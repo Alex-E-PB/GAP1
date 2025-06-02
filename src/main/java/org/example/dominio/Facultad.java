@@ -5,6 +5,8 @@ public class Facultad {
     private String nombre;
     private String ubicacion;
     private String decano;
+    private Carrera[] carreras;
+    private int contador;
 
     public Facultad() {
         this.idFacultad = "";
@@ -70,8 +72,7 @@ public class Facultad {
         }
     }
 
-    private Carrera[] carreras;
-    private int contador;
+
 
 
 
