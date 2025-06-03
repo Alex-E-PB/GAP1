@@ -12,6 +12,10 @@ public class Practica {
     private String descripcion;
     private String requisitos;
     private int duracion;
+    private Progreso[] progresos = new Progreso[4];
+    private int contador = 0;
+    private Postulacion[] postulaciones;
+
 
     public Practica() {
         this.idPractica = "";
@@ -23,6 +27,11 @@ public class Practica {
         this.descripcion = "";
         this.requisitos = "";
         this.duracion = 0;
+        this.progresos = new Progreso[4];
+        this.contador = 0;
+        postulaciones =new Postulacion[4]; // Tamaño inicial pequeño
+        contador =0;
+
     }
 
 
@@ -158,17 +167,183 @@ public class Practica {
         }
     }
 
-    public void registrarPractica() {
-        System.out.println("Práctica registrada: " + puesto + " en " + empresa);
+    //CRUD
+
+
+    // Comprobar si existe una postulacion por ID
+    public boolean existePostulacion(String idPostulacion) {
+        for (int i = 0; i < contador; i++) {
+            if (postulaciones[i].getIdPostulacion().equals(idPostulacion)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void listarPostulaciones() {
-        System.out.println("Listando postulaciones para la práctica: " + puesto);
+    // Agregar una postulacion
+    public void agregarPostulacion(Postulacion nueva) {
+        if (existePostulacion(nueva.getIdPostulacion())) {
+            System.out.println("Error: Ya existe una postulacion con ese ID.");
+            return;
+        }
+
+        if (contador == postulaciones.length) {
+            redimensionarArreglo();
+        }
+
+        postulaciones[contador] = nueva;
+        contador++;
+        System.out.println("Postulaciones agregada correctamente.");
     }
 
-    public void asignarDocenteSupervisor() {
-        System.out.println("Docente supervisor asignado a la práctica: " + puesto);
+    // Editar una postulacion por ID
+    public void editaPostulacion(String idPostulacion, String nuevoNombre) {
+        for (int i = 0; i < contador; i++) {
+            if (postulaciones[i].getIdPostulacion().equals(idPostulacion)) {
+                postulaciones[i].setIdPostulacion(nuevoNombre);
+                System.out.println("Postulacion editada correctamente.");
+                return;
+            }
+        }
+        System.out.println("Error: No se encontró una facultad con ese ID.");
     }
+
+    // Eliminar una postulacion por ID
+    public void eliminarPostulacion(String idPostulacion) {
+        for (int i = 0; i < contador; i++) {
+            if (postulaciones[i].getIdPostulacion().equals(idPostulacion)) {
+                // Desplazar los elementos hacia la izquierda
+                for (int j = i; j < contador - 1; j++) {
+                    postulaciones[j] = postulaciones[j + 1];
+                }
+                postulaciones[contador - 1] = null;
+                contador--;
+                System.out.println("Postulacion eliminada correctamente.");
+                return;
+            }
+        }
+        System.out.println("Error: Postulacion no encontrada.");
+    }
+
+    // Mostrar todas las postulaciones
+    public void mostrarPostulaciones() {
+        for (int i = 0; i < contador; i++) {
+            System.out.println(postulaciones[i]);
+        }
+    }
+
+    public Postulacion buscarPostulacion(String id) {
+        for (int i = 0; i < contador; i++) {
+            if (postulaciones[i].getIdPostulacion().equals(id)) {
+                return postulaciones[i];
+            }
+        }
+        return null;
+    }
+
+    // Redimensionar el arreglo cuando se llena
+    private void redimensionarArreglo() {
+        Postulacion[] nuevoArreglo = new Postulacion[postulaciones.length * 2];
+        for (int i = 0; i < postulaciones.length; i++) {
+            nuevoArreglo[i] = postulaciones[i];
+        }
+        postulaciones = nuevoArreglo;
+
+        Progreso[] nuevoArreglo1 = new Progreso[progresos.length * 2];
+        for (int i = 0; i < progresos.length; i++) {
+            nuevoArreglo1[i] = progresos[i];
+        }
+        progresos = nuevoArreglo1;
+        System.out.println("Arreglo redimensionado.");
+    }
+
+
+    public boolean validarPostulacion(Postulacion postulacion){
+        boolean respuesta=false;
+        for(Postulacion p: postulaciones){
+            if(p.equals(postulaciones)){
+                return true;
+            }
+            break;
+        }
+        return respuesta;
+
+    }
+
+    //Verificar si ya existe un comentario
+    private boolean existeComentarios(String comentario) {
+        for (int i = 0; i < contador; i++) {
+            if (progresos[i].getComentarios().equals(comentario)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Agregar nuevo progreso
+    public void agregarProgreso(Progreso nuevo) {
+        if (existeComentarios(nuevo.getComentarios())) {
+            System.out.println("Error: Ya existe este comentario.");
+            return;
+        }
+
+        if (contador == progresos.length) {
+            redimensionarArreglo();
+        }
+
+        progresos[contador] = nuevo;
+        contador++;
+        System.out.println("Progreso agregado correctamente.");
+    }
+
+    // Mostrar todos los progresos
+    public void mostrarProgresos() {
+        System.out.println("Listado de Progresos:");
+        for (int i = 0; i < contador; i++) {
+            System.out.println((i + 1) + ". Comentario: " + progresos[i].getComentarios()
+                    + ", Fecha: " + progresos[i].getFechaActualización());
+        }
+    }
+
+    // Editar un progreso existente por comentario
+    public void editarProgreso(String comentarioAntiguo, String nuevoComentario, Date nuevaFecha) {
+        for (int i = 0; i < contador; i++) {
+            if (progresos[i].getComentarios().equals(comentarioAntiguo)) {
+                progresos[i].setComentarios(nuevoComentario);
+                progresos[i].setFechaActualización(nuevaFecha);
+                System.out.println("Progreso actualizado correctamente.");
+                return;
+            }
+        }
+        System.out.println("Error: Comentario no encontrado.");
+    }
+
+    // Eliminar un progreso por comentario
+    public void eliminarProgreso(String comentario) {
+        for (int i = 0; i < contador; i++) {
+            if (progresos[i].getComentarios().equals(comentario)) {
+                for (int j = i; j < contador - 1; j++) {
+                    progresos[j] = progresos[j + 1];
+                }
+                progresos[contador - 1] = null;
+                contador--;
+                System.out.println("Progreso eliminado correctamente.");
+                return;
+            }
+        }
+        System.out.println("Error: Comentario no encontrado.");
+    }
+
+    /*//Redimensionar arreglo
+    private void redimensionarArreglo1() {
+        Progreso[] nuevoArreglo = new Progreso[progresos.length * 2];
+        for (int i = 0; i < progresos.length; i++) {
+            nuevoArreglo[i] = progresos[i];
+        }
+        progresos = nuevoArreglo;
+        System.out.println("Arreglo redimensionado.");
+    }*/
+
 
     @Override
     public String toString() {
@@ -178,5 +353,6 @@ public class Practica {
                 ", Requisitos=" + requisitos + ", Duración=" + duracion + "]";
     }
 }
+
 
 

@@ -1,64 +1,52 @@
 package dominio;
 
-import org.example.dominio.Carrera;
-import org.example.dominio.Facultad;
 import org.example.dominio.Usuario;
+import org.example.dominio.Estudiante;
+import org.example.dominio.Docente;
 
 public class TestUsuario {
     public static void main(String[] args) {
-        // Crear instancia con constructor vacío
-        Usuario usuario = new Usuario();
-        usuario.setIdUsuario("U001");
-        usuario.setNombre("Carlos");
-        usuario.setApellido("González");
-        usuario.setCorreo("carlos@mail.com");
-        usuario.setContrasena("clave123");
+        System.out.println("==== TEST USUARIO ====");
 
-        usuario.iniciarSesion();
-        usuario.cerrarSesion();
+        // Crear un Usuario
+        Usuario u = new Usuario("u1", "Laura", "Mendez", "laura@gmail.com", "clave123");
+        System.out.println("Usuario creado: " + u);
+        u.iniciarSesion();
 
-        System.out.println(usuario);
+        // Crear un Estudiante
+        Estudiante est = new Estudiante(1, "EST123", 3, "u2", "Ana", "Pérez", "ana@correo.com", "clave456");
+        System.out.println("Estudiante creado: " + est);
+        est.postularPractica();
 
-        // Crear instancia con constructor parametrizado
-        usuario = new Usuario("U002", "María", "Lopez", "maria@mail.com", "pass456");
-        usuario.iniciarSesion();
-        usuario.cerrarSesion();
+        // Crear un Docente
+        Docente doc = new Docente("D01", "Programación", "Ingeniería", "u3", "Carlos", "López", "carlos@correo.com", "clave789");
+        System.out.println("Docente creado: " + doc);
+        doc.enviarNotificacion();
 
-        System.out.println(usuario);
+        // Verificar instanceof
+        if (est instanceof Usuario) {
+            System.out.println(" El estudiante también es un Usuario");
+        }
 
+        if (doc instanceof Usuario) {
+            System.out.println(" El docente también es un Usuario");
+        }
 
-        usuario = new Usuario();
+        // Validar correo incorrecto
+        Usuario invalido = new Usuario();
+        invalido.setCorreo("correoIncorrecto");
+        System.out.println("Correo asignado (espera 'null'): " + invalido.getCorreo());
 
-        // Crear facultad
-        Facultad f1 = new Facultad();
-        Facultad f2 = new Facultad();
-        Facultad f3 = new Facultad();
+        // Validar contraseña corta
+        invalido.setContrasena("123");
+        System.out.println("Contraseña asignada (espera 'null'): " + invalido.getContrasena());
 
-        // Agregar facultad
-        usuario.agregarFacultad(f1);
-        usuario.agregarFacultad(f2);
-        usuario.agregarFacultad(f3);
+        // toString heredado con sobreescritura
+        Usuario referencia = est; // referencia general
+        System.out.println("Referencia como Usuario, toString da: " + referencia);
 
-        // Mostrar facultad
-        System.out.println("Facultad registradas:");
-        usuario.mostrarFacultades();
-
-        // Editar una facultad
-        usuario.editarFacultad("123", "Medicina Veterinaria");
-
-        // Eliminar una facultad
-        usuario.eliminarFacultad("001");
-
-        //Buscar facultad
-        System.out.println("Facultas encontrada:");
-        Facultad c = usuario.buscarFacultad("003");
-
-
-
-        // Mostrar facultades actualizadas
-        System.out.println("\nFacultades actualizadas:");
-        usuario.mostrarFacultades();
+        System.out.println("==== FIN DEL TEST ====");
     }
-
 }
+
 

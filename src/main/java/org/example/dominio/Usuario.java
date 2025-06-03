@@ -96,6 +96,17 @@ public class Usuario {
         System.out.println(nombre + " ha cerrado sesión.");
     }
 
+    public void mostrarTipoUsuario() {
+        if (this instanceof Estudiante) {
+            System.out.println("Este usuario es un Estudiante.");
+        } else if (this instanceof Docente) {
+            System.out.println("Este usuario es un Docente.");
+        } else {
+            System.out.println("Este usuario es de tipo Usuario.");
+        }
+    }
+
+
 
 
     @Override
@@ -103,9 +114,6 @@ public class Usuario {
         return "Usuario [ID=" + idUsuario + ", Nombre=" + nombre + ", Apellido=" + apellido +
                 ", Correo=" + correo + "]";
     }
-
-
-
 }
 
 

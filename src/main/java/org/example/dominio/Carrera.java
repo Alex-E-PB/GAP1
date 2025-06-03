@@ -5,6 +5,8 @@ public class Carrera {
     private String carrera;
     private int duracion;
     private String titulo;
+    private Practica[] practicas = new Practica[5];
+    private int contadorPracticas = 0;
 
     public Carrera() {
         this.idCarrera = "";
@@ -86,8 +88,7 @@ public class Carrera {
     }
 
 
-    private Practica[] practicas = new Practica[5];
-    private int contadorPracticas = 0;
+
 
     // Redimensionar el arreglo si está lleno
     private void redimensionarArreglo() {

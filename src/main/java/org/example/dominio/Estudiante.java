@@ -73,7 +73,7 @@ public class Estudiante extends Usuario{
     }
 
 
-    private Postulacion[] postulaciones;
+    /*private Postulacion[] postulaciones;
     private int contador;
 
 
@@ -156,13 +156,14 @@ public class Estudiante extends Usuario{
             nuevoArreglo[i] = postulaciones[i];
         }
         postulaciones = nuevoArreglo;
-    }
+    }*/
 
 
     @Override
     public String toString() {
-        return "Estudiante [ID=" + idEstudiante + ", Código=" + codigoEstudiante + ", Semestre=" + semestre + "]";
+        return super.toString() + " → Estudiante [ID=" + idEstudiante + ", Código=" + codigoEstudiante + ", Semestre=" + semestre + "]";
     }
+
 }
 
 

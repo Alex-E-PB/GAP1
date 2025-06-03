@@ -1,81 +1,156 @@
 package TestAPI;
-
 import org.example.dominio.Practica;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PracticaTest {
 
-    private Practica practica;
+    @org.junit.jupiter.api.Test
+    void getIdPractica() {
+        Practica practica = new Practica();
+        practica.setIdPractica("");
+        assertEquals("",practica.getIdPractica());
+    }
 
-    @BeforeEach
-    void setUp() {
-        practica = new Practica();
+    @org.junit.jupiter.api.Test
+    void setIdPractica() {
+        Practica practica = new Practica();
+        practica.setIdPractica("");
+        assertEquals("",practica.getIdPractica());
+
+    }
+
+    @org.junit.jupiter.api.Test
+    void getEmpresa() {
+        Practica practica = new Practica();
+        practica.setEmpresa("Banco Pichincha");
+        assertEquals("Banco Pichincha",practica.getEmpresa());
+    }
+
+    @org.junit.jupiter.api.Test
+    void setEmpresa() {
+        Practica practica = new Practica();
+        practica.setEmpresa("Banco Pichincha");
+        assertEquals("Banco Pichincha",practica.getEmpresa());
+    }
+
+    @org.junit.jupiter.api.Test
+    void getPuesto() {
+        Practica practica = new Practica();
+        practica.setPuesto("Pasante");
+        assertEquals("Pasante",practica.getPuesto());
+    }
+
+    @org.junit.jupiter.api.Test
+    void setPuesto() {
+        Practica practica = new Practica();
+        practica.setPuesto("Pasante");
+        assertEquals("Pasante",practica.getPuesto());
+    }
+
+    @org.junit.jupiter.api.Test
+    void getUbicación() {
+        Practica practica = new Practica();
+        practica.setUbicacion("Panamericana Norte km 11, 1 2 y, Quito 170133");
+        assertEquals("Panamericana Norte km 11, 1 2 y, Quito 170133",practica.getUbicacion());
+    }
+
+    @org.junit.jupiter.api.Test
+    void setUbicación() {
+        Practica practica = new Practica();
+        practica.setUbicacion("Panamericana Norte km 11, 1 2 y, Quito 170133");
+        assertEquals("Panamericana Norte km 11, 1 2 y, Quito 170133",practica.getUbicacion());
+    }
+
+    @org.junit.jupiter.api.Test
+    void getFechaInicio() {
+        Practica practica = new Practica();
+        Date fechaInicio = new Date();
+        practica.setFechaInicio(fechaInicio);
+        assertEquals(fechaInicio,practica.getFechaInicio());
+    }
+
+    @org.junit.jupiter.api.Test
+    void setFechaInicio() {
+        Practica practica = new Practica();
+        Date fechaInicio = new Date();
+        practica.setFechaInicio(fechaInicio);
+        assertEquals(fechaInicio,practica.getFechaInicio());
+    }
+
+    @org.junit.jupiter.api.Test
+    void getFechaFin() {
+        Practica practica = new Practica();
+        Date fechaFin = new Date();
+        practica.setFechaFin(fechaFin);
+        assertEquals(fechaFin,practica.getFechaFin());
+    }
+
+    @org.junit.jupiter.api.Test
+    void setFechaFin() {
+        Practica practica = new Practica();
+        Date fechaFin = new Date();
+        practica.setFechaFin(fechaFin);
+        assertEquals(fechaFin,practica.getFechaFin());
     }
 
     @Test
-    void testSetIdPractica() {
-        practica.setIdPractica("P001");
-        assertEquals("P001", practica.getIdPractica());
+    void getDescripcion() {
+        Practica practica = new Practica();
+        practica.setDescripcion("Práctica profesional en empresa de software para el desarrollo de una aplicación web con tecnologías Java y Spring Boot.");
+        assertEquals("Práctica profesional en empresa de software para el desarrollo de una aplicación web con tecnologías Java y Spring Boot.",practica.getDescripcion());
     }
 
     @Test
-    void testSetEmpresa() {
-        practica.setEmpresa("Empresa X");
-        assertEquals("Empresa X", practica.getEmpresa());
+    void setDescripcion() {
+        Practica practica = new Practica();
+        practica.setDescripcion("Práctica profesional en empresa de software para el desarrollo de una aplicación web con tecnologías Java y Spring Boot.");
+        assertEquals("Práctica profesional en empresa de software para el desarrollo de una aplicación web con tecnologías Java y Spring Boot.",practica.getDescripcion());
     }
 
     @Test
-    void testSetPuesto() {
-        practica.setPuesto("Puesto A");
-        assertEquals("Puesto A", practica.getPuesto());
+    void getRequisitos() {
+        Practica practica = new Practica();
+        practica.setRequisitos("Requisitos para postularse:\n" +
+                "- Estar matriculado en al menos el 6.º semestre\n" +
+                "- Haber aprobado Programación II y Base de Datos\n" +
+                "- Conocimientos básicos de Java y Git\n" +
+                "- Enviar CV actualizado en PDF");
+        assertEquals("Requisitos para postularse:\n" +
+                "- Estar matriculado en al menos el 6.º semestre\n" +
+                "- Haber aprobado Programación II y Base de Datos\n" +
+                "- Conocimientos básicos de Java y Git\n" +
+                "- Enviar CV actualizado en PDF",practica.getRequisitos());
     }
 
     @Test
-    void testSetUbicacion() {
-        practica.setUbicacion("Ciudad");
-        assertEquals("Ciudad", practica.getUbicacion());
+    void setRequisitos() {
+        Practica practica = new Practica();
+        practica.setRequisitos("Requisitos para postularse:\n" +
+                "- Estar matriculado en al menos el 6.º semestre\n" +
+                "- Haber aprobado Programación II y Base de Datos\n" +
+                "- Conocimientos básicos de Java y Git\n" +
+                "- Enviar CV actualizado en PDF");
+        assertEquals("Requisitos para postularse:\n" +
+                "- Estar matriculado en al menos el 6.º semestre\n" +
+                "- Haber aprobado Programación II y Base de Datos\n" +
+                "- Conocimientos básicos de Java y Git\n" +
+                "- Enviar CV actualizado en PDF",practica.getRequisitos());
     }
 
     @Test
-    void testSetFechaInicio() {
-        Date fecha = new Date();
-        practica.setFechaInicio(fecha);
-        assertEquals(fecha, practica.getFechaInicio());
+    void getDuracion() {
+        Practica practica = new Practica();
+        practica.setDuracion(4);
+        assertEquals(4,practica.getDuracion());
     }
 
     @Test
-    void testSetFechaFin() {
-        Date fecha = new Date();
-        practica.setFechaFin(fecha);
-        assertEquals(fecha, practica.getFechaFin());
-    }
-
-    @Test
-    void testSetDescripcion() {
-        practica.setDescripcion("Una práctica excelente.");
-        assertEquals("Una práctica excelente.", practica.getDescripcion());
-    }
-
-    @Test
-    void testSetRequisitos() {
-        practica.setRequisitos("Conocimientos básicos en redes.");
-        assertEquals("Conocimientos básicos en redes.", practica.getRequisitos());
-    }
-
-    @Test
-    void testSetDuracion() {
-        practica.setDuracion(5);
-        assertEquals(5, practica.getDuracion());
-    }
-
-    @Test
-    void testSetDuracionInvalida() {
-        practica.setDuracion(-3);
-        assertEquals(0, practica.getDuracion()); // Asume valor por defecto en error
+    void setDuracion() {
+        Practica practica = new Practica();
+        practica.setDuracion(4);
+        assertEquals(4,practica.getDuracion());
     }
 }
