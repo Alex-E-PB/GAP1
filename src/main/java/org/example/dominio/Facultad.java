@@ -7,42 +7,53 @@ public class Facultad {
     private String decano;
     private Carrera[] carreras;
     private int contador;
+    private int contadorF;
+    private Facultad[] facultad;
 
     public Facultad() {
         this.idFacultad = "";
         this.nombre = "";
         this.ubicacion = "";
         this.decano = "";
-        carreras =new Carrera[4]; // Tamaño inicial pequeño
-        contador =0;
+        this.carreras =new Carrera[4];
+        this.contador =0;
+        this.contadorF=0;
+        this.facultad= new Facultad[1];
     }
 
-    public Facultad(String id, String nombre, String ubicacion, String decano) {
+    public Facultad(String idFacultad, String nombre, String ubicacion, String decano) {
+        setIdFacultad(idFacultad);
+        setNombre(nombre);
+        setUbicacion(ubicacion);
+        setDecano(decano);
     }
 
     public String getIdFacultad() {
         return idFacultad;
     }
 
-    public void setIdFacultad(String idFacultad) {
+    public boolean setIdFacultad(String idFacultad) {
         if (idFacultad != null && !idFacultad.trim().isEmpty()) {
             this.idFacultad = idFacultad;
+            return true;
         } else {
-            System.out.println("Error: ID de facultad inválido");
             this.idFacultad = "null";
+            return false;
         }
     }
+
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public boolean setNombre(String nombre) {
         if (nombre != null && !nombre.trim().isEmpty()) {
             this.nombre = nombre;
+            return true;
         } else {
-            System.out.println("Error: Nombre inválido");
             this.nombre = "null";
+            return false;
         }
     }
 
@@ -50,12 +61,13 @@ public class Facultad {
         return ubicacion;
     }
 
-    public void setUbicacion(String ubicacion) {
+    public boolean setUbicacion(String ubicacion) {
         if (ubicacion != null && !ubicacion.trim().isEmpty()) {
             this.ubicacion = ubicacion;
+            return true;
         } else {
-            System.out.println("Error: Ubicación inválida");
             this.ubicacion = "null";
+            return false;
         }
     }
 
@@ -63,15 +75,27 @@ public class Facultad {
         return decano;
     }
 
-    public void setDecano(String decano) {
+    public boolean setDecano(String decano) {
         if (decano != null && !decano.trim().isEmpty()) {
             this.decano = decano;
+            return true;
         } else {
-            System.out.println("Error: Decano inválido");
             this.decano = "null";
+            return false;
         }
     }
 
+    public boolean agregarFacultad(Facultad nuevaF) {
+        facultad[contadorF] = nuevaF;
+        contadorF++;
+        return true;
+    }
+
+    public void mostrarFacultad() {
+        for (int i = 0; i < contadorF; i++) {
+            System.out.println(facultad[i]);
+        }
+    }
 
 
 
@@ -86,11 +110,12 @@ public class Facultad {
         return false;
     }
 
+
+
     // Agregar una carrera
-    public void agregarCarrera(Carrera nueva) {
+    public boolean agregarCarrera(Carrera nueva) {
         if (existeCarrera(nueva.getIdCarrera())) {
-            System.out.println("Error: Ya existe una carrera con ese ID.");
-            return;
+            return false;
         }
 
         if (contador == carreras.length) {
@@ -99,38 +124,36 @@ public class Facultad {
 
         carreras[contador] = nueva;
         contador++;
-        System.out.println("Carrera agregada correctamente.");
+        return true;
     }
 
     // Editar una carrera por ID
-    public void editarCarrera(String idCarrera, String nuevoNombre, int nuevaDuracion, String nuevoTitulo) {
+    public boolean editarCarrera(String idCarrera, String nuevoNombre, int nuevaDuracion, String nuevoTitulo) {
         for (int i = 0; i < contador; i++) {
             if (carreras[i].getIdCarrera().equals(idCarrera)) {
                 carreras[i].setCarrera(nuevoNombre);
                 carreras[i].setDuracion(nuevaDuracion);
                 carreras[i].setTitulo(nuevoTitulo);
-                System.out.println("Carrera editada correctamente.");
-                return;
+                return true;
             }
         }
-        System.out.println("Error: No se encontró una carrera con ese ID.");
+        return false;
     }
 
     // Eliminar una carrera por ID
-    public void eliminarCarrera(String idCarrera) {
+    public boolean eliminarCarrera(String idCarrera) {
         for (int i = 0; i < contador; i++) {
-            if (carreras[i].getIdCarrera().equals(idCarrera)) {
+            if (carreras[i] != null && carreras[i].getIdCarrera().equals(idCarrera)) {
                 // Desplazar los elementos hacia la izquierda
                 for (int j = i; j < contador - 1; j++) {
                     carreras[j] = carreras[j + 1];
                 }
                 carreras[contador - 1] = null;
                 contador--;
-                System.out.println("Carrera eliminada correctamente.");
-                return;
+                return true; // Se eliminó correctamente
             }
         }
-        System.out.println("Error: Carrera no encontrada.");
+        return false; // No se encontró la carrera
     }
 
     // Mostrar todas las carreras
@@ -149,13 +172,16 @@ public class Facultad {
         return null;
     }
 
+    public boolean hayCarreras() {
+        return contador > 0;
+    }
+
+
 
     // Redimensionar el arreglo cuando se llena
     private void redimensionarArreglo() {
         Carrera[] nuevoArreglo = new Carrera[carreras.length * 2];
-        for (int i = 0; i < carreras.length; i++) {
-            nuevoArreglo[i] = carreras[i];
-        }
+        System.arraycopy(carreras, 0, nuevoArreglo, 0, carreras.length);
         carreras = nuevoArreglo;
     }
 

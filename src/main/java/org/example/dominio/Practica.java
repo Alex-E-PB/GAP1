@@ -12,8 +12,9 @@ public class Practica {
     private String descripcion;
     private String requisitos;
     private int duracion;
-    private Progreso[] progresos = new Progreso[4];
-    private int contador = 0;
+    private Progreso[] progresos ;
+    private int contador ;
+    private int contador1;
     private Postulacion[] postulaciones;
 
 
@@ -29,9 +30,8 @@ public class Practica {
         this.duracion = 0;
         this.progresos = new Progreso[4];
         this.contador = 0;
-        postulaciones =new Postulacion[4]; // Tamaño inicial pequeño
-        contador =0;
-
+        this.contador1 =0;
+        this.postulaciones =new Postulacion[4];
     }
 
 
@@ -47,6 +47,9 @@ public class Practica {
         setDescripcion(descripcion);
         setRequisitos(requisitos);
         setDuracion(0);
+        this.postulaciones=new Postulacion[4];
+        this.contador1=0;
+
     }
 
 
@@ -54,12 +57,13 @@ public class Practica {
         return idPractica;
     }
 
-    public void setIdPractica(String idPractica) {
+    public boolean setIdPractica(String idPractica) {
         if (idPractica != null && !idPractica.trim().isEmpty()) {
             this.idPractica = idPractica;
+            return true;
         } else {
-            System.out.println("Error: ID de práctica inválido");
             this.idPractica = "null";
+            return false;
         }
     }
 
@@ -67,12 +71,13 @@ public class Practica {
         return empresa;
     }
 
-    public void setEmpresa(String empresa) {
+    public boolean setEmpresa(String empresa) {
         if (empresa != null && !empresa.trim().isEmpty()) {
             this.empresa = empresa;
+            return true;
         } else {
-            System.out.println("Error: Empresa inválida");
             this.empresa = "null";
+            return false;
         }
     }
 
@@ -80,12 +85,13 @@ public class Practica {
         return puesto;
     }
 
-    public void setPuesto(String puesto) {
+    public boolean setPuesto(String puesto) {
         if (puesto != null && !puesto.trim().isEmpty()) {
             this.puesto = puesto;
+            return true;
         } else {
-            System.out.println("Error: Puesto inválido");
             this.puesto = "null";
+            return false;
         }
     }
 
@@ -93,12 +99,13 @@ public class Practica {
         return ubicacion;
     }
 
-    public void setUbicacion(String ubicacion) {
+    public boolean setUbicacion(String ubicacion) {
         if (ubicacion != null && !ubicacion.trim().isEmpty()) {
             this.ubicacion = ubicacion;
+            return true;
         } else {
-            System.out.println("Error: Ubicación inválida");
             this.ubicacion = "null";
+            return false;
         }
     }
 
@@ -106,12 +113,13 @@ public class Practica {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public boolean setFechaInicio(Date fechaInicio) {
         if (fechaInicio != null) {
             this.fechaInicio = fechaInicio;
+            return true;
         } else {
-            System.out.println("Error: Fecha de inicio inválida");
-            this.fechaInicio = new Date();
+            this.fechaInicio = null;
+            return false;
         }
     }
 
@@ -119,12 +127,13 @@ public class Practica {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public boolean setFechaFin(Date fechaFin) {
         if (fechaFin != null) {
             this.fechaFin = fechaFin;
+            return true;
         } else {
-            System.out.println("Error: Fecha de fin inválida");
-            this.fechaFin = new Date();
+            this.fechaFin = null;
+            return false;
         }
     }
 
@@ -132,12 +141,13 @@ public class Practica {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
+    public boolean setDescripcion(String descripcion) {
         if (descripcion != null && !descripcion.trim().isEmpty()) {
             this.descripcion = descripcion;
+            return true;
         } else {
-            System.out.println("Error: Descripción inválida");
             this.descripcion = "null";
+            return false;
         }
     }
 
@@ -145,12 +155,13 @@ public class Practica {
         return requisitos;
     }
 
-    public void setRequisitos(String requisitos) {
+    public boolean setRequisitos(String requisitos) {
         if (requisitos != null && !requisitos.trim().isEmpty()) {
             this.requisitos = requisitos;
+            return true;
         } else {
-            System.out.println("Error: Requisitos inválidos");
             this.requisitos = "null";
+            return false;
         }
     }
 
@@ -158,12 +169,13 @@ public class Practica {
         return duracion;
     }
 
-    public void setDuracion(int duracion) {
+    public boolean setDuracion(int duracion) {
         if (duracion >= 0) {
             this.duracion = duracion;
+            return true;
         } else {
-            System.out.println("Error: Duración inválida");
             this.duracion = 0;
+            return false;
         }
     }
 
@@ -172,7 +184,7 @@ public class Practica {
 
     // Comprobar si existe una postulacion por ID
     public boolean existePostulacion(String idPostulacion) {
-        for (int i = 0; i < contador; i++) {
+        for (int i = 0; i < contador1; i++) {
             if (postulaciones[i].getIdPostulacion().equals(idPostulacion)) {
                 return true;
             }
@@ -181,26 +193,31 @@ public class Practica {
     }
 
     // Agregar una postulacion
-    public void agregarPostulacion(Postulacion nueva) {
+    public boolean agregarPostulacion(Postulacion nueva) {
         if (existePostulacion(nueva.getIdPostulacion())) {
-            System.out.println("Error: Ya existe una postulacion con ese ID.");
-            return;
+            return false;
         }
 
-        if (contador == postulaciones.length) {
+        if (contador1 == postulaciones.length) {
             redimensionarArreglo();
         }
 
-        postulaciones[contador] = nueva;
-        contador++;
-        System.out.println("Postulaciones agregada correctamente.");
+        postulaciones[contador1] = nueva;
+        contador1++;
+        return true;
+    }
+
+    public boolean hayPostulaciones() {
+        return contador1 > 0;
     }
 
     // Editar una postulacion por ID
-    public void editaPostulacion(String idPostulacion, String nuevoNombre) {
-        for (int i = 0; i < contador; i++) {
+    public void editarPostulacion(String idPostulacion, int nuevoestado, String nuevosdocumentos) {
+        for (int i = 0; i < contador1; i++) {
             if (postulaciones[i].getIdPostulacion().equals(idPostulacion)) {
-                postulaciones[i].setIdPostulacion(nuevoNombre);
+                postulaciones[i].setIdPostulacion(idPostulacion);
+                postulaciones[i].setEstado(nuevoestado);
+                postulaciones[i].setDocumentos(nuevosdocumentos);
                 System.out.println("Postulacion editada correctamente.");
                 return;
             }
@@ -208,32 +225,33 @@ public class Practica {
         System.out.println("Error: No se encontró una facultad con ese ID.");
     }
 
+
+
     // Eliminar una postulacion por ID
-    public void eliminarPostulacion(String idPostulacion) {
-        for (int i = 0; i < contador; i++) {
+    public boolean eliminarPostulacion(String idPostulacion) {
+        for (int i = 0; i < contador1; i++) {
             if (postulaciones[i].getIdPostulacion().equals(idPostulacion)) {
                 // Desplazar los elementos hacia la izquierda
-                for (int j = i; j < contador - 1; j++) {
+                for (int j = i; j < contador1 - 1; j++) {
                     postulaciones[j] = postulaciones[j + 1];
                 }
-                postulaciones[contador - 1] = null;
-                contador--;
-                System.out.println("Postulacion eliminada correctamente.");
-                return;
+                postulaciones[contador1 - 1] = null;
+                contador1--;
+                return true;
             }
         }
-        System.out.println("Error: Postulacion no encontrada.");
+        return false;
     }
 
     // Mostrar todas las postulaciones
     public void mostrarPostulaciones() {
-        for (int i = 0; i < contador; i++) {
+        for (int i = 0; i < contador1; i++) {
             System.out.println(postulaciones[i]);
         }
     }
 
     public Postulacion buscarPostulacion(String id) {
-        for (int i = 0; i < contador; i++) {
+        for (int i = 0; i < contador1; i++) {
             if (postulaciones[i].getIdPostulacion().equals(id)) {
                 return postulaciones[i];
             }
@@ -257,21 +275,32 @@ public class Practica {
         System.out.println("Arreglo redimensionado.");
     }
 
-
-    public boolean validarPostulacion(Postulacion postulacion){
+    //correcci+1
+   /* public boolean validarPostulacion(Postulacion postulacion){
         boolean respuesta=false;
         for(Postulacion p: postulaciones){
-            if(p.equals(postulaciones)){
+            if(p.equals(postulacion){
                 return true;
             }
             break;
         }
         return respuesta;
+    }*/
+   public boolean validarPostulacion(Postulacion postulacion){
+       for(Postulacion p : postulaciones){
+           if(p.equals(postulacion)){
+               return true;
+           }
+       }
+       return false;
+   }
 
-    }
+
+
+    //CRUD progreso
 
     //Verificar si ya existe un comentario
-    private boolean existeComentarios(String comentario) {
+    public boolean existeComentarios(String comentario) {
         for (int i = 0; i < contador; i++) {
             if (progresos[i].getComentarios().equals(comentario)) {
                 return true;
@@ -281,45 +310,49 @@ public class Practica {
     }
 
     // Agregar nuevo progreso
-    public void agregarProgreso(Progreso nuevo) {
+    public boolean agregarProgreso(Progreso nuevo) {
         if (existeComentarios(nuevo.getComentarios())) {
-            System.out.println("Error: Ya existe este comentario.");
-            return;
+            return false;
         }
 
-        if (contador == progresos.length) {
-            redimensionarArreglo();
+        if (contador1 == progresos.length) {
+            redimensionarArreglo1();
         }
 
         progresos[contador] = nuevo;
-        contador++;
-        System.out.println("Progreso agregado correctamente.");
+        contador1++;
+        return true;
     }
 
     // Mostrar todos los progresos
     public void mostrarProgresos() {
-        System.out.println("Listado de Progresos:");
         for (int i = 0; i < contador; i++) {
-            System.out.println((i + 1) + ". Comentario: " + progresos[i].getComentarios()
-                    + ", Fecha: " + progresos[i].getFechaActualización());
+            System.out.println(progresos[i]);
         }
+    }
+
+    //Buscar progreso
+    public Progreso buscarCarrera (String id) {
+        for (int i = 0; i < contador; i++) {
+            if (progresos[i].getComentarios().equals(id)) {
+                return progresos[i];
+            }
+        }
+        return null;
     }
 
     // Editar un progreso existente por comentario
-    public void editarProgreso(String comentarioAntiguo, String nuevoComentario, Date nuevaFecha) {
+    public boolean editarProgreso(String comentarios) {
         for (int i = 0; i < contador; i++) {
-            if (progresos[i].getComentarios().equals(comentarioAntiguo)) {
-                progresos[i].setComentarios(nuevoComentario);
-                progresos[i].setFechaActualización(nuevaFecha);
-                System.out.println("Progreso actualizado correctamente.");
-                return;
+            if (progresos[i].getComentarios().equals(comentarios)) {
+                return true;
             }
         }
-        System.out.println("Error: Comentario no encontrado.");
+        return false;
     }
 
     // Eliminar un progreso por comentario
-    public void eliminarProgreso(String comentario) {
+    public boolean eliminarProgreso(String comentario) {
         for (int i = 0; i < contador; i++) {
             if (progresos[i].getComentarios().equals(comentario)) {
                 for (int j = i; j < contador - 1; j++) {
@@ -327,22 +360,18 @@ public class Practica {
                 }
                 progresos[contador - 1] = null;
                 contador--;
-                System.out.println("Progreso eliminado correctamente.");
-                return;
+                return true;
             }
         }
-        System.out.println("Error: Comentario no encontrado.");
+        return false;
     }
 
-    /*//Redimensionar arreglo
+    //Redimensionar arreglo
     private void redimensionarArreglo1() {
         Progreso[] nuevoArreglo = new Progreso[progresos.length * 2];
-        for (int i = 0; i < progresos.length; i++) {
-            nuevoArreglo[i] = progresos[i];
-        }
+        System.arraycopy(progresos, 0, nuevoArreglo, 0, progresos.length);
         progresos = nuevoArreglo;
-        System.out.println("Arreglo redimensionado.");
-    }*/
+    }
 
 
     @Override

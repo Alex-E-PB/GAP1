@@ -1,8 +1,9 @@
 package org.example;
-import org.example.consola.menu;
 
 import org.example.dominio.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -16,7 +17,10 @@ public class Main {
             System.out.println("\n=== MENÚ PRINCIPAL ===");
             System.out.println("1. Submenú Carreras");
             System.out.println("2. Submenú Prácticas");
-            System.out.println("3. Submenú Avance");
+            System.out.println("3. Submenú Progreso");
+            System.out.println("4. Submenú Facultad");
+            System.out.println("5. Submenú Postulación");
+            System.out.println("6. Submenú Notificaciones");
             System.out.println("0. Salir");
             opcion = leerEntero(sc, "Seleccione una opción: ");
 
@@ -31,7 +35,10 @@ public class Main {
                         System.out.println("Carrera no encontrada.");
                     }
                 }
-                case 3 -> menuAvance(sc);
+                case 3 -> menuProgresos(sc,new Practica());
+                case 4 -> menuFacultad(sc, facultad);
+                case 5 -> menuPostulacion(sc, new Practica());
+                case 6 -> menuNotificaciones(sc,new Docente());
                 case 0 -> System.out.println("Saliendo del sistema...");
                 default -> System.out.println("Opción inválida.");
             }
@@ -53,30 +60,54 @@ public class Main {
 
             switch (opcion) {
                 case 1 -> {
-                    String id = leerTextoLibre(sc, "ID carrera: ");
-                    String nombre = leerTexto(sc, "Nombre carrera: ");
-                    int duracion = leerEntero(sc, "Duración (años): ");
-                    String titulo = leerTexto(sc, "Título otorgado: ");
+                    String idCarrera = leerTextoLibre(sc, "ID carrera: ");
+                    if (facultad.existeCarrera(idCarrera)) {
+                        System.out.println("Ya existe una carrera con ese ID.");
+                    } else {
+                        String carrera = leerTexto(sc, "Nombre carrera: ");
+                        int duracion = leerEntero(sc, "Duración (semestres): ");
+                        String titulo = leerTexto(sc, "Título otorgado: ");
 
-                    Carrera carrera = new Carrera();
-                    carrera.setIdCarrera(id);
-                    carrera.setCarrera(nombre);
-                    carrera.setDuracion(duracion);
-                    carrera.setTitulo(titulo);
-                    facultad.agregarCarrera(carrera);
+                        Carrera c = new Carrera(idCarrera, carrera, duracion, titulo);
+                        facultad.agregarCarrera(c);
+                        System.out.println("Carrera agregada correctamente.");
+                    }
                 }
-                case 2 -> facultad.mostrarCarreras();
+
+                case 2 -> {
+                    if (!facultad.hayCarreras()){
+                        System.out.println("No hay carreras registradas para mostrar.");
+                    }else{
+                        facultad.mostrarCarreras();
+                    }
+                    facultad.mostrarCarreras();
+                }
                 case 3 -> {
-                    String id = leerTextoLibre(sc, "ID de la carrera a editar: ");
-                    String nuevoNombre = leerTexto(sc, "Nuevo nombre: ");
-                    int nuevaDuracion = leerEntero(sc, "Nueva duración: ");
-                    String nuevoTitulo = leerTexto(sc, "Nuevo título: ");
-                    facultad.editarCarrera(id, nuevoNombre, nuevaDuracion, nuevoTitulo);
+                    String idCarrera = leerTextoLibre(sc, "ID de la carrera a editar: ");
+                    if (!facultad.existeCarrera(idCarrera)) {
+                        System.out.println("Error: ID de carrera no encontrado.");
+                    } else {
+                        String nuevoNombre = leerTexto(sc, "Nuevo nombre: ");
+                        int nuevaDuracion = leerEntero(sc, "Nueva duración: ");
+                        String nuevoTitulo = leerTexto(sc, "Nuevo título: ");
+
+                        facultad.editarCarrera(idCarrera, nuevoNombre, nuevaDuracion, nuevoTitulo);
+                        System.out.println("Carrera editada exitosamente.");
+                    }
                 }
                 case 4 -> {
-                    String idEliminar = leerTextoLibre(sc, "ID de la carrera a eliminar: ");
-                    facultad.eliminarCarrera(idEliminar);
+                    if (!facultad.hayCarreras()) {
+                        System.out.println("No hay carreras registradas para eliminar.");
+                    } else {
+                        String idEliminar = leerTextoLibre(sc, "ID de la carrera a eliminar: ");
+                        if (facultad.eliminarCarrera(idEliminar)) {
+                            System.out.println("Carrera eliminada correctamente.");
+                        } else {
+                            System.out.println("Error: Carrera no encontrada.");
+                        }
+                    }
                 }
+
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
             }
@@ -97,37 +128,61 @@ public class Main {
 
             switch (op) {
                 case 1 -> {
-                    String id = leerTextoLibre(sc, "ID práctica: ");
-                    String empresa = leerTexto(sc, "Empresa: ");
-                    String puesto = leerTexto(sc, "Puesto: ");
-                    String ubicacion = leerTexto(sc, "Ubicación: ");
-                    int duracion = leerEntero(sc, "Duración (meses): ");
-
-                    Practica p = new Practica();
-                    p.setIdPractica(id);
-                    p.setEmpresa(empresa);
-                    p.setPuesto(puesto);
-                    p.setUbicacion(ubicacion);
-                    p.setFechaInicio(new Date());
-                    p.setFechaFin(new Date());
-                    p.setDescripcion("Práctica agregada manualmente");
-                    p.setRequisitos("No especificados");
-                    p.setDuracion(duracion);
-
-                    carrera.agregarPractica(p);
+                    String idPractica = leerTextoLibre(sc, "ID práctica: ");
+                    if (carrera.existePractica(idPractica)){
+                        System.out.println("Ya existe una practica con ese ID");
+                    }else{
+                        String empresa = leerTexto(sc, "Empresa: ");
+                        String puesto = leerTexto(sc, "Puesto: ");
+                        String ubicacion = leerTextoLibre(sc, "Ubicación: ");
+                        new Date();
+                        new Date();
+                        String descripcion= leerTexto(sc, "Descripción: ");
+                        String requisitos= leerTexto(sc, "Requisitos: ");
+                        int duracion = leerEntero(sc, "Duración (meses): ");
+                        Practica p = new Practica(idPractica, empresa,puesto, ubicacion,
+                                new Date(), new Date(), descripcion,
+                                requisitos, duracion);
+                        carrera.agregarPractica(p);
+                        System.out.println("Practica agregada correctamente.");
+                    }
                 }
-                case 2 -> carrera.mostrarPracticas();
+                case 2 ->{
+                    if (!carrera.hayPracticas()){
+                        System.out.println("No hay practicas registradas para mostrar.");
+                    }else{
+                        carrera.mostrarPracticas();
+                    }
+                }
+
+
                 case 3 -> {
-                    String idEditar = leerTextoLibre(sc, "ID de la práctica a editar: ");
-                    String empresa = leerTexto(sc, "Nueva empresa: ");
-                    String puesto = leerTexto(sc, "Nuevo puesto: ");
-                    String ubicacion = leerTexto(sc, "Nueva ubicación: ");
-                    int duracion = leerEntero(sc, "Nueva duración (meses): ");
-                    carrera.editarPractica(idEditar, empresa, puesto, ubicacion, duracion);
+                    String idPractica = leerTextoLibre(sc, "ID de la práctica a editar: ");
+                    if (!carrera.existePractica(idPractica)) {
+                        System.out.println("Error: ID de práctica no encontrado.");
+                    } else {
+                        String empresa = leerTexto(sc, "Nueva empresa: ");
+                        String puesto = leerTexto(sc, "Nuevo puesto: ");
+                        String ubicacion = leerTexto(sc, "Nueva ubicación: ");
+                        String descripcion = leerTexto(sc, "Nueva descripción: ");
+                        String requisitos = leerTexto(sc, "Nuevos requisitos: ");
+                        int duracion = leerEntero(sc, "Nueva duración: ");
+
+                        carrera.editarPractica(idPractica, empresa, puesto, ubicacion, descripcion, requisitos, duracion);
+                        System.out.println("Práctica editada exitosamente.");
+                    }
                 }
                 case 4 -> {
-                    String idEliminar = leerTextoLibre(sc, "ID de la práctica a eliminar: ");
-                    carrera.eliminarPractica(idEliminar);
+                    if (!carrera.hayPracticas()) {
+                        System.out.println("No hay practicas registradas para eliminar.");
+                    } else {
+                        String idPractica = leerTextoLibre(sc, "ID de la practica a eliminar: ");
+                        if (carrera.eliminarPractica(idPractica)) {
+                            System.out.println("Practica eliminada correctamente.");
+                        } else {
+                            System.out.println("Error: Practica no encontrada.");
+                        }
+                    }
                 }
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
@@ -136,28 +191,222 @@ public class Main {
         } while (op != 0);
     }
 
-    public static void menuAvance(Scanner sc) {
+
+    public static void menuPostulacion(Scanner sc, Practica practica ){
         int op;
         do {
-            System.out.println("\n--- SUBMENÚ AVANCE ---");
-            System.out.println("1. Registrar avance (simulado)");
-            System.out.println("2. Mostrar avance (simulado)");
+            System.out.println("\n--- SUBMENÚ POSTULACIÓN DE: " + practica.getIdPractica() + " ---");
+            System.out.println("1. Agregar postulación");
+            System.out.println("2. Mostrar postulaciones");
+            System.out.println("3. Editar postulación");
+            System.out.println("4. Eliminar postulación");
             System.out.println("0. Volver al menú principal");
             op = leerEntero(sc, "Seleccione una opción: ");
 
             switch (op) {
                 case 1 -> {
-                    System.out.println("Avance registrado exitosamente (simulado).");
-                    // Aquí podrías vincular con clases como Avance o Progreso si las tienes.
+                    String idPostulacion = leerTextoLibre(sc, "ID postulación: ");
+                    if (practica.existePostulacion(idPostulacion)){
+                        System.out.println("Ya existe una postulación con ese ID");
+                    }else{
+                        new Date();
+                        int estado = leerEntero(sc,"Estado: ");
+                        String documentos = leerTexto(sc, "Documentos adjuntos: ");
+                        Postulacion pos = new Postulacion(idPostulacion,new Estudiante(),new Practica(),new Date(),estado,documentos);
+                        practica.agregarPostulacion(pos);
+                        System.out.println("Postulación agregada correctamente.");
+                    }
                 }
-                case 2 -> {
-                    System.out.println("Mostrando avance actual (simulado).");
-                    // Aquí mostrarías información guardada de avances.
+                case 2 ->{
+                    if (!practica.hayPostulaciones()){
+                       System.out.println("No hay postulaciones registradas para mostrar.");
+                    }else{
+                        practica.mostrarPostulaciones();
+                    }
+                }
+
+
+                case 3 -> {
+                    String idPostulacion = leerTextoLibre(sc, "ID de la práctica a editar: ");
+                    if (!practica.existePostulacion(idPostulacion)) {
+                        System.out.println("Error: ID de práctica no encontrado.");
+                    } else {
+                        int nuevoestado = leerEntero(sc,"Estado: ");
+                        String nuevosdocumentos = leerTexto(sc, "Documentos adjuntos: ");
+
+                        practica.editarPostulacion(idPostulacion,nuevoestado,nuevosdocumentos);
+                        System.out.println("Práctica editada exitosamente.");
+                        
+                        
+                    }
+                }
+                case 4 -> {
+                    if (!practica.hayPostulaciones()) {
+                        System.out.println("No hay postulaciones registradas para eliminar.");
+                    } else {
+                        String idPostulacion = leerTextoLibre(sc, "ID de la postulación a eliminar: ");
+                        if (practica.eliminarPostulacion(idPostulacion)){
+                            System.out.println("Practica eliminada correctamente.");
+                        } else {
+                            System.out.println("Error: Practica no encontrada.");
+                        }
+                    }
+                }
+                case 0 -> System.out.println("Volviendo al menú principal...");
+                default -> System.out.println("Opción inválida.");
+            }
+
+        } while (op != 0);
+
+    }
+
+    public static void menuProgresos(Scanner sc, Practica practica) {
+        int op;
+        do {
+            System.out.println("\n--- SUBMENÚ PROGRESOS ---");
+            System.out.println("1. Agregar progreso");
+            System.out.println("2. Mostrar progreso");
+            System.out.println("3. Editar progreso");
+            System.out.println("4. Eliminar progreso");
+            System.out.println("0. Volver al menú principal");
+            op = leerEntero(sc, "Seleccione una opción: ");
+
+
+            switch (op) {
+                case 1 -> {
+                    String comentarios = leerTextoLibre(sc, "Comentar progreso");
+                    if (practica.existeComentarios(comentarios)) {
+                        System.out.println("Este comentario ya existe.");
+                    } else {
+                        comentarios = leerTexto(sc, "Comentario");
+                        Progreso pr = new Progreso(comentarios, new Date());
+                        practica.agregarProgreso(pr);
+                        System.out.println("Progreso agregado correctamente.");
+                    }
+                }
+                case 2 -> practica.mostrarProgresos();
+                case 3 -> {
+                    String comentarios = leerTexto(sc, "Comentar progreso");
+                    boolean editado = practica.editarProgreso(comentarios);
+                    if (editado) {
+                        System.out.println("Comentario editado exitosamente.");
+                    } else {
+                        System.out.println("No se encontró un progreso con ese comentario.");
+                    }
+                }
+                case 4 -> {
+                    String comentarios = leerTextoLibre(sc, "Comentario a eliminar");
+                    boolean eliminado = practica.eliminarProgreso(comentarios);
+                    if (eliminado) {
+                        System.out.println("Comentario eliminado correctamente.");
+                    } else {
+                        System.out.println("No se encontró un progreso con ese comentario.");
+                    }
                 }
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
             }
         } while (op != 0);
+    }
+
+    public static void menuFacultad(Scanner sc, Facultad facultad){
+        int op;
+        do {
+            System.out.println("\n--- SUBMENÚ FACULTAD ---");
+            System.out.println("1. Agregar Facultad");
+            System.out.println("2. Mostar información de la facultad");
+            System.out.println("0. Volver al menú principal");
+            op = leerEntero(sc, "Seleccione una opción: ");
+
+            switch (op) {
+                case 1 -> {
+                    String idFacultad = leerTextoLibre(sc, "ID de la facultad: ");
+                    String nombre = leerTexto(sc, "Nombre de la facultad: ");
+                    String ubicacion = leerTextoLibre(sc, "Ubicación de la facultad: ");
+                    String decano = leerTexto(sc, "Decano a la facultad: ");
+                    Facultad f= new Facultad(idFacultad,nombre,ubicacion,decano);
+                    facultad.agregarFacultad(f);
+                    System.out.println("Facultad agregada exitosamente.");
+                }
+                case 2->{
+                    facultad.mostrarFacultad();
+                }
+                case 0 -> System.out.println("Volviendo al menú principal...");
+                default -> System.out.println("Opción inválida.");
+            }
+        } while (op != 0);
+    }
+
+
+    public static void menuNotificaciones(Scanner sc, Docente docente) {
+        int op;
+        do {
+            System.out.println("\n--- SUBMENÚ Notificaciones ---");
+            System.out.println("1. Agregar Notificación");
+            System.out.println("2. Mostrar Notificación");
+            System.out.println("3. Editar Notificación");
+            System.out.println("4. Eliminar Notificación");
+            System.out.println("0. Volver al menú principal");
+            op = leerEntero(sc, "Seleccione una opción: ");
+
+            switch (op) {
+                case 1 -> {
+                    String idNotificacion = leerTextoLibre(sc, "ID Notificacion: ");
+                    if (docente.validarDuplicado(idNotificacion)) {
+                        System.out.println("Ya existe una notificacion con ese ID.");
+                    } else {
+                        String notificacion = leerTexto(sc, "Nombre notificacion : ");
+                        String mensaje  = leerTexto(sc, "nuevo mensaje: ");
+                        Date fechaEnvio = leerFecha(sc, "Fecha nueva (dd/MM/yyyy): ");
+
+
+                        Notificacion n = new Notificacion(idNotificacion, docente, mensaje, fechaEnvio);
+                        docente.agregarNotificacion(n);
+                        System.out.println("notificacion agregada correctamente.");
+                    }
+                }
+
+                case 2 -> docente.mostrarNotificaciones();
+                case 3 -> {
+                    String id = leerTextoLibre(sc, "ID de la notificacion a editar: ");
+                    String nuevoMensaje  = leerTexto(sc, "Nuevo mensaje: ");
+                    docente.editarNotificacion(id, nuevoMensaje);
+                    System.out.println("Notificación editada exitosamente.");
+                }
+                case 4 -> {
+                    if (!docente.hayNotificaciones()) {
+                        System.out.println("No hay notificaciones registradas para eliminar.");
+                    } else {
+                        String idEliminar = leerTextoLibre(sc, "ID de la notificacion a eliminar: ");
+                        if (docente.eliminarNotificacion(idEliminar)) {
+                            System.out.println("Notificacion eliminada correctamente.");
+                        } else {
+                            System.out.println("Error: Notificacion no encontrada.");
+                        }
+                    }
+                }
+
+                case 0 -> System.out.println("Volviendo al menú principal...");
+                default -> System.out.println("Opción inválida.");
+            }
+
+        } while (op != 0);
+    }
+
+    public static Date leerFecha(Scanner sc, String mensaje) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);  // para validar bien la fecha
+        Date fecha = null;
+        while (fecha == null) {
+            System.out.print(mensaje);
+            String fechaStr = sc.nextLine();
+            try {
+                fecha = sdf.parse(fechaStr);
+            } catch (ParseException e) {
+                System.out.println("Formato de fecha inválido. Intente con dd/MM/yyyy");
+            }
+        }
+        return fecha;
     }
 
     public static int leerEntero(Scanner sc, String mensaje) {
@@ -184,9 +433,17 @@ public class Main {
     }
 
     public static String leerTextoLibre(Scanner sc, String mensaje) {
-        System.out.print(mensaje);
-        return sc.nextLine().trim();
+        String input;
+        do {
+            System.out.print(mensaje);
+            input = sc.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("El campo no puede estar vacío. Intente nuevamente.");
+            }
+        } while (input.isEmpty());
+        return input;
     }
+
 }
 
 

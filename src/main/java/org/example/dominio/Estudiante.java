@@ -14,8 +14,8 @@ public class Estudiante extends Usuario{
 
     public Estudiante(int idEstudiante, String codigoEstudiante, int semestre,
                       String idUsuario, String nombre, String apellido,
-                      String correo, String contrasena) {
-        super(idUsuario, nombre, apellido, correo, contrasena);
+                      String correo, String contrasena ) {
+        super(idUsuario, nombre, apellido, correo, contrasena, TipoUsuario.ESTUDIANTE);
         this.idEstudiante = idEstudiante;
         this.codigoEstudiante = codigoEstudiante;
         this.semestre = semestre;

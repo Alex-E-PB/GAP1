@@ -1,5 +1,6 @@
 package dominio;
 
+import org.example.dominio.TipoUsuario;
 import org.example.dominio.Usuario;
 import org.example.dominio.Estudiante;
 import org.example.dominio.Docente;
@@ -9,7 +10,7 @@ public class TestUsuario {
         System.out.println("==== TEST USUARIO ====");
 
         // Crear un Usuario
-        Usuario u = new Usuario("u1", "Laura", "Mendez", "laura@gmail.com", "clave123");
+        Usuario u = new Usuario("u1", "Laura", "Mendez", "laura@gmail.com", "clave123", TipoUsuario.ESTUDIANTE);
         System.out.println("Usuario creado: " + u);
         u.iniciarSesion();
 
@@ -19,7 +20,7 @@ public class TestUsuario {
         est.postularPractica();
 
         // Crear un Docente
-        Docente doc = new Docente("D01", "Programación", "Ingeniería", "u3", "Carlos", "López", "carlos@correo.com", "clave789");
+        Docente doc = new Docente( "123", "Sistemas", "INGENIERIA", "u3", "Carlos", "López", "carlos@correo.com", "clave789");
         System.out.println("Docente creado: " + doc);
         doc.enviarNotificacion();
 
@@ -48,5 +49,6 @@ public class TestUsuario {
         System.out.println("==== FIN DEL TEST ====");
     }
 }
+
 
 

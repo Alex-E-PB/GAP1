@@ -1,6 +1,7 @@
 package dominio;
 
 import org.example.dominio.Estudiante;
+import org.example.dominio.TipoUsuario;
 
 public class TestEstudiante {
     public static void main(String[] args) {

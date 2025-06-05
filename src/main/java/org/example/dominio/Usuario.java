@@ -6,6 +6,7 @@ public class Usuario {
     private String apellido;
     private String correo;
     private String contrasena;
+    private TipoUsuario tipoUsuario;
 
     public Usuario() {
         this.idUsuario = "";
@@ -13,14 +14,16 @@ public class Usuario {
         this.apellido = "";
         this.correo = "";
         this.contrasena = "";
+        this.tipoUsuario = null;
     }
 
-    public Usuario(String idUsuario, String nombre, String apellido, String correo, String contrasena) {
+    public Usuario(String idUsuario, String nombre, String apellido, String correo, String contrasena, TipoUsuario tipoUsuario) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.contrasena = contrasena;
+        this.tipoUsuario = tipoUsuario;
     }
 
     public String getIdUsuario() {
@@ -88,6 +91,14 @@ public class Usuario {
         }
     }
 
+    public TipoUsuario getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+
     public void iniciarSesion() {
         System.out.println(nombre + " ha iniciado sesión.");
     }
@@ -112,7 +123,7 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario [ID=" + idUsuario + ", Nombre=" + nombre + ", Apellido=" + apellido +
-                ", Correo=" + correo + "]";
+                ", Correo=" + correo + ", Tipo=" + tipoUsuario + "]";
     }
 }
 

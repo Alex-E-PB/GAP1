@@ -1,29 +1,32 @@
 package org.example.dominio;
 
+import java.util.Objects;
+
 public class Docente extends Usuario {
     private String idDocente;
     private String especialidad;
     private String departamento;
+    private int contador;
 
     // Arreglo de notificaciones
-    private Notificacion[] notificaciones = new Notificacion[10];
-    private int contadorNotificaciones = 0;
+    private Notificacion[] notificaciones;
+    private int contadorNotificaciones;
 
     public Docente() {
         super();
         this.idDocente = "";
         this.especialidad = "";
         this.departamento = "";
+        notificaciones = new Notificacion[10];
+        contadorNotificaciones = 0;
     }
 
-    public Docente(String idDocente, String especialidad,
-                   String departamento, String idUsuario,
-                   String nombre, String apellido, String correo,
-                   String contrasena) {
-        super(idUsuario, nombre, apellido, correo, contrasena);
-        setIdDocente(idDocente);
-        setEspecialidad(especialidad);
-        setDepartamento(departamento);
+    public Docente(String idDocente, String especialidad, String departamento, String idUsuario,
+                   String nombre, String apellido, String correo, String contrasena) {
+        super(idUsuario, nombre, apellido, correo, contrasena, TipoUsuario.DOCENTE);  // ✅
+        this.idDocente = idDocente;
+        this.especialidad = especialidad;
+        this.departamento = departamento;
     }
 
     public String getIdDocente() {
@@ -83,37 +86,46 @@ public class Docente extends Usuario {
 
     // CRUD para Notificaciones
 
-    public void agregarNotificacion(Notificacion nueva) {
+
+    public boolean validarDuplicado(Object o) {
+        if (o instanceof Notificacion) {
+            Notificacion n = (Notificacion) o;
+            return buscarNotificacion(n.getIdNotificacion()) != null;
+        }
+        return false;
+    }
+
+
+
+
+    public boolean agregarNotificacion(Notificacion nueva) {
         if (nueva == null || nueva.getIdNotificacion() == null) {
-            System.out.println("Error: Notificación inválida.");
-            return;
+            return false;
         }
-
         if (buscarNotificacion(nueva.getIdNotificacion()) != null) {
-            System.out.println("Error: Ya existe una notificación con ese ID.");
-            return;
+            return false;
         }
-
         if (contadorNotificaciones == notificaciones.length) {
             redimensionarNotificaciones();
         }
-
         notificaciones[contadorNotificaciones] = nueva;
         contadorNotificaciones++;
-        System.out.println("Notificación agregada correctamente.");
+        return true;
     }
 
-    public void editarNotificacion(String idNotificacion, String nuevoMensaje) {
+
+    public boolean editarNotificacion(String idNotificacion, String nuevoMensaje) {
         Notificacion noti = buscarNotificacion(idNotificacion);
         if (noti != null) {
             noti.setMensaje(nuevoMensaje);
-            System.out.println("Notificación editada correctamente.");
+            return true;
         } else {
-            System.out.println("Error: No se encontró la notificación.");
+            return false;
         }
     }
 
-    public void eliminarNotificacion(String idNotificacion) {
+
+    public boolean eliminarNotificacion(String idNotificacion) {
         for (int i = 0; i < contadorNotificaciones; i++) {
             if (notificaciones[i].getIdNotificacion().equals(idNotificacion)) {
                 for (int j = i; j < contadorNotificaciones - 1; j++) {
@@ -121,16 +133,16 @@ public class Docente extends Usuario {
                 }
                 notificaciones[contadorNotificaciones - 1] = null;
                 contadorNotificaciones--;
-                System.out.println("Notificación eliminada correctamente.");
-                return;
+                return true;
             }
         }
-        System.out.println("Error: No se encontró la notificación.");
+        return false;
     }
+
 
     public void mostrarNotificaciones() {
         if (contadorNotificaciones == 0) {
-            System.out.println("No hay notificaciones.");
+            System.out.println("No hay notificaciones para mostrar.");
         } else {
             for (int i = 0; i < contadorNotificaciones; i++) {
                 System.out.println(notificaciones[i]);
@@ -138,28 +150,41 @@ public class Docente extends Usuario {
         }
     }
 
+
     public Notificacion buscarNotificacion(String idNotificacion) {
         for (int i = 0; i < contadorNotificaciones; i++) {
-            if (notificaciones[i].getIdNotificacion().equals(idNotificacion)) {
+            if (Objects.equals(notificaciones[i].getIdNotificacion(), idNotificacion)) {
                 return notificaciones[i];
             }
         }
         return null;
     }
 
+
     private void redimensionarNotificaciones() {
         Notificacion[] nuevo = new Notificacion[notificaciones.length * 2];
-        for (int i = 0; i < notificaciones.length; i++) {
-            nuevo[i] = notificaciones[i];
-        }
+        System.arraycopy(notificaciones, 0, nuevo, 0, notificaciones.length);
         notificaciones = nuevo;
     }
+    public boolean hayNotificaciones() {
+
+        return contadorNotificaciones > 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || !(o instanceof Docente))
+            return false;
+        Docente docente = (Docente) o;
+        return super.equals(docente) && Objects.equals(idDocente, docente.idDocente);
+    }
+
+
 
     @Override
     public String toString() {
         return super.toString() + " → Docente [ID=" + idDocente + ", Especialidad=" + especialidad + ", Departamento=" + departamento + "]";
     }
 }
-
-
-
