@@ -1,4 +1,4 @@
-package dominio;
+/*package dominio;
 
 import org.example.dominio.TipoUsuario;
 import org.example.dominio.Usuario;
@@ -48,7 +48,7 @@ public class TestUsuario {
 
         System.out.println("==== FIN DEL TEST ====");
     }
-}
+}*/
 
 
 

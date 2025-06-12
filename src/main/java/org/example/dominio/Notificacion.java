@@ -1,34 +1,51 @@
 package org.example.dominio;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Notificacion {
-    private String idNotificacion;
+    private final String ID_NOTIFICACION;
     private Docente docente;
     private String mensaje;
     private Date fechaEnvio;
 
+    private  static int contadorN;
+    static {
+        contadorN=0;
+
+    }
+
     public Notificacion() {
-        this.idNotificacion = "";
-        this.docente = null;
-        this.mensaje = "";
+        this.ID_NOTIFICACION = "NOTI" + contadorN;
+        this.docente = new Docente();
+        this.mensaje = "Mensaje no disponible";
         this.fechaEnvio = new Date();
+        contadorN++;
     }
 
     public Notificacion(String idNotificacion, Docente docente, String mensaje, Date fechaEnvio) {
-        setIdNotificacion(idNotificacion);
+        this.ID_NOTIFICACION = "NOTI" + contadorN;
         setDocente(docente);
         setMensaje(mensaje);
         setFechaEnvio(fechaEnvio);
     }
 
-    public Notificacion(String id, Docente docente, String mensaje, String fechaEnvio) {
+    public Notificacion(String idNotificacion, Docente docente, String mensaje, String fechaEnvio) {
+        this.ID_NOTIFICACION = "NOTI" + contadorN;
+        this.docente = docente;
+        this.mensaje = mensaje;
+        try {
+            this.fechaEnvio = new SimpleDateFormat("dd/MM/yyyy").parse(fechaEnvio);
+        } catch (ParseException e) {
+            this.fechaEnvio = new Date();
+        }
     }
 
     public String getIdNotificacion() {
-        return idNotificacion;
+        return ID_NOTIFICACION;
     }
-
+    /*
     public void setIdNotificacion(String idNotificacion) {
         if (idNotificacion != null && !idNotificacion.trim().isEmpty()) {
             this.idNotificacion = idNotificacion;
@@ -37,6 +54,7 @@ public class Notificacion {
             this.idNotificacion = "null";
         }
     }
+     */
 
     public Docente getDocente() {
         return docente;
@@ -89,14 +107,35 @@ public class Notificacion {
         System.out.println("Notificación eliminada.");
     }
 
+
+
+
+    @Override
+    public boolean equals(Object n) {
+        if (this == n) return true;
+        if (!(n instanceof Notificacion)) return false;
+        Notificacion otro = (Notificacion) n;
+
+        return ID_NOTIFICACION != null && ID_NOTIFICACION.equals(otro.ID_NOTIFICACION) &&
+                mensaje != null && mensaje.equals(otro.mensaje);
+
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + (ID_NOTIFICACION != null ? ID_NOTIFICACION.hashCode() : 0);
+        result = 31 * result + (mensaje != null ? mensaje.hashCode() : 0);
+        return result;
+    }
+
     @Override
     public String toString() {
-        return "Notificación [ID=" + idNotificacion +
+        return "Notificación [ID=" + ID_NOTIFICACION +
                 ", Docente=" + (docente != null ? "Asignado" : "Ninguno") +
                 ", Mensaje=" + mensaje +
                 ", Fecha de Envío=" + fechaEnvio + "]";
     }
 }
-
-
 

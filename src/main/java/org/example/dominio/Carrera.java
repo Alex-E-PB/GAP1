@@ -3,7 +3,7 @@ package org.example.dominio;
 import java.util.Date;
 
 public class Carrera {
-    private String idCarrera;
+    private final String ID_CARRERA;
     private String carrera;
     private int duracion;
     private String titulo;
@@ -11,7 +11,7 @@ public class Carrera {
     private int contadorPracticas;
 
     public Carrera() {
-        this.idCarrera = "";
+        this.ID_CARRERA = "";
         this.carrera = "";
         this.duracion = 1;
         this.titulo = "";
@@ -28,8 +28,8 @@ public class Carrera {
         this.contadorPracticas = 0;
     }*/
 
-    public Carrera(String idCarrera, String carrera, int duracion, String titulo){
-        setIdCarrera(idCarrera);
+    public Carrera(String ID_CARRERA, String carrera, int duracion, String titulo){
+        this.ID_CARRERA = ID_CARRERA;
         setCarrera(carrera);
         setDuracion(duracion);
         setTitulo(titulo);
@@ -37,19 +37,10 @@ public class Carrera {
         this.practicas = new Practica[5];
     }
 
-    public String getIdCarrera() {
-        return idCarrera;
+    public String getID_CARRERA() {
+        return ID_CARRERA;
     }
 
-    public boolean setIdCarrera(String nIdCarrera) {
-        if (nIdCarrera != null && !nIdCarrera.trim().isEmpty()) {
-            this.idCarrera = nIdCarrera;
-            return true;
-        } else {
-            this.idCarrera = "null";
-            return false;
-        }
-    }
 
     public String getCarrera() {
         return carrera;
@@ -92,18 +83,8 @@ public class Carrera {
         }
     }
 
-    /*public void asignarEstudiante(String nombreEstudiante) {
-        if (nombreEstudiante != null && !nombreEstudiante.trim().isEmpty()) {
-            System.out.println("Estudiante " + nombreEstudiante + " asignado a la carrera " + carrera);
-        } else {
-            System.out.println("Error: Nombre de estudiante inválido");
-        }
-    }
+    //CRUD
 
-    public void obtenerPracticas() {
-        System.out.println("Obteniendo prácticas disponibles para la carrera " + carrera);
-        // Aquí podría ir lógica para obtener prácticas específicas.
-    }*/
 
 
     // Redimensionar el arreglo si está lleno
@@ -116,7 +97,7 @@ public class Carrera {
 
     // Agregar práctica
     public boolean agregarPractica(Practica nueva) {
-        if (existePractica(nueva.getIdPractica())) {
+        if (existePractica(nueva)) {
             return false;
         }
 
@@ -131,9 +112,9 @@ public class Carrera {
 
 
     // Buscar práctica
-    public Practica buscarPractica(String idPractica) {
+    public Practica buscarPractica(String ID_PRACTICA) {
         for (int i = 0; i < contadorPracticas; i++) {
-            if (practicas[i].getIdPractica().equals(idPractica)) {
+            if (practicas[i].getID_PRACTICA().equals(ID_PRACTICA)) {
                 return practicas[i];
             }
         }
@@ -141,9 +122,18 @@ public class Carrera {
     }
 
     // Ver si existe
-    public boolean existePractica(String idPractica) {
+    public boolean existePractica(Practica nuevaPractica) {
         for (int i = 0; i < contadorPracticas; i++) {
-            if (practicas[i].getIdPractica().equals(idPractica)) {
+            if (practicas[i] != null && practicas[i].equals(nuevaPractica)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existePractica(String ID_PRACTICA) {
+        for (int i = 0; i < contadorPracticas; i++) {
+            if (practicas[i].getID_PRACTICA().equals(ID_PRACTICA)) {
                 return true;
             }
         }
@@ -151,9 +141,9 @@ public class Carrera {
     }
 
     // Editar práctica
-    public boolean editarPractica(String idPractica, String empresa, String puesto, String ubicacion,
+    public boolean editarPractica(String ID_PRACTICA, String empresa, String puesto, String ubicacion,
                                   String descripcion,String requisitos, int duracion) {
-        Practica p = buscarPractica(idPractica);
+        Practica p = buscarPractica(ID_PRACTICA);
         if (p != null) {
             p.setEmpresa(empresa);
             p.setPuesto(puesto);
@@ -168,9 +158,9 @@ public class Carrera {
     }
 
     // Eliminar práctica
-    public boolean eliminarPractica(String idPractica) {
+    public boolean eliminarPractica(String ID_PRACTICA) {
         for (int i = 0; i < contadorPracticas; i++) {
-            if (practicas[i].getIdPractica().equals(idPractica)) {
+            if (practicas[i].getID_PRACTICA().equals(ID_PRACTICA)) {
                 for (int j = i; j < contadorPracticas - 1; j++) {
                     practicas[j] = practicas[j + 1];
                 }
@@ -181,6 +171,7 @@ public class Carrera {
         return false;// No se encontró la carrera
     }
 
+
     // Mostrar prácticas
     public void mostrarPracticas() {
         for (int i = 0; i < contadorPracticas; i++) {
@@ -189,25 +180,49 @@ public class Carrera {
     }
 
     public boolean hayPracticas() {
+
         return contadorPracticas > 0;
+    }
+
+    public void inicializar() {
+        Practica p1 = new Practica("P001", "Microsoft", "Desarrollador Backend", "Redmond, WA",
+                new Date(), new Date(), "Desarrollar servicios web", "Java, Spring", 6);
+        Practica p2 = new Practica("P002", "Google", "Ingeniero de Datos", "Mountain View, CA",
+                new Date(), new Date(), "Manejo de grandes volúmenes de datos", "Python, SQL", 6);
+        Practica p3 = new Practica("P003", "Amazon", "Analista de Sistemas", "Seattle, WA",
+                new Date(), new Date(), "Análisis y mejora de sistemas existentes", "Análisis de sistemas", 5);
+        Practica p4 = new Practica("P004", "Tesla", "Ingeniero de Software", "Fremont, CA",
+                new Date(), new Date(), "Desarrollar software para autos", "C++, Python", 4);
+        Practica p5 = new Practica("P005", "IBM", "Investigador de IA", "Armonk, NY",
+                new Date(), new Date(), "Proyectos de investigación en IA", "IA, ML, Python", 6);
+
+        agregarPractica(p1);
+        agregarPractica(p2);
+        agregarPractica(p3);
+        agregarPractica(p4);
+        agregarPractica(p5);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || !(obj instanceof Carrera)) return false;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
         Carrera otra = (Carrera) obj;
-        return this.idCarrera != null && this.idCarrera.equals(otra.idCarrera);
+
+        return  this.ID_CARRERA.equals(otra.ID_CARRERA) &&
+                this.carrera.equals(otra.carrera) &&
+                this.titulo.equals(otra.titulo);
     }
 
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(ID_CARRERA, carrera, duracion, titulo);
+    }
 
     @Override
     public String toString() {
-        return "Carrera [ID=" + idCarrera + ", Nombre=" + carrera + ", Duración=" + duracion + ", Título=" + titulo + "]";
+        return "Carrera [ID=" + ID_CARRERA + ", Nombre=" + carrera + ", Duración=" + duracion
+                + ", Título=" + titulo + "]";
     }
-
-
 }
-
-

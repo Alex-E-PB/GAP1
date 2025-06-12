@@ -1,13 +1,13 @@
 package dominio;
 
 import org.example.dominio.Docente;
+import org.example.dominio.Genero;
 
 public class TestDocente {
     public static void main(String[] args) {
 
         // Usando constructor vacío
         Docente docente = new Docente();
-        docente.setIdDocente("D001");
         docente.setEspecialidad("Física");
         docente.setDepartamento("Ciencias Naturales");
 
@@ -19,9 +19,8 @@ public class TestDocente {
         System.out.println(docente);
 
         // Usando constructor con parámetros
-        docente = new Docente("D002", "Programación",
-                "Ingeniería de Sistemas", "AS123", "Alex",
-                "Piedra", "Alex34@gmail.com", "123");
+        docente = new Docente("Sistemas", "INGENIERIA",  "Alex",
+                "Piedra", "Alex34@gmail.com", "123", Genero.MASCULINO);
         docente.revisarProgresoEstudiante();
         docente.aprobarPractica();
         docente.emitirComentarios();
@@ -30,3 +29,4 @@ public class TestDocente {
         System.out.println(docente);
     }
 }
+

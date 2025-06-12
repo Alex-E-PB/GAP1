@@ -1,13 +1,14 @@
 package org.example.dominio;
 
-public enum TipoUsuario {
-    ESTUDIANTE('E', "ESTUDIANTE"),
-    DOCENTE ('D', "DOCENTE");
+public enum Genero {
+
+    FEMENINO('F', "Femenino"),
+    MASCULINO('M', "Masculino");
 
     private char abrev;
     private String nombre;
 
-    private TipoUsuario(char abrev, String nombre) {
+    private Genero(char abrev, String nombre) {
         this.abrev = abrev;
         this.nombre = nombre;
     }
@@ -17,12 +18,11 @@ public enum TipoUsuario {
     }
 
     public String getNombre() {
-
         return nombre;
     }
+
     @Override
     public String toString() {
-
         return nombre;
     }
 }

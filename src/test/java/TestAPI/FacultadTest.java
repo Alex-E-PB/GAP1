@@ -12,7 +12,7 @@ public class FacultadTest {
 
     @Before
     public void setUp() {
-        facultad = new Facultad();
+        Facultad facultad = Facultad.getInstancia();
         facultad.agregarCarrera(new Carrera("001", "Ingeniería", 5, "Ingeniero"));
     }
 

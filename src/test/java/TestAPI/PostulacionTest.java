@@ -14,27 +14,26 @@ class PostulacionTest {
 
     @BeforeEach
     void setUp() {
-        estudiante = new Estudiante(1212, "ASD3",
-                5, "ASAD12", "Anahi", "Albuja",
-                "anahi@sd.com", "12312");
+        estudiante = new Estudiante("AS34", 6,
+                "ASA3", "ASAD12", "Anahi", "Albuja",
+                "anahi@sd.com", Genero.FEMENINO);
         practica = new Practica("P001", "Google", "Desarrollador Backend","Quito",new Date(),new Date(), "Remoto","Java",9);
         postulacion = new Postulacion();
     }
 
     @Test
-    void testSetGetIdPostulacion() {
-        postulacion.setIdPostulacion("POST123");
-        assertEquals("POST123", postulacion.getIdPostulacion());
+    void testSetID_POSTULACION() {
+        assertEquals("POST123", postulacion.getID_POSTULACION());
     }
 
     @Test
-    void testSetGetEstudiante() {
+    void testSetEstudiante() {
         postulacion.setEstudiante(estudiante);
         assertEquals(estudiante, postulacion.getEstudiante());
     }
 
     @Test
-    void testSetGetPractica() {
+    void testSetPractica() {
         postulacion.setPractica(practica);
         assertEquals(practica, postulacion.getPractica());
     }

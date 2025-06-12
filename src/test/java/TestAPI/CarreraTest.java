@@ -20,18 +20,25 @@ public class CarreraTest {
 
     @Test
     public void testAgregarPractica() {
-        Practica practica = new Practica("P001", "Google", "Desarrollador Backend","Quito",new Date(),new Date(), "Remoto","Java",9);
-        carrera.agregarPractica(practica);
+        Practica practica = new Practica("P001", "Google", "Desarrollador Backend", "Quito",
+                new Date(), new Date(), "Remoto", "Java", 9);
+        boolean agregada = carrera.agregarPractica(practica);
+        assertTrue(agregada);
         assertTrue(carrera.existePractica("P001"));
     }
 
     @Test
     public void testEditarPractica() {
-        Practica practica = new Practica("P002", "Amazon", "QA Tester","Otavalo", new Date(),new Date(), "Presencial","Pyton",8);;
+        Practica practica = new Practica("P002", "Amazon", "QA Tester", "Otavalo",
+                new Date(), new Date(), "Presencial", "Python", 8);
         carrera.agregarPractica(practica);
-        carrera.editarPractica("P002", "Google", "Tester QA Senior", "Remoto", 6);
+
+        boolean editado = carrera.editarPractica("P002", "Google", "Tester QA Senior",
+                "Remoto", "Texter experimentado","Java",9);
+        assertTrue(editado);
 
         Practica editada = carrera.buscarPractica("P002");
+        assertNotNull(editada);
         assertEquals("Google", editada.getEmpresa());
         assertEquals("Tester QA Senior", editada.getPuesto());
         assertEquals("Remoto", editada.getUbicacion());
@@ -40,18 +47,22 @@ public class CarreraTest {
 
     @Test
     public void testEliminarPractica() {
-        Practica practica = new Practica("P003", "Microsoft", "Frontend","Cuenca", new Date(),new Date(), "Remoto","C++",12);
+        Practica practica = new Practica("P003", "Microsoft", "Frontend", "Cuenca",
+                new Date(), new Date(), "Remoto", "C++", 12);
         carrera.agregarPractica(practica);
         assertTrue(carrera.existePractica("P003"));
 
-        carrera.eliminarPractica("P003");
+        boolean eliminada = carrera.eliminarPractica("P003");
+        assertTrue(eliminada);
         assertFalse(carrera.existePractica("P003"));
     }
 
     @Test
     public void testBuscarPractica() {
-        Practica practica = new Practica("P004", "DevOps","Frontend","Cuenca", new Date(),new Date(), "Remoto","C++",12);
+        Practica practica = new Practica("P004", "DevOps", "Frontend", "Cuenca",
+                new Date(), new Date(), "Remoto", "C++", 12);
         carrera.agregarPractica(practica);
+
         Practica encontrada = carrera.buscarPractica("P004");
         assertNotNull(encontrada);
         assertEquals("Frontend", encontrada.getPuesto());
@@ -59,12 +70,15 @@ public class CarreraTest {
 
     @Test
     public void testMostrarPracticas() {
-        carrera.agregarPractica(new Practica("P005", "Frontend","Frontend","Cuenca", new Date(),new Date(), "Remoto","C++",12));
-        carrera.agregarPractica(new Practica("P006", "Data Analyst","Frontend","Cuenca", new Date(),new Date(), "Remoto","C++",12));
+        carrera.agregarPractica(new Practica("P005", "Meta", "Frontend", "Cuenca",
+                new Date(), new Date(), "Remoto", "C++", 12));
+        carrera.agregarPractica(new Practica("P006", "Netflix", "Data Analyst", "Cuenca",
+                new Date(), new Date(), "Remoto", "Python", 12));
 
         assertTrue(carrera.existePractica("P005"));
         assertTrue(carrera.existePractica("P006"));
     }
 }
+
 
 

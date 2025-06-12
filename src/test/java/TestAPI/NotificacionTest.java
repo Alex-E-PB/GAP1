@@ -19,18 +19,6 @@ class NotificacionTest {
     }
 
     @Test
-    void testSetAndGetIdNotificacion() {
-        notificacion.setIdNotificacion("N123");
-        assertEquals("N123", notificacion.getIdNotificacion());
-    }
-
-    @Test
-    void testSetIdNotificacionInvalido() {
-        notificacion.setIdNotificacion("");
-        assertEquals("null", notificacion.getIdNotificacion());
-    }
-
-    @Test
     void testSetAndGetDocente() {
         Docente docente = new Docente();
         notificacion.setDocente(docente);

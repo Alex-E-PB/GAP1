@@ -5,8 +5,8 @@ import org.example.dominio.Facultad;
 
 public class TestFacultad {
     public static void main(String[] args) {
-        // Crear una instancia de Facultad
-        Facultad facultad = new Facultad();
+        // Usar instancia única
+        Facultad facultad = Facultad.getInstancia();
 
         // Crear carreras
         Carrera c1 = new Carrera("001", "Ingeniería", 5, "Ingeniero");
@@ -28,16 +28,20 @@ public class TestFacultad {
         // Eliminar una carrera
         facultad.eliminarCarrera("001");
 
-        //Buscar carrera
-        System.out.println("Carrera encontrada:");
+        // Buscar carrera
+        System.out.println("\nCarrera encontrada:");
         Carrera c = facultad.buscarCarrera("003");
-        System.out.println(c.getTitulo());
-
+        if (c != null) {
+            System.out.println(c.getTitulo());
+        } else {
+            System.out.println("Carrera no encontrada.");
+        }
 
         // Mostrar carreras actualizadas
         System.out.println("\nCarreras actualizadas:");
         facultad.mostrarCarreras();
     }
 }
+
 
 

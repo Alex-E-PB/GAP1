@@ -10,15 +10,13 @@ class PracticaTest {
     @org.junit.jupiter.api.Test
     void getIdPractica() {
         Practica practica = new Practica();
-        practica.setIdPractica("");
-        assertEquals("",practica.getIdPractica());
+        assertEquals("",practica.getID_PRACTICA());
     }
 
     @org.junit.jupiter.api.Test
     void setIdPractica() {
         Practica practica = new Practica();
-        practica.setIdPractica("");
-        assertEquals("",practica.getIdPractica());
+        assertEquals("",practica.getID_PRACTICA());
 
     }
 

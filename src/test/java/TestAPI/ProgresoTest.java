@@ -1,6 +1,7 @@
 package TestAPI;
 
 import org.example.dominio.Progreso;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -9,110 +10,112 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ProgresoTest {
 
-    // -------- SETTERS & GETTERS --------
-
     @Test
-    void testSetAndGetComentariosValid() {
-        Progreso p = new Progreso();
-        p.setComentarios("Práctica exitosa");
-        assertEquals("Práctica exitosa", p.getComentarios());
+    void testConstructorPorDefecto() {
+        Progreso progreso = new Progreso();
+        assertEquals("", progreso.getComentarios());
+        assertNull(progreso.getFechaActualizacion());
     }
 
     @Test
-    void testSetComentariosNull() {
-        Progreso p = new Progreso();
-        p.setComentarios(null);
-        assertEquals("null", p.getComentarios());
-    }
-
-    @Test
-    void testSetComentariosVacio() {
-        Progreso p = new Progreso();
-        p.setComentarios("   ");
-        assertEquals("null", p.getComentarios());
-    }
-
-    @Test
-    void testSetAndGetFechaActualización() {
-        Progreso p = new Progreso();
+    void testConstructorConParametrosValidos() {
         Date fecha = new Date();
-        p.setFechaActualización(fecha);
-        assertEquals(fecha, p.getFechaActualización());
+        Progreso progreso = new Progreso("Avance correcto", fecha);
+
+        assertEquals("Avance correcto", progreso.getComentarios());
+        assertEquals(fecha, progreso.getFechaActualizacion());
     }
 
     @Test
-    void testSetFechaActualizaciónNull() {
-        Progreso p = new Progreso();
-        p.setFechaActualización(null);
-        assertNull(p.getFechaActualización());
-    }
+    void testSetComentariosValidos() {
+        Progreso progreso = new Progreso();
+        boolean result = progreso.setComentarios("Nuevo comentario");
 
-    // -------- CRUD TESTS --------
-
-    @Test
-    void testAgregarProgreso() {
-        Progreso gestor = new Progreso();
-
-        Progreso p1 = new Progreso("Primera entrega", new Date());
-        Progreso p2 = new Progreso("Revisión parcial", new Date());
-
-        gestor.agregarProgreso(p1);
-        gestor.agregarProgreso(p2);
-
-        assertEquals(2, gestor.getCantidadProgresos());
+        assertTrue(result);
+        assertEquals("Nuevo comentario", progreso.getComentarios());
     }
 
     @Test
-    void testAgregarDuplicado() {
-        Progreso gestor = new Progreso();
+    void testSetComentariosInvalidos() {
+        Progreso progreso = new Progreso();
+        boolean result = progreso.setComentarios("   "); // Solo espacios
 
-        Progreso p1 = new Progreso("Duplicado", new Date());
-        gestor.agregarProgreso(p1);
-        gestor.agregarProgreso(new Progreso("Duplicado", new Date()));
-
-        assertEquals(1, gestor.getCantidadProgresos());
+        assertFalse(result);
+        assertEquals("null", progreso.getComentarios());
     }
 
     @Test
-    void testEditarProgresoExistente() {
-        Progreso gestor = new Progreso();
+    void testSetFechaActualizacionValida() {
+        Progreso progreso = new Progreso();
+        Date fecha = new Date();
+        boolean result = progreso.setFechaActualizacion(fecha);
 
-        Progreso original = new Progreso("Entregado", new Date());
-        gestor.agregarProgreso(original);
-
-        gestor.editarProgreso("Entregado", "Entregado con cambios", new Date());
-
-        assertEquals("Entregado con cambios", gestor.getProgreso(0).getComentarios());
+        assertTrue(result);
+        assertEquals(fecha, progreso.getFechaActualizacion());
     }
 
     @Test
-    void testEditarProgresoInexistente() {
-        Progreso gestor = new Progreso();
+    void testSetFechaActualizacionNula() {
+        Progreso progreso = new Progreso();
+        boolean result = progreso.setFechaActualizacion(null);
 
-        gestor.agregarProgreso(new Progreso("Otro", new Date()));
-        gestor.editarProgreso("No existe", "Editado", new Date());
-
-        assertEquals("Otro", gestor.getProgreso(0).getComentarios());
+        assertFalse(result);
+        assertNull(progreso.getFechaActualizacion());
     }
 
     @Test
-    void testEliminarProgresoExistente() {
-        Progreso gestor = new Progreso();
-        gestor.agregarProgreso(new Progreso("Borrar esto", new Date()));
-
-        gestor.eliminarProgreso("Borrar esto");
-
-        assertEquals(0, gestor.getCantidadProgresos());
+    void testEqualsMismoObjeto() {
+        Progreso progreso = new Progreso("Comentario", new Date());
+        assertEquals(progreso, progreso);
     }
 
     @Test
-    void testEliminarProgresoInexistente() {
-        Progreso gestor = new Progreso();
-        gestor.agregarProgreso(new Progreso("No borrar", new Date()));
+    void testEqualsObjetoNulo() {
+        Progreso progreso = new Progreso("Comentario", new Date());
+        assertNotEquals(null, progreso);
+    }
 
-        gestor.eliminarProgreso("No existe");
+    @Test
+    void testEqualsDiferenteClase() {
+        Progreso progreso = new Progreso("Comentario", new Date());
+        assertNotEquals(progreso, "otro objeto");
+    }
 
-        assertEquals(1, gestor.getCantidadProgresos());
+    @Test
+    void testEqualsPorComentarios() {
+        Date fecha = new Date();
+        Progreso p1 = new Progreso("Igual", fecha);
+        Progreso p2 = new Progreso("Igual", new Date(fecha.getTime() + 5000));
+
+        assertTrue(p1.equals(p2)); // comentarios iguales, fecha distinta
+    }
+
+    @Test
+    void testEqualsPorFecha() {
+        Date fecha = new Date();
+        Progreso p1 = new Progreso("Comentario A", fecha);
+        Progreso p2 = new Progreso("Comentario B", fecha);
+
+        assertTrue(p1.equals(p2)); // comentarios diferentes, fecha igual
+    }
+
+    @Test
+    void testToString() {
+        Date fecha = new Date();
+        Progreso progreso = new Progreso("Texto prueba", fecha);
+        String result = progreso.toString();
+
+        assertTrue(result.contains("comentarios='Texto prueba'"));
+        assertTrue(result.contains("fechaActualización="));
+    }
+
+    @Test
+    void testHashCodeConsistente() {
+        Progreso p1 = new Progreso("Comentario", new Date());
+        Progreso p2 = new Progreso("Comentario", p1.getFechaActualizacion());
+
+        // hashCode se implementa correctamente solo si descomentas en la clase original
+        assertEquals(p1.hashCode(), p2.hashCode());
     }
 }
 

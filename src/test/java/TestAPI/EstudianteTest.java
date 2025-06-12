@@ -15,12 +15,6 @@ class EstudianteTest {
     }
 
     @Test
-    void testSetGetIdEstudiante() {
-        estudiante.setIdEstudiante(200);
-        assertEquals(200, estudiante.getIdEstudiante());
-    }
-
-    @Test
     void testSetGetCodigoEstudiante() {
         estudiante.setCodigoEstudiante("20240001");
         assertEquals("20240001", estudiante.getCodigoEstudiante());

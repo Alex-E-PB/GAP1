@@ -1,24 +1,51 @@
 package org.example.dominio;
 
-public class Usuario {
-    private String idUsuario;
+import java.util.Objects;
+
+public abstract class  Usuario {
+
+    private final String ID_USUARIO;
     private String nombre;
     private String apellido;
     private String correo;
     private String contrasena;
     private TipoUsuario tipoUsuario;
+    private Genero genero;
+    //final
+    public static int contador ;
+
+    //bloque de inicializaion
+    static {
+        contador = 0;
+    }
+
 
     public Usuario() {
-        this.idUsuario = "";
+        this.ID_USUARIO = "USR" + contador;
         this.nombre = "";
         this.apellido = "";
         this.correo = "";
         this.contrasena = "";
         this.tipoUsuario = null;
+        this.genero= null;
+        contador++;
+
     }
 
-    public Usuario(String idUsuario, String nombre, String apellido, String correo, String contrasena, TipoUsuario tipoUsuario) {
-        this.idUsuario = idUsuario;
+    // Constructor con nombre, apellido, etc. (ID automático)
+    public Usuario(String nombre, String apellido, String correo, String contrasena) {
+        contador++;
+        this.ID_USUARIO = "USR" + contador;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.contrasena = contrasena;
+    }
+
+    // Constructor con tipo de usuario
+    public Usuario(String nombre, String apellido, String correo, String contrasena, TipoUsuario tipoUsuario) {
+        contador++;
+        this.ID_USUARIO = "USR" + contador;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
@@ -26,18 +53,22 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
     }
 
-    public String getIdUsuario() {
-        return idUsuario;
+    // Constructor con tipo de usuario y género
+    public Usuario(String nombre, String apellido, String correo, String contrasena, TipoUsuario tipoUsuario, Genero genero) {
+        contador++;
+        this.ID_USUARIO = "USR" + contador;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
+        this.contrasena = contrasena;
+        this.tipoUsuario = tipoUsuario;
+        this.genero = genero;
     }
 
-    public void setIdUsuario(String nIdUsuario) {
-        if (nIdUsuario != null && !nIdUsuario.trim().isEmpty()) {
-            this.idUsuario = nIdUsuario;
-        } else {
-            System.out.println("Error: ID de usuario inválido");
-            this.idUsuario = "null";
-        }
+    public String getIdUsuario() {
+        return ID_USUARIO;
     }
+
 
     public String getNombre() {
         return nombre;
@@ -91,6 +122,7 @@ public class Usuario {
         }
     }
 
+
     public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
     }
@@ -99,31 +131,32 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
     }
 
-    public void iniciarSesion() {
-        System.out.println(nombre + " ha iniciado sesión.");
+    public Genero getGenero() {
+        return genero;
     }
 
-    public void cerrarSesion() {
-        System.out.println(nombre + " ha cerrado sesión.");
+    public void setGenero(Genero genero) {
+        this.genero = genero;
     }
 
-    public void mostrarTipoUsuario() {
-        if (this instanceof Estudiante) {
-            System.out.println("Este usuario es un Estudiante.");
-        } else if (this instanceof Docente) {
-            System.out.println("Este usuario es un Docente.");
-        } else {
-            System.out.println("Este usuario es de tipo Usuario.");
-        }
-    }
+    @Override
+    public boolean equals(Object u) {
+        if (this ==u) return true;
+        if (!(u instanceof Usuario)) return false;
+        Usuario otro = (Usuario) u;
 
+        return ID_USUARIO != null && ID_USUARIO.equals(otro.ID_USUARIO) &&
+                nombre != null && nombre.equals(otro.nombre) &&
+                apellido != null && apellido.equals(otro.apellido) &&
+                correo != null && correo.equals(otro.correo) ;
+    }
 
 
 
     @Override
     public String toString() {
-        return "Usuario [ID=" + idUsuario + ", Nombre=" + nombre + ", Apellido=" + apellido +
-                ", Correo=" + correo + ", Tipo=" + tipoUsuario + "]";
+        return "Usuario [ID=" + ID_USUARIO+ ", Nombre=" + nombre + ", Apellido=" + apellido +
+                ", Correo=" + correo + ", Género=" + genero + "]";
     }
 }
 

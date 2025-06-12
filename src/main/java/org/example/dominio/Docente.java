@@ -3,10 +3,9 @@ package org.example.dominio;
 import java.util.Objects;
 
 public class Docente extends Usuario {
-    private String idDocente;
     private String especialidad;
     private String departamento;
-    private int contador;
+
 
     // Arreglo de notificaciones
     private Notificacion[] notificaciones;
@@ -14,33 +13,20 @@ public class Docente extends Usuario {
 
     public Docente() {
         super();
-        this.idDocente = "";
+        this.setTipoUsuario(TipoUsuario.DOCENTE);
         this.especialidad = "";
         this.departamento = "";
         notificaciones = new Notificacion[10];
         contadorNotificaciones = 0;
     }
 
-    public Docente(String idDocente, String especialidad, String departamento, String idUsuario,
-                   String nombre, String apellido, String correo, String contrasena) {
-        super(idUsuario, nombre, apellido, correo, contrasena, TipoUsuario.DOCENTE);  // ✅
-        this.idDocente = idDocente;
+    public Docente(String especialidad, String departamento,
+                   String nombre, String apellido, String correo, String contrasena, Genero genero) {
+        super( nombre, apellido, correo, contrasena, TipoUsuario.DOCENTE, genero);
         this.especialidad = especialidad;
         this.departamento = departamento;
     }
 
-    public String getIdDocente() {
-        return idDocente;
-    }
-
-    public void setIdDocente(String idDocente) {
-        if (idDocente != null && !idDocente.trim().isEmpty()) {
-            this.idDocente = idDocente;
-        } else {
-            System.out.println("Error: ID de docente inválido");
-            this.idDocente = "null";
-        }
-    }
 
     public String getEspecialidad() {
         return especialidad;
@@ -84,25 +70,28 @@ public class Docente extends Usuario {
         System.out.println("Notificación enviada al estudiante.");
     }
 
+
+
     // CRUD para Notificaciones
 
+    public boolean validarDuplicado(Object n) {
+        if (n == null || !(n instanceof Notificacion)) return false;
 
-    public boolean validarDuplicado(Object o) {
-        if (o instanceof Notificacion) {
-            Notificacion n = (Notificacion) o;
-            return buscarNotificacion(n.getIdNotificacion()) != null;
+        Notificacion nueva = (Notificacion) n;
+
+        for (int i = 0; i < contadorNotificaciones; i++) {
+            if (nueva.equals(notificaciones[i])) {
+                return true;
+            }
         }
         return false;
     }
 
 
 
-
     public boolean agregarNotificacion(Notificacion nueva) {
-        if (nueva == null || nueva.getIdNotificacion() == null) {
-            return false;
-        }
-        if (buscarNotificacion(nueva.getIdNotificacion()) != null) {
+
+        if (validarDuplicado(nueva)) {
             return false;
         }
         if (contadorNotificaciones == notificaciones.length) {
@@ -112,6 +101,7 @@ public class Docente extends Usuario {
         contadorNotificaciones++;
         return true;
     }
+
 
 
     public boolean editarNotificacion(String idNotificacion, String nuevoMensaje) {
@@ -172,19 +162,40 @@ public class Docente extends Usuario {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || !(o instanceof Docente))
-            return false;
-        Docente docente = (Docente) o;
-        return super.equals(docente) && Objects.equals(idDocente, docente.idDocente);
+    public boolean equals(Object d) {
+        if (this == d) return true;
+        if (!(d instanceof Docente)) return false;
+        if (!super.equals(d)) return false;
+
+        Docente otro = (Docente) d;
+        return especialidad != null && especialidad.equals(otro.especialidad) &&
+                departamento != null && departamento.equals(otro.departamento);
     }
+
+    @Override
+    public int hashCode() {
+        int result = especialidad != null ? especialidad.hashCode() : 0;
+        result = 31 * result + (departamento != null ? departamento.hashCode() : 0);
+        return result;
+    }
+
 
 
 
     @Override
     public String toString() {
-        return super.toString() + " → Docente [ID=" + idDocente + ", Especialidad=" + especialidad + ", Departamento=" + departamento + "]";
+        return super.toString() + " → Docente [ Especialidad=" + especialidad + ", Departamento=" + departamento + "]";
+    }
+
+    public String toString(boolean mostrarNotificaciones) {
+        String base = toString();
+        if (mostrarNotificaciones) {
+            base += "\nNotificaciones:\n";
+            for (int i = 0; i < contadorNotificaciones; i++) {
+                base += notificaciones[i].toString() + "\n";
+            }
+        }
+        return base;
     }
 }
+

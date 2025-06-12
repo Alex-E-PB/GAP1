@@ -4,43 +4,35 @@ import java.util.Date;
 
 public class Postulacion {
 
-    private String idPostulacion;
+    private final String ID_POSTULACION;
     private Estudiante estudiante;
     private Practica practica;
-    private Date fechaPostulacion;
+    private final Date FECHA_POSTULACION;
     private int estado;
     private String documentos;
 
     public Postulacion() {
-        this.idPostulacion = "";
+        this.ID_POSTULACION = "";
         this.estudiante = null;
         this.practica = null;
-        this.fechaPostulacion = new Date();
+        this.FECHA_POSTULACION = new Date();
         this.estado = 0;
         this.documentos = "";
     }
 
-    public Postulacion(String idPostulacion, Estudiante estudiante, Practica practica, Date fechaPostulacion, int estado, String documentos) {
-        this.idPostulacion = idPostulacion;
+    public Postulacion(String ID_POSTULACION, Estudiante estudiante, Practica practica, Date FECHA_POSTULACION, int estado, String documentos) {
+        this.ID_POSTULACION = ID_POSTULACION;
         this.estudiante = estudiante;
         this.practica = practica;
-        this.fechaPostulacion = fechaPostulacion;
+        this.FECHA_POSTULACION = FECHA_POSTULACION;
         this.estado = estado;
         this.documentos = documentos;
     }
 
-    public String getIdPostulacion() {
-        return idPostulacion;
+    public String getID_POSTULACION() {
+        return ID_POSTULACION;
     }
 
-    public void setIdPostulacion(String idPostulacion) {
-        if (idPostulacion != null && !idPostulacion.trim().isEmpty()) {
-            this.idPostulacion = idPostulacion;
-        } else {
-            System.out.println("Error: ID de postulación inválido");
-            this.idPostulacion = "null";
-        }
-    }
 
     public Estudiante getEstudiante() {
         return estudiante;
@@ -67,16 +59,7 @@ public class Postulacion {
     }
 
     public Date getFechaPostulacion() {
-        return fechaPostulacion;
-    }
-
-    public void setFechaPostulacion(Date fechaPostulacion) {
-        if (fechaPostulacion != null) {
-            this.fechaPostulacion = fechaPostulacion;
-        } else {
-            System.out.println("Error: Fecha inválida");
-            this.fechaPostulacion = new Date();
-        }
+        return FECHA_POSTULACION;
     }
 
     public int getEstado() {
@@ -115,11 +98,26 @@ public class Postulacion {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || !(obj instanceof Postulacion)) return false;
+
+        Postulacion otra = (Postulacion) obj;
+        return  this.ID_POSTULACION.equals(otra.ID_POSTULACION)&&
+                this.FECHA_POSTULACION.equals(otra.FECHA_POSTULACION);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(ID_POSTULACION,FECHA_POSTULACION);
+    }
+
+    @Override
     public String toString() {
-        return "Postulacion [ID=" + idPostulacion +
+        return "Postulacion [ID=" + ID_POSTULACION +
                 ", Estudiante=" + estudiante +
                 ", Practica=" + practica +
-                ", Fecha=" + fechaPostulacion +
+                ", Fecha=" + FECHA_POSTULACION +
                 ", Estado=" + estado +
                 ", Documentos=" + documentos + "]";
     }

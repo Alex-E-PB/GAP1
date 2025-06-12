@@ -1,9 +1,8 @@
 package org.example.dominio;
-
 import java.util.Date;
 
 public class Practica {
-    private String idPractica;
+    private final String ID_PRACTICA;
     private String empresa;
     private String puesto;
     private String ubicacion;
@@ -14,12 +13,12 @@ public class Practica {
     private int duracion;
     private Progreso[] progresos ;
     private int contador ;
-    private int contador1;
     private Postulacion[] postulaciones;
+    private int contador1;
 
 
     public Practica() {
-        this.idPractica = "";
+        this.ID_PRACTICA = "";
         this.empresa = "";
         this.puesto = "";
         this.ubicacion = "";
@@ -30,15 +29,30 @@ public class Practica {
         this.duracion = 0;
         this.progresos = new Progreso[4];
         this.contador = 0;
-        this.contador1 =0;
         this.postulaciones =new Postulacion[4];
+        this.contador1 =0;
+    }
+/*
+    public Practica (String idPractica, String empresa, String puesto, String ubicacion,
+                     Date fechaInicio, Date fechaFin, String descripcion,
+                     String requisitos, int duracion){
+        this.idPractica = idPractica;
+        this.empresa = empresa;
+        this.puesto = puesto;
+        this.ubicacion = ubicacion;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.descripcion = descripcion;
+        this.requisitos = requisitos;
+        this.duracion = duracion;
     }
 
+ */
 
-    public Practica(String idPractica, String empresa, String puesto, String ubicacion,
-                    Date fechaInicio, Date fechaFin, String descripcion,
-                    String requisitos, int duracion) {
-        setIdPractica(idPractica);
+    public Practica (String ID_PRACTICA, String empresa, String puesto, String ubicacion,
+                     Date fechaInicio, Date fechaFin, String descripcion,
+                     String requisitos, int duracion) {
+        this.ID_PRACTICA=ID_PRACTICA;
         setEmpresa(empresa);
         setPuesto(puesto);
         setUbicacion(ubicacion);
@@ -47,24 +61,15 @@ public class Practica {
         setDescripcion(descripcion);
         setRequisitos(requisitos);
         setDuracion(0);
-        this.postulaciones=new Postulacion[4];
-        this.contador1=0;
-
+        this.progresos = new Progreso[4];
+        this.contador = 0;
+        this.contador1 =0;
+        this.postulaciones =new Postulacion[4];
     }
 
 
-    public String getIdPractica() {
-        return idPractica;
-    }
-
-    public boolean setIdPractica(String idPractica) {
-        if (idPractica != null && !idPractica.trim().isEmpty()) {
-            this.idPractica = idPractica;
-            return true;
-        } else {
-            this.idPractica = "null";
-            return false;
-        }
+    public String getID_PRACTICA() {
+        return ID_PRACTICA;
     }
 
     public String getEmpresa() {
@@ -179,123 +184,91 @@ public class Practica {
         }
     }
 
-    //CRUD
+
+    //CRUD postulacion
 
 
-    // Comprobar si existe una postulacion por ID
-    public boolean existePostulacion(String idPostulacion) {
-        for (int i = 0; i < contador1; i++) {
-            if (postulaciones[i].getIdPostulacion().equals(idPostulacion)) {
-                return true;
-            }
-        }
-        return false;
+    private void redimensionarArreglo() {
+        Postulacion[] nuevo = new Postulacion[postulaciones.length + 5];
+        System.arraycopy(postulaciones, 0, nuevo, 0, postulaciones.length);
+        postulaciones = nuevo;
     }
 
-    // Agregar una postulacion
+
     public boolean agregarPostulacion(Postulacion nueva) {
-        if (existePostulacion(nueva.getIdPostulacion())) {
+        if (existePostulacion(nueva)){
             return false;
         }
 
-        if (contador1 == postulaciones.length) {
+        if (contador == postulaciones.length) {
             redimensionarArreglo();
         }
 
-        postulaciones[contador1] = nueva;
-        contador1++;
+        postulaciones[contador++] = nueva;
         return true;
     }
 
-    public boolean hayPostulaciones() {
-        return contador1 > 0;
-    }
-
-    // Editar una postulacion por ID
-    public void editarPostulacion(String idPostulacion, int nuevoestado, String nuevosdocumentos) {
-        for (int i = 0; i < contador1; i++) {
-            if (postulaciones[i].getIdPostulacion().equals(idPostulacion)) {
-                postulaciones[i].setIdPostulacion(idPostulacion);
-                postulaciones[i].setEstado(nuevoestado);
-                postulaciones[i].setDocumentos(nuevosdocumentos);
-                System.out.println("Postulacion editada correctamente.");
-                return;
-            }
-        }
-        System.out.println("Error: No se encontró una facultad con ese ID.");
-    }
-
-
-
-    // Eliminar una postulacion por ID
-    public boolean eliminarPostulacion(String idPostulacion) {
-        for (int i = 0; i < contador1; i++) {
-            if (postulaciones[i].getIdPostulacion().equals(idPostulacion)) {
-                // Desplazar los elementos hacia la izquierda
-                for (int j = i; j < contador1 - 1; j++) {
-                    postulaciones[j] = postulaciones[j + 1];
-                }
-                postulaciones[contador1 - 1] = null;
-                contador1--;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Mostrar todas las postulaciones
-    public void mostrarPostulaciones() {
-        for (int i = 0; i < contador1; i++) {
-            System.out.println(postulaciones[i]);
-        }
-    }
-
     public Postulacion buscarPostulacion(String id) {
-        for (int i = 0; i < contador1; i++) {
-            if (postulaciones[i].getIdPostulacion().equals(id)) {
+        for (int i = 0; i < contador; i++) {
+            if (postulaciones[i].getID_POSTULACION().equals(id)) {
                 return postulaciones[i];
             }
         }
         return null;
     }
 
-    // Redimensionar el arreglo cuando se llena
-    private void redimensionarArreglo() {
-        Postulacion[] nuevoArreglo = new Postulacion[postulaciones.length * 2];
-        for (int i = 0; i < postulaciones.length; i++) {
-            nuevoArreglo[i] = postulaciones[i];
+    public boolean existePostulacion(Postulacion nuevaPostulacion) {
+        for (int i = 0; i < contador; i++) {
+            if (postulaciones[i] != null && postulaciones[i].equals(nuevaPostulacion)) {
+                return true; // Ya existe una carrera igual
+            }
         }
-        postulaciones = nuevoArreglo;
-
-        Progreso[] nuevoArreglo1 = new Progreso[progresos.length * 2];
-        for (int i = 0; i < progresos.length; i++) {
-            nuevoArreglo1[i] = progresos[i];
-        }
-        progresos = nuevoArreglo1;
-        System.out.println("Arreglo redimensionado.");
+        return false;
     }
 
-    //correcci+1
-   /* public boolean validarPostulacion(Postulacion postulacion){
-        boolean respuesta=false;
-        for(Postulacion p: postulaciones){
-            if(p.equals(postulacion){
+    public boolean existePostulacion(String ID_POSTILACION) {
+        for (int i = 0; i < contador; i++) {
+            if (postulaciones[i].getID_POSTULACION().equals(ID_POSTILACION)) {
                 return true;
             }
-            break;
         }
-        return respuesta;
-    }*/
-   public boolean validarPostulacion(Postulacion postulacion){
-       for(Postulacion p : postulaciones){
-           if(p.equals(postulacion)){
-               return true;
-           }
-       }
-       return false;
-   }
+        return false;
+    }
 
+    public boolean editarPostulacion(String ID_POSTULACION, int nuevoEstado,String nuevosDocumentos) {
+        for (int i = 0; i < contador; i++) {
+            if (postulaciones[i].getID_POSTULACION().equals(ID_POSTULACION)) {
+                postulaciones[i].setEstado(nuevoEstado);
+                postulaciones[i].setDocumentos(nuevosDocumentos);
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public boolean eliminarPostulacion(String ID_POSTULACION) {
+        for (int i = 0; i < contador; i++) {
+            if (postulaciones[i] != null && postulaciones[i].getID_POSTULACION().equals(ID_POSTULACION)) {
+                for (int j = i; j < contador - 1; j++) {
+                    postulaciones[j] = postulaciones[j + 1];
+                }
+                postulaciones[contador - 1] = null;
+                contador--;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hayPostulaciones() {
+        return contador > 0;
+    }
+
+    public void mostrarPostulaciones() {
+        for (int i = 0; i < contador; i++) {
+            System.out.println(postulaciones[i]);
+        }
+    }
 
     //CRUD progreso
 
@@ -374,14 +347,46 @@ public class Practica {
     }
 
 
+
     @Override
     public String toString() {
-        return "Practica [ID=" + idPractica + ", Empresa=" + empresa + ", Puesto=" + puesto +
+        return "Practica [ID=" + ID_PRACTICA + ", Empresa=" + empresa + ", Puesto=" + puesto +
                 ", Ubicación=" + ubicacion + ", FechaInicio=" + fechaInicio +
                 ", FechaFin=" + fechaFin + ", Descripción=" + descripcion +
                 ", Requisitos=" + requisitos + ", Duración=" + duracion + "]";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || !(obj instanceof Practica)) return false;
+
+        Practica otra = (Practica) obj;
+        return this.ID_PRACTICA.equals(otra.ID_PRACTICA)
+                && this.empresa.equals(otra.empresa)
+                && this.puesto.equals(otra.puesto)
+                && this.ubicacion.equals(otra.ubicacion)
+                && this.fechaInicio.equals(otra.fechaInicio)
+                && this.fechaFin.equals(otra.fechaFin)
+                && this.descripcion.equals(otra.descripcion)
+                && this.requisitos.equals(otra.requisitos);
+    }
+
+    /*@Override
+    public int hashCode() {
+        int hash = 0;
+        hash = 31 * hash + Objects.hashCode(idPractica);
+        hash = 31 * hash + Objects.hashCode(empresa);
+        hash = 31 * hash + Objects.hashCode(puesto);
+        hash = 31 * hash + Objects.hashCode(ubicacion);
+        hash = 31 * hash + Objects.hashCode(fechaInicio);
+        hash = 31 * hash + Objects.hashCode(fechaFin);
+        hash = 31 * hash + Objects.hashCode(descripcion);
+        hash = 31 * hash + Objects.hashCode(requisitos);
+        hash = 31 * hash + Integer.hashCode(duracion);
+        return hash;
+    }
+
+     */
+
 }
-
-
-

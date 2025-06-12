@@ -1,4 +1,4 @@
-package TestAPI;
+/*package TestAPI;
 
 import org.example.dominio.Usuario;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,5 +43,5 @@ class UsuarioTest {
         usuario.setContrasena("secreta123");
         assertEquals("secreta123", usuario.getContrasena());
     }
-}
+}*/
 
