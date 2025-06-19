@@ -1,28 +1,36 @@
 package TestAPI;
 
 import org.example.dominio.Estudiante;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.example.dominio.Genero;
+import org.junit.Before;
+import org.junit.Test;
 
-class EstudianteTest {
+import static org.junit.Assert.*;
 
-    private Estudiante estudiante;
+public class EstudianteTest {
+    Estudiante e;
 
-    @BeforeEach
-    void setUp() {
-        estudiante = new Estudiante();
+    @Before
+    public void setUp() {
+        e = new Estudiante("ECU123", 2, "Ana", "Lopez", "ana@mail.com", "abcdef", Genero.FEMENINO);
     }
 
     @Test
-    void testSetGetCodigoEstudiante() {
-        estudiante.setCodigoEstudiante("20240001");
-        assertEquals("20240001", estudiante.getCodigoEstudiante());
+    public void testSetSemestreValido() {
+        e.setSemestre(5);
+        assertEquals(5, e.getSemestre());
     }
 
     @Test
-    void testSetGetSemestre() {
-        estudiante.setSemestre(7);
-        assertEquals(7, estudiante.getSemestre());
+    public void testSetSemestreInvalido() {
+        e.setSemestre(15);
+        assertEquals(1, e.getSemestre());  // debería reiniciarse a 1
+    }
+
+    @Test
+    public void testSetCodigoEstudiante() {
+        e.setCodigoEstudiante("ECU999");
+        assertEquals("ECU999", e.getCodigoEstudiante());
     }
 }
+

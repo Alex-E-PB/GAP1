@@ -45,16 +45,6 @@ public class Notificacion {
     public String getIdNotificacion() {
         return ID_NOTIFICACION;
     }
-    /*
-    public void setIdNotificacion(String idNotificacion) {
-        if (idNotificacion != null && !idNotificacion.trim().isEmpty()) {
-            this.idNotificacion = idNotificacion;
-        } else {
-            System.out.println("Error: ID de notificación inválido");
-            this.idNotificacion = "null";
-        }
-    }
-     */
 
     public Docente getDocente() {
         return docente;

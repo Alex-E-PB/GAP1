@@ -13,9 +13,9 @@ public class Progreso {
     }
 
     // Constructor con parámetros
-    public Progreso(final String comentarios, final Date fechaActualizacion) {
+    public Progreso(final String comentarios, final Date FECHA_ACTUALIZACION) {
         setComentarios(comentarios);
-        this.FECHA_ACTUALIZACION = fechaActualizacion;
+        this.FECHA_ACTUALIZACION = FECHA_ACTUALIZACION;
     }
 
     public String getComentarios() {
@@ -32,7 +32,7 @@ public class Progreso {
         }
     }
 
-    public Date getFechaActualizacion() {
+    public Date getFECHA_ACTUALIZACION() {
         return FECHA_ACTUALIZACION;
     }
 

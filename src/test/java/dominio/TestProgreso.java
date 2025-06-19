@@ -11,14 +11,14 @@ public class TestProgreso {
         System.out.println("=== Test Constructor por defecto ===");
         Progreso p0 = new Progreso();
         assert "".equals(p0.getComentarios()) : "Fallo en constructor por defecto (comentarios)";
-        assert p0.getFechaActualizacion() == null : "Fallo en constructor por defecto (fecha)";
+        assert p0.getFECHA_ACTUALIZACION() == null : "Fallo en constructor por defecto (fecha)";
         System.out.println("✓ Constructor por defecto OK");
 
         System.out.println("\n=== Test Constructor con parámetros ===");
         Date fecha = new Date();
         Progreso p1 = new Progreso("Avance inicial", fecha);
         assert "Avance inicial".equals(p1.getComentarios()) : "Fallo en constructor con comentarios";
-        assert p1.getFechaActualizacion().equals(fecha) : "Fallo en constructor con fecha";
+        assert p1.getFECHA_ACTUALIZACION().equals(fecha) : "Fallo en constructor con fecha";
         System.out.println("✓ Constructor con parámetros OK");
 
         System.out.println("\n=== Test setComentarios válido ===");
@@ -32,19 +32,6 @@ public class TestProgreso {
         assert !result2 : "Fallo al rechazar comentario vacío";
         assert "null".equals(p1.getComentarios()) : "Comentario inválido no establecido como 'null'";
         System.out.println("✓ setComentarios inválido OK");
-
-        System.out.println("\n=== Test setFechaActualizacion válida ===");
-        Date nuevaFecha = new Date();
-        boolean result3 = p1.setFechaActualizacion(nuevaFecha);
-        assert result3 : "Fallo al aceptar fecha válida";
-        assert p1.getFechaActualizacion().equals(nuevaFecha) : "Fecha no actualizada correctamente";
-        System.out.println("✓ setFechaActualizacion válida OK");
-
-        System.out.println("\n=== Test setFechaActualizacion nula ===");
-        boolean result4 = p1.setFechaActualizacion(null);
-        assert !result4 : "Fallo al rechazar fecha nula";
-        assert p1.getFechaActualizacion() == null : "Fecha nula no asignada correctamente";
-        System.out.println("✓ setFechaActualizacion nula OK");
 
         System.out.println("\n=== Test toString ===");
         Progreso p2 = new Progreso("Texto", new Date());

@@ -1,53 +1,41 @@
 package TestAPI;
 
+
 import org.example.dominio.Docente;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.example.dominio.Genero;
+import org.example.dominio.Notificacion;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class DocenteTest {
+public class DocenteTest {
+    Docente d;
 
-    private Docente docente;
-
-    @BeforeEach
-    void setUp() {
-        docente = new Docente();
+    @Before
+    public void setUp() {
+        d = new Docente("Matemáticas", "Ciencias", "Marta", "Gómez", "marta@mail.com", "clave123", Genero.FEMENINO);
     }
 
     @Test
-    void testSetAndGetIdDocente() {
-        docente.setIdDocente("D001");
-        assertEquals("D001", docente.getIdDocente());
+    public void testAgregarNotificacion() {
+        Notificacion n = new Notificacion();
+        assertTrue(d.agregarNotificacion(n));
+        assertFalse(d.agregarNotificacion(n));  // Duplicado
     }
 
     @Test
-    void testSetIdDocenteInvalido() {
-        docente.setIdDocente("");
-        assertEquals("null", docente.getIdDocente());
+    public void testEditarNotificacion() {
+        Notificacion n = new Notificacion();
+        d.agregarNotificacion(n);
+        assertTrue(d.editarNotificacion(n.getIdNotificacion(), "Cambio importante"));
+        assertEquals("Cambio importante", d.buscarNotificacion(n.getIdNotificacion()).getMensaje());
     }
 
     @Test
-    void testSetAndGetEspecialidad() {
-        docente.setEspecialidad("Matemáticas");
-        assertEquals("Matemáticas", docente.getEspecialidad());
-    }
-
-    @Test
-    void testSetEspecialidadInvalida() {
-        docente.setEspecialidad("   ");
-        assertEquals("null", docente.getEspecialidad());
-    }
-
-    @Test
-    void testSetAndGetDepartamento() {
-        docente.setDepartamento("Ciencias Exactas");
-        assertEquals("Ciencias Exactas", docente.getDepartamento());
-    }
-
-    @Test
-    void testSetDepartamentoInvalido() {
-        docente.setDepartamento(null);
-        assertEquals("null", docente.getDepartamento());
+    public void testEliminarNotificacion() {
+        Notificacion n = new Notificacion();
+        d.agregarNotificacion(n);
+        assertTrue(d.eliminarNotificacion(n.getIdNotificacion()));
     }
 }

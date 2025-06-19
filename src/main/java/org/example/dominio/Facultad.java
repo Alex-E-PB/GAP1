@@ -81,7 +81,7 @@ public final class Facultad {
         return false;
     }
 
-    public boolean existeCarrera(String ID_CARRERA) {
+    public boolean validadorEditarCarrera(String ID_CARRERA) {
         for (int i = 0; i < contador; i++) {
             if (carreras[i].getID_CARRERA().equals(ID_CARRERA)) {
                 return true;
@@ -194,4 +194,3 @@ public final class Facultad {
                 ", Ubicación=" + UBICACION + ", Decano=" + decano + "]";
     }
 }
-

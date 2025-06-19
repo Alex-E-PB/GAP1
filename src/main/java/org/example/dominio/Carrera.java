@@ -19,15 +19,6 @@ public class Carrera {
         this.practicas = new Practica[5];
     }
 
-   /* public Carrera(String idCarrera, String carrera, int duracion, String titulo) {
-        this.idCarrera = idCarrera;
-        this.carrera = carrera;
-        this.duracion = duracion;
-        this.titulo = titulo;
-        this.practicas = new Practica[5];
-        this.contadorPracticas = 0;
-    }*/
-
     public Carrera(String ID_CARRERA, String carrera, int duracion, String titulo){
         this.ID_CARRERA = ID_CARRERA;
         setCarrera(carrera);
@@ -206,7 +197,7 @@ public class Carrera {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+        if (!(obj instanceof Carrera)) return false;
 
         Carrera otra = (Carrera) obj;
 

@@ -1,29 +1,19 @@
-/*package dominio;
+package dominio;
 
 import org.example.dominio.Estudiante;
 
+import org.example.dominio.Genero;
+
 public class TestEstudiante {
     public static void main(String[] args) {
-        // Crear instancia con constructor vacío
-        Estudiante estudiante = new Estudiante();
-        estudiante.setIdEstudiante(101);
-        estudiante.setCodigoEstudiante("20231001");
-        estudiante.setSemestre(5);
+        Estudiante e = new Estudiante("ECU123", 3, "Juan", "Pérez", "juan@mail.com", "123456", Genero.MASCULINO);
 
-        estudiante.postularPractica();
-        estudiante.consultarProgreso();
-        estudiante.recibirNotificacion();
+        System.out.println(e);
 
-        System.out.println(estudiante);
+        e.setSemestre(9);
+        e.setCodigoEstudiante("ECU456");
 
-        // Crear instancia con constructor parametrizado
-        estudiante = new Estudiante(1212, "ASD3",
-                5, "ASAD12", "Anahi", "Albuja",
-                "anahi@sd.com", "12312");
-        estudiante.postularPractica();
-        estudiante.consultarProgreso();
-        estudiante.recibirNotificacion();
-
-        System.out.println(estudiante);
+        System.out.println("Actualizado: " + e.toString(true));
     }
-}*/
+}
+

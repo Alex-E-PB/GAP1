@@ -161,6 +161,23 @@ public class Docente extends Usuario {
         return contadorNotificaciones > 0;
     }
 
+    public void inicializarNotificaciones() {
+        // Crear y agregar al menos 5 notificaciones
+        Notificacion n1 = new Notificacion("001", this, "Entrega de informe", "10/06/2025");
+        Notificacion n2 = new Notificacion("002", this, "Reunión con estudiantes", "12/06/2025");
+        Notificacion n3 = new Notificacion("003", this, "Revisión de prácticas", "15/06/2025");
+        Notificacion n4 = new Notificacion("004", this, "Publicación de notas", "18/06/2025");
+        Notificacion n5 = new Notificacion("005", this, "Cierre de semestre", "20/06/2025");
+
+        agregarNotificacion(n1);
+        agregarNotificacion(n2);
+        agregarNotificacion(n3);
+        agregarNotificacion(n4);
+        agregarNotificacion(n5);
+    }
+
+
+
     @Override
     public boolean equals(Object d) {
         if (this == d) return true;
@@ -177,6 +194,10 @@ public class Docente extends Usuario {
         int result = especialidad != null ? especialidad.hashCode() : 0;
         result = 31 * result + (departamento != null ? departamento.hashCode() : 0);
         return result;
+    }
+    @Override
+    public String obtenerDescripcionRol() {
+        return "Docente de " + especialidad + " del departamento " + departamento;
     }
 
 
@@ -198,4 +219,3 @@ public class Docente extends Usuario {
         return base;
     }
 }
-

@@ -86,6 +86,7 @@ public class Main {
 
 
                 case 2 -> {
+                    facultad.inicializar();
                     if (!facultad.hayCarreras()){
                         System.out.println("No hay carreras registradas para mostrar.");
                     }else{
@@ -93,15 +94,15 @@ public class Main {
                     }
                 }
                 case 3 -> {
-                    String idCarrera = leerTextoLibre(sc, "ID de la carrera a editar: ");
-                    if (!facultad.existeCarrera(idCarrera)) {
+                    String ID_CARRERA = leerTextoLibre(sc, "ID de la carrera a editar: ");
+                    if (!facultad.validadorEditarCarrera(ID_CARRERA)) {
                         System.out.println("Error: ID de carrera no encontrado.");
                     } else {
                         String nuevoNombre = leerTexto(sc, "Nuevo nombre: ");
                         int nuevaDuracion = leerEntero(sc, "Nueva duración: ");
                         String nuevoTitulo = leerTexto(sc, "Nuevo título: ");
 
-                        facultad.editarCarrera(idCarrera, nuevoNombre, nuevaDuracion, nuevoTitulo);
+                        facultad.editarCarrera(ID_CARRERA, nuevoNombre, nuevaDuracion, nuevoTitulo);
                         System.out.println("Carrera editada exitosamente.");
                     }
                 }
@@ -171,6 +172,7 @@ public class Main {
                     }
                 }
                 case 2 ->{
+                    carrera.inicializar();
                     if (!carrera.hayPracticas()){
                         System.out.println("No hay practicas registradas para mostrar.");
                     }else{
@@ -209,13 +211,13 @@ public class Main {
                 }
 
                 case 5 ->{
-                    Carrera C = new Carrera("SIS254", "SISTEMAS", 8, "INGENIERO EN SISTEMAS");
+                    Carrera C = new Carrera();
 
-                    // Inicializar con carreras
+                    // Inicializar con practicas
                     C.inicializar();
 
-                    // Imprimir todas las carreras agregadas
-                    System.out.println("Carreras registradas:");
+                    // Imprimir todas las practicas agregadas
+                    System.out.println("Practicas registradas:");
                     C.mostrarPracticas();
 
                 }
@@ -235,6 +237,7 @@ public class Main {
             System.out.println("2. Mostrar postulaciones");
             System.out.println("3. Editar postulación");
             System.out.println("4. Eliminar postulación");
+            System.out.println("5. Método Inicializador");
             System.out.println("0. Volver al menú principal");
             op = leerEntero(sc, "Seleccione una opción: ");
 
@@ -253,6 +256,7 @@ public class Main {
                     }
                 }
                 case 2 ->{
+                    practica.inicializarPostulaciones();
                     if (!practica.hayPostulaciones()){
                        System.out.println("No hay postulaciones registradas para mostrar.");
                     }else{
@@ -262,15 +266,15 @@ public class Main {
 
 
                 case 3 -> {
-                    String idPostulacion = leerTextoLibre(sc, "ID de la práctica a editar: ");
+                    String idPostulacion = leerTextoLibre(sc, "ID de la postulación a editar: ");
                     if (!practica.existePostulacion(idPostulacion)) {
-                        System.out.println("Error: ID de práctica no encontrado.");
+                        System.out.println("Error: ID de postulación no encontrado.");
                     } else {
                         int nuevoestado = leerEntero(sc,"Estado: ");
                         String nuevosdocumentos = leerTexto(sc, "Documentos adjuntos: ");
 
                         practica.editarPostulacion(idPostulacion,nuevoestado,nuevosdocumentos);
-                        System.out.println("Práctica editada exitosamente.");
+                        System.out.println("Postulación editada exitosamente.");
                     }
                 }
                 case 4 -> {
@@ -279,11 +283,22 @@ public class Main {
                     } else {
                         String idPostulacion = leerTextoLibre(sc, "ID de la postulación a eliminar: ");
                         if (practica.eliminarPostulacion(idPostulacion)){
-                            System.out.println("Practica eliminada correctamente.");
+                            System.out.println("Postulación eliminada correctamente.");
                         } else {
-                            System.out.println("Error: Practica no encontrada.");
+                            System.out.println("Error: Postulación no encontrada.");
                         }
                     }
+                }
+                case 5 ->{
+                    Practica po = new Practica();
+
+                    // Inicializar con postulaciones
+                    po.inicializarPostulaciones();
+
+                    // Imprimir todas las postulaciones agregadas
+                    System.out.println("Postulaciones registradas:");
+                    po.mostrarPostulaciones();
+
                 }
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
@@ -301,6 +316,7 @@ public class Main {
             System.out.println("2. Mostrar progreso");
             System.out.println("3. Editar progreso");
             System.out.println("4. Eliminar progreso");
+            System.out.println("5. Método Inicializador");
             System.out.println("0. Volver al menú principal");
             op = leerEntero(sc, "Seleccione una opción: ");
 
@@ -317,7 +333,14 @@ public class Main {
                         System.out.println("Progreso agregado correctamente.");
                     }
                 }
-                case 2 -> practica.mostrarProgresos();
+                case 2 -> {
+                    practica.inicializarProgresos();
+                    if (!practica.hayProgresos()){
+                        System.out.println("No hay progresos registrados para mostrar");
+                    }else{
+                        practica.mostrarProgresos();
+                    }
+                }
                 case 3 -> {
                     String comentarios = leerTexto(sc, "Comentar progreso");
                     boolean editado = practica.editarProgreso(comentarios);
@@ -335,6 +358,17 @@ public class Main {
                     } else {
                         System.out.println("No se encontró un progreso con ese comentario.");
                     }
+                }
+                case 5 ->{
+                    Practica pr = new Practica();
+
+                    // Inicializar con progresos
+                    pr.inicializarProgresos();
+
+                    // Imprimir todos los progresos agregados
+                    System.out.println("Progresos registrados:");
+                    pr.mostrarProgresos();
+
                 }
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");

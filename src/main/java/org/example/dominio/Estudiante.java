@@ -19,12 +19,7 @@ public class Estudiante extends Usuario{
         this.codigoEstudiante = codigoEstudiante;
         this.semestre = semestre;
     }
-    public Estudiante(String codigoEstudiante, String idUsuario, String nombre) {
-        super(idUsuario, nombre, "", "", TipoUsuario.ESTUDIANTE);
-        this.setTipoUsuario(TipoUsuario.ESTUDIANTE);
-        this.codigoEstudiante = codigoEstudiante;
-        this.semestre = 1;
-    }
+
 
 
 
@@ -63,6 +58,10 @@ public class Estudiante extends Usuario{
     }
 
 
+    @Override
+    public String obtenerDescripcionRol() {
+        return "Estudiante del semestre " + getSemestre();
+    }
 
 
 
@@ -79,3 +78,4 @@ public class Estudiante extends Usuario{
     }
 
 }
+

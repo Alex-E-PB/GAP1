@@ -3,30 +3,22 @@ package dominio;
 import org.example.dominio.Docente;
 import org.example.dominio.Genero;
 
+import org.example.dominio.Notificacion;
+
 public class TestDocente {
     public static void main(String[] args) {
+        Docente d = new Docente("Informática", "Ingeniería", "Luis", "Salazar", "lsalazar@mail.com", "123456", Genero.MASCULINO);
 
-        // Usando constructor vacío
-        Docente docente = new Docente();
-        docente.setEspecialidad("Física");
-        docente.setDepartamento("Ciencias Naturales");
+        d.agregarNotificacion(new Notificacion());
+        d.agregarNotificacion(new Notificacion());
 
-        docente.revisarProgresoEstudiante();
-        docente.aprobarPractica();
-        docente.emitirComentarios();
-        docente.enviarNotificacion();
+        d.mostrarNotificaciones();
 
-        System.out.println(docente);
+        d.editarNotificacion("NOTI0", "Nueva fecha de evaluación");
+        d.eliminarNotificacion("NOTI1");
 
-        // Usando constructor con parámetros
-        docente = new Docente("Sistemas", "INGENIERIA",  "Alex",
-                "Piedra", "Alex34@gmail.com", "123", Genero.MASCULINO);
-        docente.revisarProgresoEstudiante();
-        docente.aprobarPractica();
-        docente.emitirComentarios();
-        docente.enviarNotificacion();
-
-        System.out.println(docente);
+        d.mostrarNotificaciones();
     }
 }
+
 

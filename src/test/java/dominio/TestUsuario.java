@@ -1,54 +1,34 @@
-/*package dominio;
+package dominio;
 
-import org.example.dominio.TipoUsuario;
-import org.example.dominio.Usuario;
-import org.example.dominio.Estudiante;
-import org.example.dominio.Docente;
+import org.example.dominio.*;
 
 public class TestUsuario {
     public static void main(String[] args) {
-        System.out.println("==== TEST USUARIO ====");
+        // Crear estudiante
+        Estudiante est = new Estudiante("EST123", 6, "Laura", "Mora", "laura@uni.edu", "clave123", Genero.FEMENINO);
+        System.out.println("Estudiante creado:");
+        System.out.println(est);
 
-        // Crear un Usuario
-        Usuario u = new Usuario("u1", "Laura", "Mendez", "laura@gmail.com", "clave123", TipoUsuario.ESTUDIANTE);
-        System.out.println("Usuario creado: " + u);
-        u.iniciarSesion();
+        // Probar setters inválidos
+        est.setNombre("");
+        est.setCorreo("correo_invalido");
+        est.setSemestre(20);
 
-        // Crear un Estudiante
-        Estudiante est = new Estudiante(1, "EST123", 3, "u2", "Ana", "Pérez", "ana@correo.com", "clave456");
-        System.out.println("Estudiante creado: " + est);
-        est.postularPractica();
+        System.out.println("\nDespués de setters inválidos:");
+        System.out.println(est);
 
-        // Crear un Docente
-        Docente doc = new Docente( "123", "Sistemas", "INGENIERIA", "u3", "Carlos", "López", "carlos@correo.com", "clave789");
-        System.out.println("Docente creado: " + doc);
-        doc.enviarNotificacion();
+        // Crear docente
+        Docente doc = new Docente("Informática", "Ingeniería", "Carlos", "Díaz", "carlos@uni.edu", "clave456", Genero.MASCULINO);
+        System.out.println("\nDocente creado:");
+        System.out.println(doc);
 
-        // Verificar instanceof
-        if (est instanceof Usuario) {
-            System.out.println(" El estudiante también es un Usuario");
-        }
 
-        if (doc instanceof Usuario) {
-            System.out.println(" El docente también es un Usuario");
-        }
 
-        // Validar correo incorrecto
-        Usuario invalido = new Usuario();
-        invalido.setCorreo("correoIncorrecto");
-        System.out.println("Correo asignado (espera 'null'): " + invalido.getCorreo());
-
-        // Validar contraseña corta
-        invalido.setContrasena("123");
-        System.out.println("Contraseña asignada (espera 'null'): " + invalido.getContrasena());
-
-        // toString heredado con sobreescritura
-        Usuario referencia = est; // referencia general
-        System.out.println("Referencia como Usuario, toString da: " + referencia);
-
-        System.out.println("==== FIN DEL TEST ====");
+        System.out.println("\nDocente con notificación:");
+        System.out.println(doc.toString(true));
     }
-}*/
+}
+
 
 
 

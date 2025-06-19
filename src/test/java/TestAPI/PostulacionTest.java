@@ -15,7 +15,7 @@ class PostulacionTest {
     @BeforeEach
     void setUp() {
         estudiante = new Estudiante("AS34", 6,
-                "ASA3", "ASAD12", "Anahi", "Albuja",
+                "ASA3", "Anahi", "Albuja",
                 "anahi@sd.com", Genero.FEMENINO);
         practica = new Practica("P001", "Google", "Desarrollador Backend","Quito",new Date(),new Date(), "Remoto","Java",9);
         postulacion = new Postulacion();

@@ -32,22 +32,6 @@ public class Practica {
         this.postulaciones =new Postulacion[4];
         this.contador1 =0;
     }
-/*
-    public Practica (String idPractica, String empresa, String puesto, String ubicacion,
-                     Date fechaInicio, Date fechaFin, String descripcion,
-                     String requisitos, int duracion){
-        this.idPractica = idPractica;
-        this.empresa = empresa;
-        this.puesto = puesto;
-        this.ubicacion = ubicacion;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.descripcion = descripcion;
-        this.requisitos = requisitos;
-        this.duracion = duracion;
-    }
-
- */
 
     public Practica (String ID_PRACTICA, String empresa, String puesto, String ubicacion,
                      Date fechaInicio, Date fechaFin, String descripcion,
@@ -270,6 +254,27 @@ public class Practica {
         }
     }
 
+    public void inicializarPostulaciones() {
+        // Inicializar postulaciones
+        Estudiante estudiante1 = new Estudiante("EST001", 5, "Ana", "Torres", "ana@email.com", "clave123", Genero.FEMENINO);
+        Estudiante estudiante2 = new Estudiante("EST002", 7, "Luis", "Gómez", "luis@email.com", "clave123", Genero.MASCULINO);
+        Estudiante estudiante3 = new Estudiante("EST003", 4, "María", "Pérez", "maria@email.com", "clave123", Genero.FEMENINO);
+        Estudiante estudiante4 = new Estudiante("EST004", 6, "Carlos", "López", "carlos@email.com", "clave123", Genero.MASCULINO);
+        Estudiante estudiante5 = new Estudiante("EST005", 8, "Elena", "Martínez", "elena@email.com", "clave123", Genero.FEMENINO);
+
+        Postulacion post1 = new Postulacion("POST001", estudiante1, this, new Date(), 1, "cv1.pdf");
+        Postulacion post2 = new Postulacion("POST002", estudiante2, this, new Date(), 0, "cv2.pdf");
+        Postulacion post3 = new Postulacion("POST003", estudiante3, this, new Date(), 2, "cv3.pdf");
+        Postulacion post4 = new Postulacion("POST004", estudiante4, this, new Date(), 1, "cv4.pdf");
+        Postulacion post5 = new Postulacion("POST005", estudiante5, this, new Date(), 0, "cv5.pdf");
+
+        agregarPostulacion(post1);
+        agregarPostulacion(post2);
+        agregarPostulacion(post3);
+        agregarPostulacion(post4);
+        agregarPostulacion(post5);
+    }
+
     //CRUD progreso
 
     //Verificar si ya existe un comentario
@@ -346,6 +351,25 @@ public class Practica {
         progresos = nuevoArreglo;
     }
 
+    public boolean hayProgresos() {
+        return contador > 0;
+    }
+
+    public void inicializarProgresos() {
+        // Inicializar progresos
+        Progreso prog1 = new Progreso("Inicio satisfactorio del proyecto", new Date());
+        Progreso prog2 = new Progreso("Primera entrega completada", new Date());
+        Progreso prog3 = new Progreso("Se requiere mejorar la documentación", new Date());
+        Progreso prog4 = new Progreso("Buen desempeño en la revisión técnica", new Date());
+        Progreso prog5 = new Progreso("Etapa final en progreso", new Date());
+
+        agregarProgreso(prog1);
+        agregarProgreso(prog2);
+        agregarProgreso(prog3);
+        agregarProgreso(prog4);
+        agregarProgreso(prog5);
+    }
+
 
 
     @Override
@@ -388,5 +412,4 @@ public class Practica {
     }
 
      */
-
 }

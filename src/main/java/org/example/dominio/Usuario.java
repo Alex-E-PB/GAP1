@@ -5,6 +5,7 @@ import java.util.Objects;
 public abstract class  Usuario {
 
     private final String ID_USUARIO;
+    private static final String PREFIJO_USUARIO = "USR";
     private String nombre;
     private String apellido;
     private String correo;
@@ -20,43 +21,29 @@ public abstract class  Usuario {
     }
 
 
+    // Constructor sin parámetros
     public Usuario() {
-        this.ID_USUARIO = "USR" + contador;
+        this.ID_USUARIO = PREFIJO_USUARIO + contador++;
         this.nombre = "";
         this.apellido = "";
         this.correo = "";
         this.contrasena = "";
         this.tipoUsuario = null;
-        this.genero= null;
-        contador++;
-
+        this.genero = null;
     }
 
-    // Constructor con nombre, apellido, etc. (ID automático)
+    // Constructor con datos básicos
     public Usuario(String nombre, String apellido, String correo, String contrasena) {
-        contador++;
-        this.ID_USUARIO = "USR" + contador;
+        this.ID_USUARIO = PREFIJO_USUARIO + contador++;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
         this.contrasena = contrasena;
     }
 
-    // Constructor con tipo de usuario
-    public Usuario(String nombre, String apellido, String correo, String contrasena, TipoUsuario tipoUsuario) {
-        contador++;
-        this.ID_USUARIO = "USR" + contador;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.correo = correo;
-        this.contrasena = contrasena;
-        this.tipoUsuario = tipoUsuario;
-    }
-
-    // Constructor con tipo de usuario y género
+    // Constructor extendido
     public Usuario(String nombre, String apellido, String correo, String contrasena, TipoUsuario tipoUsuario, Genero genero) {
-        contador++;
-        this.ID_USUARIO = "USR" + contador;
+        this.ID_USUARIO = PREFIJO_USUARIO + contador++;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
@@ -64,6 +51,10 @@ public abstract class  Usuario {
         this.tipoUsuario = tipoUsuario;
         this.genero = genero;
     }
+
+    // Método abstracto
+    public abstract String obtenerDescripcionRol();
+
 
     public String getIdUsuario() {
         return ID_USUARIO;
@@ -159,7 +150,3 @@ public abstract class  Usuario {
                 ", Correo=" + correo + ", Género=" + genero + "]";
     }
 }
-
-
-
-

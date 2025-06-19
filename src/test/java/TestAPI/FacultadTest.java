@@ -18,13 +18,13 @@ public class FacultadTest {
 
     @Test
     public void testAgregarCarrera() {
-        assertTrue(facultad.existeCarrera("001"));
+        assertTrue(facultad.validadorEditarCarrera("001"));
     }
 
     @Test
     public void testEliminarCarrera() {
         facultad.eliminarCarrera("001");
-        assertFalse(facultad.existeCarrera("001"));
+        assertFalse(facultad.validadorEditarCarrera("001"));
     }
 
     @Test

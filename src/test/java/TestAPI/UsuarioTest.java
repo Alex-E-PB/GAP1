@@ -1,47 +1,51 @@
-/*package TestAPI;
+package TestAPI;
 
-import org.example.dominio.Usuario;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import org.example.dominio.*;
+import org.junit.Before;
+import org.junit.Test;
 
-class UsuarioTest {
+public class UsuarioTest {
+    private Estudiante estudiante;
+    private Docente docente;
 
-    private Usuario usuario;
-
-    @BeforeEach
-    void setUp() {
-        usuario = new Usuario();
+    @Before
+    public void setUp() {
+        estudiante = new Estudiante("EST001", 3, "Ana", "Lopez", "ana@correo.com", "clave123", Genero.FEMENINO);
+        docente = new Docente("Matemática", "Ciencias", "Luis", "Díaz", "luis@uni.edu", "clave456", Genero.MASCULINO);
     }
 
     @Test
-    void testSetGetIdUsuario() {
-        usuario.setIdUsuario("U100");
-        assertEquals("U100", usuario.getIdUsuario());
+    public void testSetCorreoInvalido() {
+        estudiante.setCorreo("correo_mal");
+        assertEquals("null", estudiante.getCorreo());
     }
 
     @Test
-    void testSetGetNombre() {
-        usuario.setNombre("Lucía");
-        assertEquals("Lucía", usuario.getNombre());
+    public void testSetNombreInvalido() {
+        estudiante.setNombre("");
+        assertEquals("null", estudiante.getNombre());
     }
 
     @Test
-    void testSetGetApellido() {
-        usuario.setApellido("Martínez");
-        assertEquals("Martínez", usuario.getApellido());
+    public void testContadorUsuarios() {
+        int antes = Usuario.contador;
+        new Estudiante();
+        new Docente();
+        assertEquals(antes + 2, Usuario.contador);
     }
 
     @Test
-    void testSetGetCorreo() {
-        usuario.setCorreo("lucia@mail.com");
-        assertEquals("lucia@mail.com", usuario.getCorreo());
+    public void testToStringDocente() {
+        assertTrue(docente.toString().contains("Docente"));
+        assertTrue(docente.toString().contains("Departamento"));
     }
 
     @Test
-    void testSetGetContrasena() {
-        usuario.setContrasena("secreta123");
-        assertEquals("secreta123", usuario.getContrasena());
+    public void testSemestreInvalido() {
+        estudiante.setSemestre(0);
+        assertEquals(1, estudiante.getSemestre());
     }
-}*/
+}
+
 
