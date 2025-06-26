@@ -1,7 +1,6 @@
 package Datos;
 
 import org.example.datos.NotificacionDAO;
-import org.example.datos.NotificacionDaoMemoryImp;
 import org.example.dominio.Docente;
 import org.example.dominio.Notificacion;
 import org.example.dominio.Genero;
@@ -10,7 +9,7 @@ import java.util.Date;
 
 public class TestNotificacionDAO {
     public static void main(String[] args) {
-        NotificacionDAO dao = new NotificacionDaoMemoryImp();
+        NotificacionDAO dao = new Docente();
 
         Docente docente = new Docente("Redes", "Tecnología", "Luis", "Gómez", "luis@correo.com", "clave123", Genero.MASCULINO);
 

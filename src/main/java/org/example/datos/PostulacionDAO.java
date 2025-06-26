@@ -7,6 +7,6 @@ public interface PostulacionDAO {
     boolean editar(Postulacion postulacion);
     boolean eliminar(String idPostulacion);
     Postulacion buscarPorId(String idPostulacion);
-    Postulacion[] listar();
+    Postulacion[] listarPostulaciones();
 }
 

@@ -1,8 +1,14 @@
 package org.example.dominio;
-import java.util.Date;
 
-public class Practica {
-    private final String ID_PRACTICA;
+import org.example.datos.PostulacionDAO;
+import org.example.datos.ProgresoDAO;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class Practica implements PostulacionDAO, ProgresoDAO, Comparable<Practica> {
+    private final String idPractica;
     private String empresa;
     private String puesto;
     private String ubicacion;
@@ -11,14 +17,11 @@ public class Practica {
     private String descripcion;
     private String requisitos;
     private int duracion;
-    private Progreso[] progresos ;
-    private int contador ;
-    private Postulacion[] postulaciones;
-    private int contador1;
-
+    private List<Progreso> progresos;
+    private List<Postulacion> postulaciones;
 
     public Practica() {
-        this.ID_PRACTICA = "";
+        this.idPractica = "";
         this.empresa = "";
         this.puesto = "";
         this.ubicacion = "";
@@ -27,33 +30,28 @@ public class Practica {
         this.descripcion = "";
         this.requisitos = "";
         this.duracion = 0;
-        this.progresos = new Progreso[4];
-        this.contador = 0;
-        this.postulaciones =new Postulacion[4];
-        this.contador1 =0;
+        this.progresos = new ArrayList<>();
+        this.postulaciones = new ArrayList<>();
     }
 
-    public Practica (String ID_PRACTICA, String empresa, String puesto, String ubicacion,
-                     Date fechaInicio, Date fechaFin, String descripcion,
-                     String requisitos, int duracion) {
-        this.ID_PRACTICA=ID_PRACTICA;
+    public Practica(String idPractica, String empresa, String puesto, String ubicacion,
+                    Date fechaInicio, Date fechaFin, String descripcion,
+                    String requisitos, int duracion) {
+        this.idPractica = idPractica;
         setEmpresa(empresa);
         setPuesto(puesto);
         setUbicacion(ubicacion);
-        setFechaInicio(new Date());
-        setFechaFin(new Date());
+        setFechaInicio(fechaInicio);
+        setFechaFin(fechaFin);
         setDescripcion(descripcion);
         setRequisitos(requisitos);
-        setDuracion(0);
-        this.progresos = new Progreso[4];
-        this.contador = 0;
-        this.contador1 =0;
-        this.postulaciones =new Postulacion[4];
+        setDuracion(duracion);
+        this.progresos = new ArrayList<>();
+        this.postulaciones = new ArrayList<>();
     }
 
-
-    public String getID_PRACTICA() {
-        return ID_PRACTICA;
+    public String getIdPractica() {
+        return idPractica;
     }
 
     public String getEmpresa() {
@@ -168,62 +166,40 @@ public class Practica {
         }
     }
 
-
-    //CRUD postulacion
-
-
-    private void redimensionarArreglo() {
-        Postulacion[] nuevo = new Postulacion[postulaciones.length + 5];
-        System.arraycopy(postulaciones, 0, nuevo, 0, postulaciones.length);
-        postulaciones = nuevo;
-    }
-
+    // CRUD postulacion
 
     public boolean agregarPostulacion(Postulacion nueva) {
-        if (existePostulacion(nueva)){
-            return false;
-        }
-
-        if (contador == postulaciones.length) {
-            redimensionarArreglo();
-        }
-
-        postulaciones[contador++] = nueva;
+        if (existePostulacion(nueva)) return false;
+        postulaciones.add(nueva);
         return true;
     }
 
     public Postulacion buscarPostulacion(String id) {
-        for (int i = 0; i < contador; i++) {
-            if (postulaciones[i].getID_POSTULACION().equals(id)) {
-                return postulaciones[i];
-            }
+        for (Postulacion p : postulaciones) {
+            if (p.getIdPostulacion().equals(id)) return p;
         }
         return null;
     }
 
     public boolean existePostulacion(Postulacion nuevaPostulacion) {
-        for (int i = 0; i < contador; i++) {
-            if (postulaciones[i] != null && postulaciones[i].equals(nuevaPostulacion)) {
-                return true; // Ya existe una carrera igual
-            }
+        for (Postulacion p : postulaciones) {
+            if (p.equals(nuevaPostulacion)) return true;
         }
         return false;
     }
 
-    public boolean existePostulacion(String ID_POSTILACION) {
-        for (int i = 0; i < contador; i++) {
-            if (postulaciones[i].getID_POSTULACION().equals(ID_POSTILACION)) {
-                return true;
-            }
+    public boolean existePostulacion(String ID_POSTULACION) {
+        for (Postulacion p : postulaciones) {
+            if (p.getIdPostulacion().equals(ID_POSTULACION)) return true;
         }
         return false;
     }
 
-    public boolean editarPostulacion(String ID_POSTULACION, int nuevoEstado,String nuevosDocumentos) {
-        for (int i = 0; i < contador; i++) {
-            if (postulaciones[i].getID_POSTULACION().equals(ID_POSTULACION)) {
-                postulaciones[i].setEstado(nuevoEstado);
-                postulaciones[i].setDocumentos(nuevosDocumentos);
+    public boolean editarPostulacion(String ID_POSTULACION, int nuevoEstado, String nuevosDocumentos) {
+        for (Postulacion p : postulaciones) {
+            if (p.getIdPostulacion().equals(ID_POSTULACION)) {
+                p.setEstado(nuevoEstado);
+                p.setDocumentos(nuevosDocumentos);
                 return true;
             }
         }
@@ -231,153 +207,82 @@ public class Practica {
     }
 
     public boolean eliminarPostulacion(String ID_POSTULACION) {
-        for (int i = 0; i < contador; i++) {
-            if (postulaciones[i] != null && postulaciones[i].getID_POSTULACION().equals(ID_POSTULACION)) {
-                for (int j = i; j < contador - 1; j++) {
-                    postulaciones[j] = postulaciones[j + 1];
-                }
-                postulaciones[contador - 1] = null;
-                contador--;
-                return true;
-            }
-        }
-        return false;
+        return postulaciones.removeIf(p -> p.getIdPostulacion().equals(ID_POSTULACION));
     }
 
     public boolean hayPostulaciones() {
-        return contador > 0;
+        return !postulaciones.isEmpty();
     }
 
     public void mostrarPostulaciones() {
-        for (int i = 0; i < contador; i++) {
-            System.out.println(postulaciones[i]);
+        for (Postulacion p : postulaciones) {
+            System.out.println(p);
         }
     }
 
     public void inicializarPostulaciones() {
-        // Inicializar postulaciones
         Estudiante estudiante1 = new Estudiante("EST001", 5, "Ana", "Torres", "ana@email.com", "clave123", Genero.FEMENINO);
         Estudiante estudiante2 = new Estudiante("EST002", 7, "Luis", "Gómez", "luis@email.com", "clave123", Genero.MASCULINO);
         Estudiante estudiante3 = new Estudiante("EST003", 4, "María", "Pérez", "maria@email.com", "clave123", Genero.FEMENINO);
         Estudiante estudiante4 = new Estudiante("EST004", 6, "Carlos", "López", "carlos@email.com", "clave123", Genero.MASCULINO);
         Estudiante estudiante5 = new Estudiante("EST005", 8, "Elena", "Martínez", "elena@email.com", "clave123", Genero.FEMENINO);
 
-        Postulacion post1 = new Postulacion("POST001", estudiante1, this, new Date(), 1, "cv1.pdf");
-        Postulacion post2 = new Postulacion("POST002", estudiante2, this, new Date(), 0, "cv2.pdf");
-        Postulacion post3 = new Postulacion("POST003", estudiante3, this, new Date(), 2, "cv3.pdf");
-        Postulacion post4 = new Postulacion("POST004", estudiante4, this, new Date(), 1, "cv4.pdf");
-        Postulacion post5 = new Postulacion("POST005", estudiante5, this, new Date(), 0, "cv5.pdf");
-
-        agregarPostulacion(post1);
-        agregarPostulacion(post2);
-        agregarPostulacion(post3);
-        agregarPostulacion(post4);
-        agregarPostulacion(post5);
+        agregarPostulacion(new Postulacion("POST001", estudiante1, this, new Date(), 1, "cv1.pdf"));
+        agregarPostulacion(new Postulacion("POST002", estudiante2, this, new Date(), 0, "cv2.pdf"));
+        agregarPostulacion(new Postulacion("POST003", estudiante3, this, new Date(), 2, "cv3.pdf"));
+        agregarPostulacion(new Postulacion("POST004", estudiante4, this, new Date(), 1, "cv4.pdf"));
+        agregarPostulacion(new Postulacion("POST005", estudiante5, this, new Date(), 0, "cv5.pdf"));
     }
 
-    //CRUD progreso
+    // CRUD progreso
 
-    //Verificar si ya existe un comentario
     public boolean existeComentarios(String comentario) {
-        for (int i = 0; i < contador; i++) {
-            if (progresos[i].getComentarios().equals(comentario)) {
-                return true;
-            }
+        for (Progreso p : progresos) {
+            if (p.getComentarios().equals(comentario)) return true;
         }
         return false;
     }
 
-    // Agregar nuevo progreso
     public boolean agregarProgreso(Progreso nuevo) {
-        if (existeComentarios(nuevo.getComentarios())) {
-            return false;
-        }
-
-        if (contador1 == progresos.length) {
-            redimensionarArreglo1();
-        }
-
-        progresos[contador] = nuevo;
-        contador1++;
+        if (existeComentarios(nuevo.getComentarios())) return false;
+        progresos.add(nuevo);
         return true;
     }
 
-    // Mostrar todos los progresos
     public void mostrarProgresos() {
-        for (int i = 0; i < contador; i++) {
-            System.out.println(progresos[i]);
+        for (Progreso p : progresos) {
+            System.out.println(p);
         }
     }
 
-    //Buscar progreso
-    public Progreso buscarCarrera (String id) {
-        for (int i = 0; i < contador; i++) {
-            if (progresos[i].getComentarios().equals(id)) {
-                return progresos[i];
-            }
+    public Progreso buscarCarrera(String id) {
+        for (Progreso p : progresos) {
+            if (p.getComentarios().equals(id)) return p;
         }
         return null;
     }
 
-    // Editar un progreso existente por comentario
     public boolean editarProgreso(String comentarios) {
-        for (int i = 0; i < contador; i++) {
-            if (progresos[i].getComentarios().equals(comentarios)) {
-                return true;
-            }
+        for (Progreso p : progresos) {
+            if (p.getComentarios().equals(comentarios)) return true;
         }
         return false;
     }
 
-    // Eliminar un progreso por comentario
     public boolean eliminarProgreso(String comentario) {
-        for (int i = 0; i < contador; i++) {
-            if (progresos[i].getComentarios().equals(comentario)) {
-                for (int j = i; j < contador - 1; j++) {
-                    progresos[j] = progresos[j + 1];
-                }
-                progresos[contador - 1] = null;
-                contador--;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //Redimensionar arreglo
-    private void redimensionarArreglo1() {
-        Progreso[] nuevoArreglo = new Progreso[progresos.length * 2];
-        System.arraycopy(progresos, 0, nuevoArreglo, 0, progresos.length);
-        progresos = nuevoArreglo;
+        return progresos.removeIf(p -> p.getComentarios().equals(comentario));
     }
 
     public boolean hayProgresos() {
-        return contador > 0;
+        return !progresos.isEmpty();
     }
 
     public void inicializarProgresos() {
-        // Inicializar progresos
-        Progreso prog1 = new Progreso("Inicio satisfactorio del proyecto", new Date());
-        Progreso prog2 = new Progreso("Primera entrega completada", new Date());
-        Progreso prog3 = new Progreso("Se requiere mejorar la documentación", new Date());
-        Progreso prog4 = new Progreso("Buen desempeño en la revisión técnica", new Date());
-        Progreso prog5 = new Progreso("Etapa final en progreso", new Date());
-
-        agregarProgreso(prog1);
-        agregarProgreso(prog2);
-        agregarProgreso(prog3);
-        agregarProgreso(prog4);
-        agregarProgreso(prog5);
-    }
-
-
-
-    @Override
-    public String toString() {
-        return "Practica [ID=" + ID_PRACTICA + ", Empresa=" + empresa + ", Puesto=" + puesto +
-                ", Ubicación=" + ubicacion + ", FechaInicio=" + fechaInicio +
-                ", FechaFin=" + fechaFin + ", Descripción=" + descripcion +
-                ", Requisitos=" + requisitos + ", Duración=" + duracion + "]";
+        agregarProgreso(new Progreso("Inicio satisfactorio del proyecto", new Date()));
+        agregarProgreso(new Progreso("Primera entrega completada", new Date()));
+        agregarProgreso(new Progreso("Se requiere mejorar la documentación", new Date()));
+        agregarProgreso(new Progreso("Buen desempeño en la revisión técnica", new Date()));
+        agregarProgreso(new Progreso("Etapa final en progreso", new Date()));
     }
 
     @Override
@@ -386,7 +291,7 @@ public class Practica {
         if (obj == null || !(obj instanceof Practica)) return false;
 
         Practica otra = (Practica) obj;
-        return this.ID_PRACTICA.equals(otra.ID_PRACTICA)
+        return this.idPractica.equals(otra.idPractica)
                 && this.empresa.equals(otra.empresa)
                 && this.puesto.equals(otra.puesto)
                 && this.ubicacion.equals(otra.ubicacion)
@@ -396,20 +301,67 @@ public class Practica {
                 && this.requisitos.equals(otra.requisitos);
     }
 
-    /*@Override
-    public int hashCode() {
-        int hash = 0;
-        hash = 31 * hash + Objects.hashCode(idPractica);
-        hash = 31 * hash + Objects.hashCode(empresa);
-        hash = 31 * hash + Objects.hashCode(puesto);
-        hash = 31 * hash + Objects.hashCode(ubicacion);
-        hash = 31 * hash + Objects.hashCode(fechaInicio);
-        hash = 31 * hash + Objects.hashCode(fechaFin);
-        hash = 31 * hash + Objects.hashCode(descripcion);
-        hash = 31 * hash + Objects.hashCode(requisitos);
-        hash = 31 * hash + Integer.hashCode(duracion);
-        return hash;
+    // Métodos de interfaces (PostulacionDAO)
+
+    @Override
+    public boolean crear(Postulacion postulacion) {
+        return agregarPostulacion(postulacion);
     }
 
-     */
+    @Override
+    public boolean editar(Postulacion postulacion) {
+        return editarPostulacion(postulacion.getIdPostulacion(), postulacion.getEstado(), postulacion.getDocumentos());
+    }
+
+    @Override
+    public boolean eliminar(String idPostulacion) {
+        return eliminarPostulacion(idPostulacion);
+    }
+
+    @Override
+    public Postulacion buscarPorId(String idPostulacion) {
+        return buscarPostulacion(idPostulacion);
+    }
+
+    @Override
+    public Postulacion[] listarPostulaciones() {
+        return postulaciones.toArray(new Postulacion[0]);
+    }
+
+    // Métodos de interfaces (ProgresoDAO)
+
+    @Override
+    public boolean crear(Progreso progreso) {
+        return agregarProgreso(progreso);
+    }
+
+    @Override
+    public Progreso buscarPorComentario(String comentario) {
+        return buscarCarrera(comentario);
+    }
+
+    @Override
+    public Progreso[] listarProgresos() {
+        return progresos.toArray(new Progreso[0]);
+    }
+
+    @Override
+    public int compareTo(Practica o) {
+        int resultado = this.empresa.compareToIgnoreCase(o.getEmpresa());
+        if (resultado > 0) {
+            return 1;
+        } else if (resultado < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Practica [ID=" + idPractica + ", Empresa=" + empresa + ", Puesto=" + puesto +
+                ", Ubicación=" + ubicacion + ", FechaInicio=" + fechaInicio +
+                ", FechaFin=" + fechaFin + ", Descripción=" + descripcion +
+                ", Requisitos=" + requisitos + ", Duración=" + duracion + "]";
+    }
 }

@@ -4,8 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Notificacion {
-    private final String ID_NOTIFICACION;
+public class Notificacion implements Comparable<Notificacion> {
+    private final String idNotificacion;
     private Docente docente;
     private String mensaje;
     private Date fechaEnvio;
@@ -17,22 +17,22 @@ public class Notificacion {
     }
 
     public Notificacion() {
-        this.ID_NOTIFICACION = "NOTI" + contadorN;
+        this.idNotificacion = "NOTI" + contadorN++;
         this.docente = new Docente();
         this.mensaje = "Mensaje no disponible";
         this.fechaEnvio = new Date();
-        contadorN++;
+
     }
 
     public Notificacion(String idNotificacion, Docente docente, String mensaje, Date fechaEnvio) {
-        this.ID_NOTIFICACION = "NOTI" + contadorN;
+        this.idNotificacion = "NOTI" + contadorN++;
         setDocente(docente);
         setMensaje(mensaje);
         setFechaEnvio(fechaEnvio);
     }
 
     public Notificacion(String idNotificacion, Docente docente, String mensaje, String fechaEnvio) {
-        this.ID_NOTIFICACION = "NOTI" + contadorN;
+        this.idNotificacion = "NOTI" + contadorN++;
         this.docente = docente;
         this.mensaje = mensaje;
         try {
@@ -43,7 +43,7 @@ public class Notificacion {
     }
 
     public String getIdNotificacion() {
-        return ID_NOTIFICACION;
+        return idNotificacion;
     }
 
     public Docente getDocente() {
@@ -106,7 +106,7 @@ public class Notificacion {
         if (!(n instanceof Notificacion)) return false;
         Notificacion otro = (Notificacion) n;
 
-        return ID_NOTIFICACION != null && ID_NOTIFICACION.equals(otro.ID_NOTIFICACION) &&
+        return idNotificacion != null && idNotificacion.equals(otro.idNotificacion) &&
                 mensaje != null && mensaje.equals(otro.mensaje);
 
     }
@@ -115,17 +115,21 @@ public class Notificacion {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + (ID_NOTIFICACION != null ? ID_NOTIFICACION.hashCode() : 0);
+        result = 31 * result + (idNotificacion != null ? idNotificacion.hashCode() : 0);
         result = 31 * result + (mensaje != null ? mensaje.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Notificación [ID=" + ID_NOTIFICACION +
+        return "Notificación [ID=" + idNotificacion +
                 ", Docente=" + (docente != null ? "Asignado" : "Ninguno") +
                 ", Mensaje=" + mensaje +
                 ", Fecha de Envío=" + fechaEnvio + "]";
     }
-}
 
+    @Override
+    public int compareTo(Notificacion o) {
+        return this.fechaEnvio.compareTo(o.fechaEnvio);
+    }
+}

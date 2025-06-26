@@ -1,43 +1,35 @@
 package org.example.dominio;
 
-public final class Facultad {
-    private static Facultad instancia;
-    private final String ID_FACULTAD;
+import org.example.datos.CarreraDAO;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class Facultad implements CarreraDAO {
+    private static final Facultad instancia = new Facultad();
+    private final String idFacultad;
     private String nombre;
-    private final String UBICACION;
+    private final String ubicacion;
     private String decano;
-    private Carrera[] carreras;
-    private int contador;
-    private int contadorF;
-    private Facultad[] facultad;
+    private List<Carrera> carreras;
 
     private Facultad() {
-        this.ID_FACULTAD = "";
-        this.nombre = "";
-        this.UBICACION = "";
-        this.decano = "";
-        this.carreras = new Carrera[4];
-        this.contador = 0;
+        this("SIS01", "FACULTAD DE INGENIERÍA Y CIENCIAS APLICADAS", "QUITO", "SN");
     }
 
     public static Facultad getInstancia() {
-        if (instancia == null) {
-            instancia = new Facultad();
-        }
         return instancia;
     }
 
-    public Facultad(String ID_FACULTAD, String nombre, String UBICACION, String decano) {
-        this.ID_FACULTAD=ID_FACULTAD;
+    public Facultad(String idFacultad, String nombre, String ubicacion, String decano) {
+        this.idFacultad = idFacultad;
         setNombre(nombre);
-        this.UBICACION=UBICACION;
+        this.ubicacion = ubicacion;
         setDecano(decano);
-        this.carreras = new Carrera[4];
-        this.contador = 0;
+        this.carreras = new ArrayList<>();
     }
 
-    public String getID_FACULTAD() {
-        return ID_FACULTAD;
+    public String getIdFacultad() {
+        return idFacultad;
     }
 
     public String getNombre() {
@@ -54,8 +46,8 @@ public final class Facultad {
         }
     }
 
-    public String getUBICACION() {
-        return UBICACION;
+    public String getUbicacion() {
+        return ubicacion;
     }
 
     public String getDecano() {
@@ -72,125 +64,91 @@ public final class Facultad {
         }
     }
 
+    public boolean agregarCarrera(Carrera nueva) {
+        if (existeCarrera(nueva)) return false;
+        return carreras.add(nueva);
+    }
+
     public boolean existeCarrera(Carrera nuevaCarrera) {
-        for (int i = 0; i < contador; i++) {
-            if (carreras[i] != null && carreras[i].equals(nuevaCarrera)) {
-                return true; // Ya existe una carrera igual
-            }
-        }
-        return false;
+        return carreras.contains(nuevaCarrera);
     }
 
     public boolean validadorEditarCarrera(String ID_CARRERA) {
-        for (int i = 0; i < contador; i++) {
-            if (carreras[i].getID_CARRERA().equals(ID_CARRERA)) {
-                return true;
-            }
-        }
-        return false;
+        return carreras.stream().anyMatch(c -> c.getIdCarrera().equals(ID_CARRERA));
     }
 
-    // Agregar una carrera
-    public boolean agregarCarrera(Carrera nueva) {
-        if (existeCarrera(nueva)) {
-            return false;
-        }
-
-        if (contador == carreras.length) {
-            redimensionarArreglo();
-        }
-
-        carreras[contador] = nueva;
-        contador++;
-        return true;
-    }
-
-    // Editar una carrera por ID
     public boolean editarCarrera(String ID_CARRERA, String nuevoNombre, int nuevaDuracion, String nuevoTitulo) {
-        for (int i = 0; i < contador; i++) {
-            if (carreras[i].getID_CARRERA().equals(ID_CARRERA)) {
-                carreras[i].setCarrera(nuevoNombre);
-                carreras[i].setDuracion(nuevaDuracion);
-                carreras[i].setTitulo(nuevoTitulo);
+        for (Carrera c : carreras) {
+            if (c.getIdCarrera().equals(ID_CARRERA)) {
+                c.setCarrera(nuevoNombre);
+                c.setDuracion(nuevaDuracion);
+                c.setTitulo(nuevoTitulo);
                 return true;
             }
         }
         return false;
     }
 
-    // Eliminar una carrera por ID
     public boolean eliminarCarrera(String ID_CARRERA) {
-        for (int i = 0; i < contador; i++) {
-            if (carreras[i] != null && carreras[i].getID_CARRERA().equals(ID_CARRERA)) {
-                // Desplazar los elementos hacia la izquierda
-                for (int j = i; j < contador - 1; j++) {
-                    carreras[j] = carreras[j + 1];
-                }
-                carreras[contador - 1] = null;
-                contador--;
-                return true; // Se eliminó correctamente
-            }
-        }
-        return false; // No se encontró la carrera
+        return carreras.removeIf(c -> c.getIdCarrera().equals(ID_CARRERA));
     }
 
-    // Mostrar todas las carreras
     public void mostrarCarreras() {
-        for (int i = 0; i < contador; i++) {
-            System.out.println(carreras[i]);
+        for (Carrera c : carreras) {
+            System.out.println(c);
         }
     }
 
     public Carrera buscarCarrera(String ID_CARRERA) {
-        for (int i = 0; i < contador; i++) {
-            if (carreras[i].getID_CARRERA().equals(ID_CARRERA)) {
-                return carreras[i];
+        for (Carrera c : carreras) {
+            if (c.getIdCarrera().equals(ID_CARRERA)) {
+                return c;
             }
         }
         return null;
     }
 
     public boolean hayCarreras() {
-        return contador > 0;
-    }
-
-
-
-    // Redimensionar el arreglo cuando se llena
-    private void redimensionarArreglo() {
-        Carrera[] nuevoArreglo = new Carrera[carreras.length * 2];
-        System.arraycopy(carreras, 0, nuevoArreglo, 0, carreras.length);
-        carreras = nuevoArreglo;
+        return !carreras.isEmpty();
     }
 
     public void inicializar() {
-        Carrera c1 = new Carrera("001", "Ingeniería de Software", 5, "Ingeniero en Software");
-        Carrera c2 = new Carrera("002", "Medicina", 6, "Médico");
-        Carrera c3 = new Carrera("003", "Arquitectura", 5, "Arquitecto");
-        Carrera c4 = new Carrera("004", "Administración", 4, "Administrador");
-        Carrera c5 = new Carrera("005", "Derecho", 5, "Abogado");
-
-        agregarCarrera(c1);
-        agregarCarrera(c2);
-        agregarCarrera(c3);
-        agregarCarrera(c4);
-        agregarCarrera(c5);
-    }
-
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || !(obj instanceof Facultad)) return false;
-
-        Facultad otra = (Facultad) obj;
-        return this.ID_FACULTAD != null || this.ID_FACULTAD.equals(otra.ID_FACULTAD) ||
-                this.UBICACION.equals(otra.UBICACION) || this.nombre.equals(otra.nombre);
+        agregarCarrera(new Carrera("001", "Ingeniería de Software", 5, "Ingeniero en Software"));
+        agregarCarrera(new Carrera("002", "Medicina", 6, "Médico"));
+        agregarCarrera(new Carrera("003", "Arquitectura", 5, "Arquitecto"));
+        agregarCarrera(new Carrera("004", "Administración", 4, "Administrador"));
+        agregarCarrera(new Carrera("005", "Derecho", 5, "Abogado"));
     }
 
     @Override
     public String toString() {
-        return "Facultad [ID=" + ID_FACULTAD + ", Nombre=" + nombre +
-                ", Ubicación=" + UBICACION + ", Decano=" + decano + "]";
+        return "Facultad [ID=" + idFacultad + ", Nombre=" + nombre +
+                ", Ubicación=" + ubicacion + ", Decano=" + decano + "]";
+    }
+
+    // Métodos de CarreraDAO
+    @Override
+    public boolean crear(Carrera carrera) {
+        return agregarCarrera(carrera);
+    }
+
+    @Override
+    public boolean editar(Carrera carrera) {
+        return editarCarrera(carrera.getIdCarrera(), carrera.getCarrera(), carrera.getDuracion(), carrera.getTitulo());
+    }
+
+    @Override
+    public boolean eliminar(String idCarrera) {
+        return eliminarCarrera(idCarrera);
+    }
+
+    @Override
+    public Carrera buscarPorId(String idCarrera) {
+        return buscarCarrera(idCarrera);
+    }
+
+    @Override
+    public Carrera[] listar() {
+        return carreras.toArray(new Carrera[0]);
     }
 }

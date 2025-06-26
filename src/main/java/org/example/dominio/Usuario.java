@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public abstract class  Usuario {
 
-    private final String ID_USUARIO;
+    private final String idUsuario ;
     private static final String PREFIJO_USUARIO = "USR";
     private String nombre;
     private String apellido;
@@ -23,7 +23,7 @@ public abstract class  Usuario {
 
     // Constructor sin parámetros
     public Usuario() {
-        this.ID_USUARIO = PREFIJO_USUARIO + contador++;
+        this.idUsuario = PREFIJO_USUARIO + contador++;
         this.nombre = "";
         this.apellido = "";
         this.correo = "";
@@ -34,7 +34,7 @@ public abstract class  Usuario {
 
     // Constructor con datos básicos
     public Usuario(String nombre, String apellido, String correo, String contrasena) {
-        this.ID_USUARIO = PREFIJO_USUARIO + contador++;
+        this.idUsuario = PREFIJO_USUARIO + contador++;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
@@ -43,7 +43,7 @@ public abstract class  Usuario {
 
     // Constructor extendido
     public Usuario(String nombre, String apellido, String correo, String contrasena, TipoUsuario tipoUsuario, Genero genero) {
-        this.ID_USUARIO = PREFIJO_USUARIO + contador++;
+        this.idUsuario = PREFIJO_USUARIO + contador++;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correo = correo;
@@ -57,7 +57,7 @@ public abstract class  Usuario {
 
 
     public String getIdUsuario() {
-        return ID_USUARIO;
+        return idUsuario;
     }
 
 
@@ -136,7 +136,7 @@ public abstract class  Usuario {
         if (!(u instanceof Usuario)) return false;
         Usuario otro = (Usuario) u;
 
-        return ID_USUARIO != null && ID_USUARIO.equals(otro.ID_USUARIO) &&
+        return idUsuario != null && idUsuario.equals(otro.idUsuario) &&
                 nombre != null && nombre.equals(otro.nombre) &&
                 apellido != null && apellido.equals(otro.apellido) &&
                 correo != null && correo.equals(otro.correo) ;
@@ -146,7 +146,7 @@ public abstract class  Usuario {
 
     @Override
     public String toString() {
-        return "Usuario [ID=" + ID_USUARIO+ ", Nombre=" + nombre + ", Apellido=" + apellido +
+        return "Usuario [ID=" +idUsuario+ ", Nombre=" + nombre + ", Apellido=" + apellido +
                 ", Correo=" + correo + ", Género=" + genero + "]";
     }
 }

@@ -1,14 +1,14 @@
 package Datos;
 
 import org.example.datos.PracticaDAO;
-import org.example.datos.PracticaDaoMemoryImp;
+import org.example.dominio.Carrera;
 import org.example.dominio.Practica;
 
 import java.util.Date;
 
 public class TestPracticaDAO {
     public static void main(String[] args) {
-        PracticaDAO dao = new PracticaDaoMemoryImp();
+        PracticaDAO dao = new Carrera();
 
         Practica p1 = new Practica("P001", "Google", "Data Engineer", "California",
                 new Date(), new Date(), "Data processing", "SQL, Python", 6);

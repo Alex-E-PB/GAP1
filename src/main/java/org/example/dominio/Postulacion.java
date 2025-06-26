@@ -2,35 +2,35 @@ package org.example.dominio;
 
 import java.util.Date;
 
-public class Postulacion {
+public class Postulacion implements Comparable<Postulacion> {
 
-    private final String ID_POSTULACION;
+    private final String idPostulacion;
     private Estudiante estudiante;
     private Practica practica;
-    private final Date FECHA_POSTULACION;
+    private final Date fechaPostulacion;
     private int estado;
     private String documentos;
 
     public Postulacion() {
-        this.ID_POSTULACION = "";
+        this.idPostulacion = "";
         this.estudiante = null;
         this.practica = null;
-        this.FECHA_POSTULACION = new Date();
+        this.fechaPostulacion = new Date();
         this.estado = 0;
         this.documentos = "";
     }
 
-    public Postulacion(String ID_POSTULACION, Estudiante estudiante, Practica practica, Date FECHA_POSTULACION, int estado, String documentos) {
-        this.ID_POSTULACION = ID_POSTULACION;
+    public Postulacion(String idPostulacion, Estudiante estudiante, Practica practica, Date fechaPostulacion, int estado, String documentos) {
+        this.idPostulacion = idPostulacion;
         this.estudiante = estudiante;
         this.practica = practica;
-        this.FECHA_POSTULACION = FECHA_POSTULACION;
+        this.fechaPostulacion = fechaPostulacion;
         this.estado = estado;
         this.documentos = documentos;
     }
 
-    public String getID_POSTULACION() {
-        return ID_POSTULACION;
+    public String getIdPostulacion() {
+        return idPostulacion;
     }
 
 
@@ -59,7 +59,7 @@ public class Postulacion {
     }
 
     public Date getFechaPostulacion() {
-        return FECHA_POSTULACION;
+        return fechaPostulacion;
     }
 
     public int getEstado() {
@@ -103,23 +103,34 @@ public class Postulacion {
         if (obj == null || !(obj instanceof Postulacion)) return false;
 
         Postulacion otra = (Postulacion) obj;
-        return  this.ID_POSTULACION.equals(otra.ID_POSTULACION)&&
-                this.FECHA_POSTULACION.equals(otra.FECHA_POSTULACION);
+        return  this.idPostulacion.equals(otra.idPostulacion)&&
+                this.fechaPostulacion.equals(otra.fechaPostulacion);
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(ID_POSTULACION,FECHA_POSTULACION);
+        return java.util.Objects.hash(idPostulacion, fechaPostulacion);
+    }
+
+    @Override
+    public int compareTo(Postulacion o) {
+        int resultado = this.idPostulacion.compareToIgnoreCase(o.getIdPostulacion());
+        if (resultado > 0) {
+            return 1;
+        } else if (resultado < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public String toString() {
-        return "Postulacion [ID=" + ID_POSTULACION +
+        return "Postulacion [ID=" + idPostulacion +
                 ", Estudiante=" + estudiante +
                 ", Practica=" + practica +
-                ", Fecha=" + FECHA_POSTULACION +
+                ", Fecha=" + fechaPostulacion +
                 ", Estado=" + estado +
                 ", Documentos=" + documentos + "]";
     }
 }
-

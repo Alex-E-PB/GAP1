@@ -1,12 +1,12 @@
 package Datos;
 
 import org.example.datos.CarreraDAO;
-import org.example.datos.CarreraDaoMemoryImp;
 import org.example.dominio.Carrera;
+import org.example.dominio.Facultad;
 
 public class TestCarreraDAO {
     public static void main(String[] args) {
-        CarreraDAO dao = new CarreraDaoMemoryImp();
+        CarreraDAO dao = Facultad.getInstancia();
 
         Carrera c1 = new Carrera("001", "Ingeniería de Software", 5, "Ingeniero en Software");
         Carrera c2 = new Carrera("002", "Arquitectura", 5, "Arquitecto");
@@ -32,3 +32,4 @@ public class TestCarreraDAO {
         }
     }
 }
+

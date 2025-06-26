@@ -22,8 +22,10 @@ public class TestCarrera {
         carrera.mostrarPracticas();
 
         // Editar una práctica
-        carrera.editarPractica("P002", "Amazon Inc.", "QA Lead",
-                "Híbrido","Empacador", "Python",9);
+        Practica nueva = new Practica("P002", "Amazon Inc.", "QA Lead", "Híbrido",
+                new Date(), new Date(), "Empacador", "Python", 9);
+
+        carrera.editar(nueva);
 
         // Eliminar una práctica
         carrera.eliminarPractica("P001");

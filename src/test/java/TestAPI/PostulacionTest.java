@@ -23,7 +23,7 @@ class PostulacionTest {
 
     @Test
     void testSetID_POSTULACION() {
-        assertEquals("POST123", postulacion.getID_POSTULACION());
+        assertEquals("POST123", postulacion.getIdPostulacion());
     }
 
     @Test

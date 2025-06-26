@@ -6,5 +6,5 @@ public interface ProgresoDAO {
     boolean crear(Progreso progreso);
     boolean eliminar(String comentario);
     Progreso buscarPorComentario(String comentario);
-    Progreso[] listar();
+    Progreso[] listarProgresos();
 }

@@ -14,7 +14,7 @@ class ProgresoTest {
     void testConstructorPorDefecto() {
         Progreso progreso = new Progreso();
         assertEquals("", progreso.getComentarios());
-        assertNull(progreso.getFECHA_ACTUALIZACION());
+        assertNull(progreso.getFechaActualizacion());
     }
 
     @Test
@@ -23,7 +23,7 @@ class ProgresoTest {
         Progreso progreso = new Progreso("Avance correcto", fecha);
 
         assertEquals("Avance correcto", progreso.getComentarios());
-        assertEquals(fecha, progreso.getFECHA_ACTUALIZACION());
+        assertEquals(fecha, progreso.getFechaActualizacion());
     }
 
     @Test
@@ -93,7 +93,7 @@ class ProgresoTest {
     @Test
     void testHashCodeConsistente() {
         Progreso p1 = new Progreso("Comentario", new Date());
-        Progreso p2 = new Progreso("Comentario", p1.getFECHA_ACTUALIZACION());
+        Progreso p2 = new Progreso("Comentario", p1.getFechaActualizacion());
 
         // hashCode se implementa correctamente solo si descomentas en la clase original
         assertEquals(p1.hashCode(), p2.hashCode());

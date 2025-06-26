@@ -35,7 +35,7 @@ public class TestPractica {
     }
 
     public static void mostrarPractica(Practica practica) {
-        System.out.println("ID: " + practica.getID_PRACTICA());
+        System.out.println("ID: " + practica.getIdPractica());
         System.out.println("Empresa: " + practica.getEmpresa());
         System.out.println("Puesto: " + practica.getPuesto());
         System.out.println("Ubicación: " + practica.getUbicacion());

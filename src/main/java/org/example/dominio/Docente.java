@@ -1,32 +1,34 @@
 package org.example.dominio;
 
+import org.example.datos.NotificacionDAO;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
-public class Docente extends Usuario {
+public class Docente extends Usuario implements Comparable<Docente>, NotificacionDAO {
     private String especialidad;
     private String departamento;
 
 
-    // Arreglo de notificaciones
-    private Notificacion[] notificaciones;
-    private int contadorNotificaciones;
+    private List<Notificacion> notificaciones;
 
     public Docente() {
         super();
         this.setTipoUsuario(TipoUsuario.DOCENTE);
         this.especialidad = "";
         this.departamento = "";
-        notificaciones = new Notificacion[10];
-        contadorNotificaciones = 0;
+        this.notificaciones = new ArrayList<>();
     }
 
     public Docente(String especialidad, String departamento,
                    String nombre, String apellido, String correo, String contrasena, Genero genero) {
-        super( nombre, apellido, correo, contrasena, TipoUsuario.DOCENTE, genero);
+        super(nombre, apellido, correo, contrasena, TipoUsuario.DOCENTE, genero);
         this.especialidad = especialidad;
         this.departamento = departamento;
+        this.notificaciones = new ArrayList<>();
     }
-
 
     public String getEspecialidad() {
         return especialidad;
@@ -70,113 +72,71 @@ public class Docente extends Usuario {
         System.out.println("Notificación enviada al estudiante.");
     }
 
+    // CRUD Notificaciones
 
-
-    // CRUD para Notificaciones
-
-    public boolean validarDuplicado(Object n) {
-        if (n == null || !(n instanceof Notificacion)) return false;
-
-        Notificacion nueva = (Notificacion) n;
-
-        for (int i = 0; i < contadorNotificaciones; i++) {
-            if (nueva.equals(notificaciones[i])) {
-                return true;
-            }
-        }
-        return false;
+    public boolean validarDuplicado(Notificacion nueva) {
+        return notificaciones.contains(nueva);
     }
-
-
 
     public boolean agregarNotificacion(Notificacion nueva) {
-
         if (validarDuplicado(nueva)) {
+            System.out.println("Error: Notificación duplicada.");
             return false;
         }
-        if (contadorNotificaciones == notificaciones.length) {
-            redimensionarNotificaciones();
-        }
-        notificaciones[contadorNotificaciones] = nueva;
-        contadorNotificaciones++;
+        notificaciones.add(nueva);
         return true;
     }
-
-
 
     public boolean editarNotificacion(String idNotificacion, String nuevoMensaje) {
         Notificacion noti = buscarNotificacion(idNotificacion);
         if (noti != null) {
             noti.setMensaje(nuevoMensaje);
             return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    public boolean eliminarNotificacion(String idNotificacion) {
-        for (int i = 0; i < contadorNotificaciones; i++) {
-            if (notificaciones[i].getIdNotificacion().equals(idNotificacion)) {
-                for (int j = i; j < contadorNotificaciones - 1; j++) {
-                    notificaciones[j] = notificaciones[j + 1];
-                }
-                notificaciones[contadorNotificaciones - 1] = null;
-                contadorNotificaciones--;
-                return true;
-            }
         }
         return false;
     }
 
+    public boolean eliminarNotificacion(String idNotificacion) {
+        Notificacion noti = buscarNotificacion(idNotificacion);
+        if (noti != null) {
+            notificaciones.remove(noti);
+            return true;
+        }
+        return false;
+    }
 
     public void mostrarNotificaciones() {
-        if (contadorNotificaciones == 0) {
+        if (notificaciones.isEmpty()) {
             System.out.println("No hay notificaciones para mostrar.");
         } else {
-            for (int i = 0; i < contadorNotificaciones; i++) {
-                System.out.println(notificaciones[i]);
+            for (Notificacion n : notificaciones) {
+                System.out.println(n);
             }
         }
     }
 
-
     public Notificacion buscarNotificacion(String idNotificacion) {
-        for (int i = 0; i < contadorNotificaciones; i++) {
-            if (Objects.equals(notificaciones[i].getIdNotificacion(), idNotificacion)) {
-                return notificaciones[i];
+        for (Notificacion n : notificaciones) {
+            if (n.getIdNotificacion().equals(idNotificacion)) {
+                return n;
             }
         }
         return null;
     }
-
-
-    private void redimensionarNotificaciones() {
-        Notificacion[] nuevo = new Notificacion[notificaciones.length * 2];
-        System.arraycopy(notificaciones, 0, nuevo, 0, notificaciones.length);
-        notificaciones = nuevo;
-    }
     public boolean hayNotificaciones() {
-
-        return contadorNotificaciones > 0;
+        return notificaciones.size() > 0;
     }
+
+
 
     public void inicializarNotificaciones() {
-        // Crear y agregar al menos 5 notificaciones
-        Notificacion n1 = new Notificacion("001", this, "Entrega de informe", "10/06/2025");
-        Notificacion n2 = new Notificacion("002", this, "Reunión con estudiantes", "12/06/2025");
-        Notificacion n3 = new Notificacion("003", this, "Revisión de prácticas", "15/06/2025");
-        Notificacion n4 = new Notificacion("004", this, "Publicación de notas", "18/06/2025");
-        Notificacion n5 = new Notificacion("005", this, "Cierre de semestre", "20/06/2025");
 
-        agregarNotificacion(n1);
-        agregarNotificacion(n2);
-        agregarNotificacion(n3);
-        agregarNotificacion(n4);
-        agregarNotificacion(n5);
+        notificaciones.add(new Notificacion("N1", this, "Notificación 1", new Date()));
+        notificaciones.add(new Notificacion("N2", this, "Notificación 2", new Date()));
+        notificaciones.add(new Notificacion("N3", this, "Notificación 3", new Date()));
+        notificaciones.add(new Notificacion("N4", this, "Notificación 4", new Date()));
+        notificaciones.add(new Notificacion("N5", this, "Notificación 5", new Date()));
     }
-
-
 
     @Override
     public boolean equals(Object d) {
@@ -185,37 +145,65 @@ public class Docente extends Usuario {
         if (!super.equals(d)) return false;
 
         Docente otro = (Docente) d;
-        return especialidad != null && especialidad.equals(otro.especialidad) &&
-                departamento != null && departamento.equals(otro.departamento);
+        return Objects.equals(especialidad, otro.especialidad) &&
+                Objects.equals(departamento, otro.departamento);
     }
 
     @Override
     public int hashCode() {
-        int result = especialidad != null ? especialidad.hashCode() : 0;
-        result = 31 * result + (departamento != null ? departamento.hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), especialidad, departamento);
     }
+
     @Override
     public String obtenerDescripcionRol() {
         return "Docente de " + especialidad + " del departamento " + departamento;
     }
 
-
-
-
     @Override
     public String toString() {
-        return super.toString() + " → Docente [ Especialidad=" + especialidad + ", Departamento=" + departamento + "]";
+        return super.toString() + " → Docente [Especialidad=" + especialidad + ", Departamento=" + departamento + "]";
     }
+
+    @Override
+    public int compareTo(Docente o) {
+        return this.getIdUsuario().compareTo(o.getIdUsuario());
+    }
+
+    @Override
+    public boolean crear(Notificacion notificacion) {
+        return agregarNotificacion(notificacion);
+    }
+
+    @Override
+    public boolean editar(Notificacion notificacion) {
+        return editarNotificacion(notificacion.getIdNotificacion(), notificacion.getMensaje());
+    }
+
+    @Override
+    public boolean eliminar(String idNotificacion) {
+        return eliminarNotificacion(idNotificacion);
+    }
+
+    @Override
+    public Notificacion buscarPorId(String idNotificacion) {
+        return buscarNotificacion(idNotificacion);
+    }
+
+    @Override
+    public Notificacion[] listar() {
+        return notificaciones.toArray(new Notificacion[0]);
+    }
+
 
     public String toString(boolean mostrarNotificaciones) {
         String base = toString();
         if (mostrarNotificaciones) {
             base += "\nNotificaciones:\n";
-            for (int i = 0; i < contadorNotificaciones; i++) {
-                base += notificaciones[i].toString() + "\n";
+            for (Notificacion notificacion : notificaciones) {
+                base += notificacion.toString() + "\n";
             }
         }
         return base;
     }
+
 }

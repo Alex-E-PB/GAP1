@@ -33,17 +33,19 @@ public class CarreraTest {
                 new Date(), new Date(), "Presencial", "Python", 8);
         carrera.agregarPractica(practica);
 
-        boolean editado = carrera.editarPractica("P002", "Google", "Tester QA Senior",
-                "Remoto", "Texter experimentado","Java",9);
-        assertTrue(editado);
+        Practica nueva = new Practica("P002", "Amazon Inc.", "QA Lead", "Híbrido",
+                new Date(), new Date(), "Empacador", "Python", 9);
+
+        carrera.editar(nueva);
 
         Practica editada = carrera.buscarPractica("P002");
         assertNotNull(editada);
         assertEquals("Google", editada.getEmpresa());
         assertEquals("Tester QA Senior", editada.getPuesto());
         assertEquals("Remoto", editada.getUbicacion());
-        assertEquals(6, editada.getDuracion());
+        assertEquals(9, editada.getDuracion());  // Cambiado de 6 a 9
     }
+
 
     @Test
     public void testEliminarPractica() {

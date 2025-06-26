@@ -1,7 +1,6 @@
 package Datos;
 
 import org.example.datos.PostulacionDAO;
-import org.example.datos.PostulacionDaoMemoryImp;
 import org.example.dominio.Postulacion;
 import org.example.dominio.Estudiante;
 import org.example.dominio.Practica;
@@ -11,7 +10,7 @@ import java.util.Date;
 
 public class TestPostulacionDAO {
     public static void main(String[] args) {
-        PostulacionDAO dao = new PostulacionDaoMemoryImp();
+        PostulacionDAO dao = new Practica();
 
         Estudiante estudiante = new Estudiante("EST001", 5, "Ana", "Torres", "ana@email.com", "clave123", Genero.FEMENINO);
         Practica practica = new Practica("P001", "IBM", "Desarrollador", "Quito",
@@ -27,7 +26,7 @@ public class TestPostulacionDAO {
 
         // Listar
         System.out.println("\nListado de postulaciones:");
-        for (Postulacion p : dao.listar()) {
+        for (Postulacion p : dao.listarPostulaciones()) {
             System.out.println(p);
         }
 
@@ -44,7 +43,7 @@ public class TestPostulacionDAO {
 
         // Listado final
         System.out.println("\nListado final:");
-        for (Postulacion p : dao.listar()) {
+        for (Postulacion p : dao.listarPostulaciones()) {
             System.out.println(p);
         }
     }

@@ -180,7 +180,6 @@ public class Main {
                     }
                 }
 
-
                 case 3 -> {
                     String idPractica = leerTextoLibre(sc, "ID de la práctica a editar: ");
                     if (!carrera.existePractica(idPractica)) {
@@ -193,10 +192,15 @@ public class Main {
                         String requisitos = leerTexto(sc, "Nuevos requisitos: ");
                         int duracion = leerEntero(sc, "Nueva duración: ");
 
-                        carrera.editarPractica(idPractica, empresa, puesto, ubicacion, descripcion, requisitos, duracion);
+                        // Crear objeto con el mismo ID
+                        Practica nueva = new Practica(idPractica, empresa, puesto, ubicacion,
+                                new Date(), new Date(), descripcion, requisitos, duracion);
+
+                        carrera.editar(nueva);
                         System.out.println("Práctica editada exitosamente.");
                     }
                 }
+
                 case 4 -> {
                     if (!carrera.hayPracticas()) {
                         System.out.println("No hay practicas registradas para eliminar.");
@@ -232,7 +236,7 @@ public class Main {
     public static void menuPostulacion(Scanner sc, Practica practica ){
         int op;
         do {
-            System.out.println("\n--- SUBMENÚ POSTULACIÓN DE: " + practica.getID_PRACTICA() + " ---");
+            System.out.println("\n--- SUBMENÚ POSTULACIÓN DE: " + practica.getIdPractica() + " ---");
             System.out.println("1. Agregar postulación");
             System.out.println("2. Mostrar postulaciones");
             System.out.println("3. Editar postulación");
@@ -432,7 +436,7 @@ public class Main {
 
     public static Date leerFecha(Scanner sc, String mensaje) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        sdf.setLenient(false);  // para validar bien la fecha
+        sdf.setLenient(false);
         Date fecha = null;
         while (fecha == null) {
             System.out.print(mensaje);
@@ -482,6 +486,3 @@ public class Main {
     }
 
 }
-
-
-

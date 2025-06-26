@@ -1,21 +1,24 @@
 package org.example.dominio;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
-public class Progreso {
+public class Progreso implements Comparable<Progreso> {
+
     private String comentarios;
-    private final Date FECHA_ACTUALIZACION;
+    private final Date fechaActualizacion;
 
     // Constructor por defecto
     public Progreso() {
-        this.comentarios = "";
-        this.FECHA_ACTUALIZACION = null;
+        this.comentarios = "Sin comentarios";
+        this.fechaActualizacion = new Date();
     }
 
     // Constructor con parámetros
-    public Progreso(final String comentarios, final Date FECHA_ACTUALIZACION) {
+    public Progreso(final String comentarios, final Date fechaActualizacion) {
         setComentarios(comentarios);
-        this.FECHA_ACTUALIZACION = FECHA_ACTUALIZACION;
+        this.fechaActualizacion = fechaActualizacion;
     }
 
     public String getComentarios() {
@@ -24,23 +27,28 @@ public class Progreso {
 
     public boolean setComentarios(final String comentarios) {
         if (comentarios != null && !comentarios.trim().isEmpty()) {
-            this.comentarios = comentarios;
+            this.comentarios = comentarios.trim();
             return true;
         } else {
-            this.comentarios = "null";
+            this.comentarios = "Sin comentarios";
             return false;
         }
     }
 
-    public Date getFECHA_ACTUALIZACION() {
-        return FECHA_ACTUALIZACION;
+    public Date getFechaActualizacion() {
+        return fechaActualizacion;
     }
 
     @Override
     public String toString() {
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String fechaFormateada = (fechaActualizacion != null)
+                ? formato.format(fechaActualizacion)
+                : "No registrada";
+
         return "Progreso{" +
                 "comentarios='" + comentarios + '\'' +
-                ", fechaActualización=" + FECHA_ACTUALIZACION +
+                ", fechaActualización=" + fechaFormateada +
                 '}';
     }
 
@@ -48,11 +56,24 @@ public class Progreso {
     public boolean equals(final Object obj) {
         if (this == obj) return true;
         if (obj == null || !(obj instanceof Progreso)) return false;
-
         final Progreso otro = (Progreso) obj;
-        return this.comentarios.equals(otro.comentarios)
-                || this.FECHA_ACTUALIZACION.equals(otro.FECHA_ACTUALIZACION);
+
+        return Objects.equals(this.comentarios, otro.comentarios)
+                && Objects.equals(this.fechaActualizacion, otro.fechaActualizacion);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(comentarios, fechaActualizacion);
+    }
+
+
+    @Override
+    public int compareTo(Progreso otro) {
+        return otro.getFechaActualizacion().compareTo(this.getFechaActualizacion());
+    }
+
+
 
     /*
     @Override

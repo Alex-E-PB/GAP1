@@ -1,37 +1,37 @@
 package org.example.dominio;
 
-import java.util.Date;
+import org.example.datos.PracticaDAO;
 
-public class Carrera {
-    private final String ID_CARRERA;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class Carrera implements PracticaDAO, Comparable<Carrera> {
+    private final String idCarrera;
     private String carrera;
     private int duracion;
     private String titulo;
-    private Practica[] practicas ;
-    private int contadorPracticas;
+    private List<Practica> practicas;
 
     public Carrera() {
-        this.ID_CARRERA = "";
+        this.idCarrera = "";
         this.carrera = "";
         this.duracion = 1;
         this.titulo = "";
-        this.contadorPracticas=0;
-        this.practicas = new Practica[5];
+        this.practicas = new ArrayList<>();
     }
 
-    public Carrera(String ID_CARRERA, String carrera, int duracion, String titulo){
-        this.ID_CARRERA = ID_CARRERA;
+    public Carrera(String idCarrera, String carrera, int duracion, String titulo) {
+        this.idCarrera = idCarrera;
         setCarrera(carrera);
         setDuracion(duracion);
         setTitulo(titulo);
-        this.contadorPracticas=0;
-        this.practicas = new Practica[5];
+        this.practicas = new ArrayList<>();
     }
 
-    public String getID_CARRERA() {
-        return ID_CARRERA;
+    public String getIdCarrera() {
+        return idCarrera;
     }
-
 
     public String getCarrera() {
         return carrera;
@@ -74,105 +74,54 @@ public class Carrera {
         }
     }
 
-    //CRUD
+    // Métodos para prácticas
 
-
-
-    // Redimensionar el arreglo si está lleno
-
-    private void redimensionarArreglo() {
-        Practica[] nuevoArreglo = new Practica[practicas.length * 2];
-        System.arraycopy(practicas, 0, nuevoArreglo, 0, practicas.length);
-        practicas = nuevoArreglo;
-    }
-
-    // Agregar práctica
     public boolean agregarPractica(Practica nueva) {
         if (existePractica(nueva)) {
             return false;
         }
-
-        if(contadorPracticas == practicas.length) {
-            redimensionarArreglo();
-        }
-        practicas[contadorPracticas] = nueva;
-        contadorPracticas++;
-        return true;
-
+        return practicas.add(nueva);
     }
 
-
-    // Buscar práctica
-    public Practica buscarPractica(String ID_PRACTICA) {
-        for (int i = 0; i < contadorPracticas; i++) {
-            if (practicas[i].getID_PRACTICA().equals(ID_PRACTICA)) {
-                return practicas[i];
+    public Practica buscarPractica(String idPractica) {
+        for (Practica p : practicas) {
+            if (p.getIdPractica().equals(idPractica)) {
+                return p;
             }
         }
         return null;
     }
 
-    // Ver si existe
     public boolean existePractica(Practica nuevaPractica) {
-        for (int i = 0; i < contadorPracticas; i++) {
-            if (practicas[i] != null && practicas[i].equals(nuevaPractica)) {
+        return practicas.contains(nuevaPractica);
+    }
+
+    public boolean existePractica(String idPractica) {
+        return practicas.stream().anyMatch(p -> p.getIdPractica().equals(idPractica));
+    }
+
+    public boolean editarPractica(Practica practicaActualizada) {
+        for (int i = 0; i < practicas.size(); i++) {
+            if (practicas.get(i).getIdPractica().equals(practicaActualizada.getIdPractica())) {
+                practicas.set(i, practicaActualizada);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean existePractica(String ID_PRACTICA) {
-        for (int i = 0; i < contadorPracticas; i++) {
-            if (practicas[i].getID_PRACTICA().equals(ID_PRACTICA)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean eliminarPractica(String idPractica) {
+        return practicas.removeIf(p -> p.getIdPractica().equals(idPractica));
     }
 
-    // Editar práctica
-    public boolean editarPractica(String ID_PRACTICA, String empresa, String puesto, String ubicacion,
-                                  String descripcion,String requisitos, int duracion) {
-        Practica p = buscarPractica(ID_PRACTICA);
-        if (p != null) {
-            p.setEmpresa(empresa);
-            p.setPuesto(puesto);
-            p.setUbicacion(ubicacion);
-            p.setDescripcion(descripcion);
-            p.setRequisitos(requisitos);
-            p.setDuracion(duracion);
-            return true;//practica editada
-        } else {
-            return false;//practica no encontrada
-        }
-    }
-
-    // Eliminar práctica
-    public boolean eliminarPractica(String ID_PRACTICA) {
-        for (int i = 0; i < contadorPracticas; i++) {
-            if (practicas[i].getID_PRACTICA().equals(ID_PRACTICA)) {
-                for (int j = i; j < contadorPracticas - 1; j++) {
-                    practicas[j] = practicas[j + 1];
-                }
-                practicas[--contadorPracticas] = null;
-                return true;// Se eliminó correctamente
-            }
-        }
-        return false;// No se encontró la carrera
-    }
-
-
-    // Mostrar prácticas
     public void mostrarPracticas() {
-        for (int i = 0; i < contadorPracticas; i++) {
-            System.out.println(practicas[i]);
+        for (Practica p : practicas) {
+            System.out.println(p);
         }
     }
 
     public boolean hayPracticas() {
-
-        return contadorPracticas > 0;
+        return !practicas.isEmpty();
     }
 
     public void inicializar() {
@@ -194,26 +143,64 @@ public class Carrera {
         agregarPractica(p5);
     }
 
+    // Métodos DAO implementados
+
+    @Override
+    public boolean crear(Practica practica) {
+        return agregarPractica(practica);
+    }
+
+    @Override
+    public boolean editar(Practica practica) {
+        return editarPractica(practica);
+    }
+
+    @Override
+    public boolean eliminar(String idPractica) {
+        return eliminarPractica(idPractica);
+    }
+
+    @Override
+    public Practica buscarPorId(String idPractica) {
+        return buscarPractica(idPractica);
+    }
+
+    @Override
+    public Practica[] listar() {
+        return practicas.toArray(new Practica[0]);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Carrera)) return false;
-
         Carrera otra = (Carrera) obj;
-
-        return  this.ID_CARRERA.equals(otra.ID_CARRERA) &&
-                this.carrera.equals(otra.carrera) &&
-                this.titulo.equals(otra.titulo);
+        return idCarrera.equals(otra.idCarrera) &&
+                carrera.equals(otra.carrera) &&
+                titulo.equals(otra.titulo);
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(ID_CARRERA, carrera, duracion, titulo);
+        return java.util.Objects.hash(idCarrera, carrera, duracion, titulo);
     }
 
     @Override
+    public int compareTo(Carrera o) {
+        int resultado = this.carrera.compareToIgnoreCase(o.getCarrera());
+        if (resultado > 0) {
+            return 1;
+        } else if (resultado < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+
+    @Override
     public String toString() {
-        return "Carrera [ID=" + ID_CARRERA + ", Nombre=" + carrera + ", Duración=" + duracion
+        return "Carrera [ID=" + idCarrera + ", Nombre=" + carrera + ", Duración=" + duracion
                 + ", Título=" + titulo + "]";
     }
 }

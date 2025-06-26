@@ -11,14 +11,14 @@ public class TestProgreso {
         System.out.println("=== Test Constructor por defecto ===");
         Progreso p0 = new Progreso();
         assert "".equals(p0.getComentarios()) : "Fallo en constructor por defecto (comentarios)";
-        assert p0.getFECHA_ACTUALIZACION() == null : "Fallo en constructor por defecto (fecha)";
+        assert p0.getFechaActualizacion() == null : "Fallo en constructor por defecto (fecha)";
         System.out.println("✓ Constructor por defecto OK");
 
         System.out.println("\n=== Test Constructor con parámetros ===");
         Date fecha = new Date();
         Progreso p1 = new Progreso("Avance inicial", fecha);
         assert "Avance inicial".equals(p1.getComentarios()) : "Fallo en constructor con comentarios";
-        assert p1.getFECHA_ACTUALIZACION().equals(fecha) : "Fallo en constructor con fecha";
+        assert p1.getFechaActualizacion().equals(fecha) : "Fallo en constructor con fecha";
         System.out.println("✓ Constructor con parámetros OK");
 
         System.out.println("\n=== Test setComentarios válido ===");
