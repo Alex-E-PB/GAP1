@@ -2,28 +2,29 @@ package org.example.dominio;
 
 import org.example.datos.PracticaDAO;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Carrera implements PracticaDAO, Comparable<Carrera> {
     private final String idCarrera;
-    private String carrera;
+    private String nomcarrera;
     private int duracion;
     private String titulo;
     private List<Practica> practicas;
 
     public Carrera() {
         this.idCarrera = "";
-        this.carrera = "";
+        this.nomcarrera = "";
         this.duracion = 1;
         this.titulo = "";
         this.practicas = new ArrayList<>();
     }
 
-    public Carrera(String idCarrera, String carrera, int duracion, String titulo) {
+    public Carrera(String idCarrera, String nomcarrera, int duracion, String titulo) {
         this.idCarrera = idCarrera;
-        setCarrera(carrera);
+        setCarrera(nomcarrera);
         setDuracion(duracion);
         setTitulo(titulo);
         this.practicas = new ArrayList<>();
@@ -33,16 +34,16 @@ public class Carrera implements PracticaDAO, Comparable<Carrera> {
         return idCarrera;
     }
 
-    public String getCarrera() {
-        return carrera;
+    public String getNomcarrera() {
+        return nomcarrera;
     }
 
     public boolean setCarrera(String nCarrera) {
         if (nCarrera != null && !nCarrera.trim().isEmpty()) {
-            this.carrera = nCarrera;
+            this.nomcarrera = nCarrera;
             return true;
         } else {
-            this.carrera = "null";
+            this.nomcarrera = "null";
             return false;
         }
     }
@@ -115,16 +116,47 @@ public class Carrera implements PracticaDAO, Comparable<Carrera> {
     }
 
     public void mostrarPracticas() {
-        for (Practica p : practicas) {
-            System.out.println(p);
+        if (practicas.isEmpty()) {
+            System.out.println("No hay prácticas registradas.");
+            return;
         }
+
+        // Encabezado
+        System.out.printf("%-8s %-15s %-20s %-15s %-12s %-12s %-25s %-20s %-8s%n",
+                "ID", "Empresa", "Puesto", "Ubicación", "Inicio", "Fin", "Descripción", "Requisitos", "Duración");
+
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------");
+
+        // Formateador de fechas
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        // Contenido
+        for (Practica p : practicas) {
+            System.out.printf("%-8s %-15s %-20s %-15s %-12s %-12s %-25s %-20s %-8d%n",
+                    p.getIdPractica(),
+                    p.getEmpresa(),
+                    p.getPuesto(),
+                    p.getUbicacion(),
+                    sdf.format(p.getFechaInicio()),
+                    sdf.format(p.getFechaFin()),
+                    acortar(p.getDescripcion(), 24),
+                    acortar(p.getRequisitos(), 19),
+                    p.getDuracion());
+        }
+    }
+
+    private String acortar(String texto, int maxLongitud) {
+        if (texto.length() > maxLongitud) {
+            return texto.substring(0, maxLongitud - 3) + "...";
+        }
+        return texto;
     }
 
     public boolean hayPracticas() {
         return !practicas.isEmpty();
     }
 
-    public void inicializar() {
+    /*public void inicializar() {
         Practica p1 = new Practica("P001", "Microsoft", "Desarrollador Backend", "Redmond, WA",
                 new Date(), new Date(), "Desarrollar servicios web", "Java, Spring", 6);
         Practica p2 = new Practica("P002", "Google", "Ingeniero de Datos", "Mountain View, CA",
@@ -141,7 +173,27 @@ public class Carrera implements PracticaDAO, Comparable<Carrera> {
         agregarPractica(p3);
         agregarPractica(p4);
         agregarPractica(p5);
+    }*/
+
+    public void inicializar() {
+        agregarPracticaSiNoExiste(new Practica("P001", "Microsoft", "Desarrollador Backend", "Redmond, WA",
+                new Date(), new Date(), "Desarrollar servicios web", "Java, Spring", 6));
+        agregarPracticaSiNoExiste(new Practica("P002", "Google", "Ingeniero de Datos", "Mountain View, CA",
+                new Date(), new Date(), "Manejo de grandes volúmenes de datos", "Python, SQL", 6));
+        agregarPracticaSiNoExiste(new Practica("P003", "Amazon", "Analista de Sistemas", "Seattle, WA",
+                new Date(), new Date(), "Análisis y mejora de sistemas existentes", "Análisis de sistemas", 5));
+        agregarPracticaSiNoExiste(new Practica("P004", "Tesla", "Ingeniero de Software", "Fremont, CA",
+                new Date(), new Date(), "Desarrollar software para autos", "C++, Python", 4));
+        agregarPracticaSiNoExiste(new Practica("P005", "IBM", "Investigador de IA", "Armonk, NY",
+                new Date(), new Date(), "Proyectos de investigación en IA", "IA, ML, Python", 6));
     }
+
+    private void agregarPracticaSiNoExiste(Practica p) {
+        if (!existePractica(p.getIdPractica())) {
+            practicas.add(p);
+        }
+    }
+
 
     // Métodos DAO implementados
 
@@ -176,18 +228,18 @@ public class Carrera implements PracticaDAO, Comparable<Carrera> {
         if (!(obj instanceof Carrera)) return false;
         Carrera otra = (Carrera) obj;
         return idCarrera.equals(otra.idCarrera) &&
-                carrera.equals(otra.carrera) &&
+                nomcarrera.equals(otra.nomcarrera) &&
                 titulo.equals(otra.titulo);
     }
 
     @Override
     public int hashCode() {
-        return java.util.Objects.hash(idCarrera, carrera, duracion, titulo);
+        return java.util.Objects.hash(idCarrera, nomcarrera, duracion, titulo);
     }
 
     @Override
     public int compareTo(Carrera o) {
-        int resultado = this.carrera.compareToIgnoreCase(o.getCarrera());
+        int resultado = this.nomcarrera.compareToIgnoreCase(o.getNomcarrera());
         if (resultado > 0) {
             return 1;
         } else if (resultado < 0) {
@@ -200,7 +252,12 @@ public class Carrera implements PracticaDAO, Comparable<Carrera> {
 
     @Override
     public String toString() {
-        return "Carrera [ID=" + idCarrera + ", Nombre=" + carrera + ", Duración=" + duracion
-                + ", Título=" + titulo + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Carrera [ID=").append(idCarrera)
+                .append(", Nombre=").append(nomcarrera)
+                .append(", Duración=").append(duracion)
+                .append(", Título=").append(titulo).append("]");
+        return sb.toString();
     }
+
 }

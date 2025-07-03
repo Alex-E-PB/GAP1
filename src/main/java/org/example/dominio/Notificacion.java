@@ -16,12 +16,11 @@ public class Notificacion implements Comparable<Notificacion> {
 
     }
 
-    public Notificacion() {
+    public Notificacion(Docente docente, String mensaje, Date fechaEnvio) {
         this.idNotificacion = "NOTI" + contadorN++;
-        this.docente = new Docente();
-        this.mensaje = "Mensaje no disponible";
-        this.fechaEnvio = new Date();
-
+        this.docente = docente;
+        this.mensaje = mensaje;
+        this.fechaEnvio = fechaEnvio;
     }
 
     public Notificacion(String idNotificacion, Docente docente, String mensaje, Date fechaEnvio) {
@@ -122,14 +121,23 @@ public class Notificacion implements Comparable<Notificacion> {
 
     @Override
     public String toString() {
-        return "Notificación [ID=" + idNotificacion +
-                ", Docente=" + (docente != null ? "Asignado" : "Ninguno") +
-                ", Mensaje=" + mensaje +
-                ", Fecha de Envío=" + fechaEnvio + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Notificación [ID=").append(idNotificacion)
+                .append(", Docente=").append(docente != null ? "Asignado" : "Ninguno")
+                .append(", Mensaje=").append(mensaje)
+                .append(", Fecha de Envío=").append(fechaEnvio)
+                .append("]");
+        return sb.toString();
     }
 
     @Override
     public int compareTo(Notificacion o) {
-        return this.fechaEnvio.compareTo(o.fechaEnvio);
+        int resultado=this.idNotificacion.compareTo(o.getIdNotificacion());
+        if (resultado>0){
+            return 1;
+        } else if (resultado<0){
+            return -1;
+        }
+        return 0;
     }
 }

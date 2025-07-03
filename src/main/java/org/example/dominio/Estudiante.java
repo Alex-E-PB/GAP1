@@ -1,6 +1,6 @@
 package org.example.dominio;
 
-public class Estudiante extends Usuario implements Comparable<Estudiante> {
+public class Estudiante extends Usuario {
 
     private String codigoEstudiante;
     private int semestre;
@@ -73,10 +73,5 @@ public class Estudiante extends Usuario implements Comparable<Estudiante> {
         }
         return toString();
     }
-    @Override
-    public int compareTo(Estudiante otro) {
-        return this.getIdUsuario().compareTo(otro.getIdUsuario());
-    }
 
 }
-

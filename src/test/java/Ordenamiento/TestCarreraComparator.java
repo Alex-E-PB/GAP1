@@ -18,7 +18,7 @@ public class TestCarreraComparator {
         Comparator<Carrera> porDuracion = new OrdenarCarreraDuracion();
 
         Collections.sort(listaCarreras, porNombre);
-        System.out.println("Ordenadas por nombre:");
+        System.out.println("\nOrdenadas por nombre:");
         for (Carrera c : listaCarreras) {
             System.out.println(c);
         }

@@ -32,7 +32,7 @@ public class FacultadTest {
         facultad.editarCarrera("001", "Ingeniería de Software", 6, "Ingeniero en Software");
         Carrera editada = facultad.buscarCarrera("001");
 
-        assertEquals("Ingeniería de Software", editada.getCarrera());
+        assertEquals("Ingeniería de Software", editada.getNomcarrera());
         assertEquals(6, editada.getDuracion());
         assertEquals("Ingeniero en Software", editada.getTitulo());
     }

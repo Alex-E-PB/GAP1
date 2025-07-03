@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class Docente extends Usuario implements Comparable<Docente>, NotificacionDAO {
+public class Docente extends Usuario implements  NotificacionDAO {
     private String especialidad;
     private String departamento;
 
@@ -108,11 +108,21 @@ public class Docente extends Usuario implements Comparable<Docente>, Notificacio
     public void mostrarNotificaciones() {
         if (notificaciones.isEmpty()) {
             System.out.println("No hay notificaciones para mostrar.");
-        } else {
-            for (Notificacion n : notificaciones) {
-                System.out.println(n);
-            }
+            return;
         }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-10s %-30s %-20s\n", "ID", "Mensaje", "Fecha Envío"));
+        sb.append("=".repeat(65)).append("\n");
+
+        for (Notificacion n : notificaciones) {
+            sb.append(String.format("%-10s %-30s %-20s\n",
+                    n.getIdNotificacion(),
+                    n.getMensaje().length() > 28 ? n.getMensaje().substring(0, 27) + "…" : n.getMensaje(),
+                    new java.text.SimpleDateFormat("dd/MM/yyyy").format(n.getFechaEnvio())));
+        }
+
+        System.out.println(sb);
     }
 
     public Notificacion buscarNotificacion(String idNotificacion) {
@@ -131,11 +141,11 @@ public class Docente extends Usuario implements Comparable<Docente>, Notificacio
 
     public void inicializarNotificaciones() {
 
-        notificaciones.add(new Notificacion("N1", this, "Notificación 1", new Date()));
+        notificaciones.add(new Notificacion("N1", this, "Notificación 7", new Date()));
         notificaciones.add(new Notificacion("N2", this, "Notificación 2", new Date()));
         notificaciones.add(new Notificacion("N3", this, "Notificación 3", new Date()));
-        notificaciones.add(new Notificacion("N4", this, "Notificación 4", new Date()));
-        notificaciones.add(new Notificacion("N5", this, "Notificación 5", new Date()));
+        notificaciones.add(new Notificacion("N4", this, "Notificación 6", new Date()));
+        notificaciones.add(new Notificacion("N5", this, "Notificación 9", new Date()));
     }
 
     @Override
@@ -164,10 +174,9 @@ public class Docente extends Usuario implements Comparable<Docente>, Notificacio
         return super.toString() + " → Docente [Especialidad=" + especialidad + ", Departamento=" + departamento + "]";
     }
 
-    @Override
-    public int compareTo(Docente o) {
-        return this.getIdUsuario().compareTo(o.getIdUsuario());
-    }
+
+
+
 
     @Override
     public boolean crear(Notificacion notificacion) {

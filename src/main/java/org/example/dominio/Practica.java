@@ -3,6 +3,7 @@ package org.example.dominio;
 import org.example.datos.PostulacionDAO;
 import org.example.datos.ProgresoDAO;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -214,25 +215,73 @@ public class Practica implements PostulacionDAO, ProgresoDAO, Comparable<Practic
         return !postulaciones.isEmpty();
     }
 
-    public void mostrarPostulaciones() {
-        for (Postulacion p : postulaciones) {
-            System.out.println(p);
-        }
-    }
+
 
     public void inicializarPostulaciones() {
         Estudiante estudiante1 = new Estudiante("EST001", 5, "Ana", "Torres", "ana@email.com", "clave123", Genero.FEMENINO);
         Estudiante estudiante2 = new Estudiante("EST002", 7, "Luis", "Gómez", "luis@email.com", "clave123", Genero.MASCULINO);
-        Estudiante estudiante3 = new Estudiante("EST003", 4, "María", "Pérez", "maria@email.com", "clave123", Genero.FEMENINO);
+        Estudiante estudiante3 = new Estudiante("EST000", 4, "María", "Pérez", "maria@email.com", "clave123", Genero.FEMENINO);
         Estudiante estudiante4 = new Estudiante("EST004", 6, "Carlos", "López", "carlos@email.com", "clave123", Genero.MASCULINO);
         Estudiante estudiante5 = new Estudiante("EST005", 8, "Elena", "Martínez", "elena@email.com", "clave123", Genero.FEMENINO);
 
-        agregarPostulacion(new Postulacion("POST001", estudiante1, this, new Date(), 1, "cv1.pdf"));
-        agregarPostulacion(new Postulacion("POST002", estudiante2, this, new Date(), 0, "cv2.pdf"));
-        agregarPostulacion(new Postulacion("POST003", estudiante3, this, new Date(), 2, "cv3.pdf"));
-        agregarPostulacion(new Postulacion("POST004", estudiante4, this, new Date(), 1, "cv4.pdf"));
-        agregarPostulacion(new Postulacion("POST005", estudiante5, this, new Date(), 0, "cv5.pdf"));
+        agregarPostulacionSiNoExiste(new Postulacion("POST001", estudiante1, this, new Date(), 1, "cv1.pdf"));
+        agregarPostulacionSiNoExiste(new Postulacion("POST010", estudiante2, this, new Date(), 0, "cv2.pdf"));
+        agregarPostulacionSiNoExiste(new Postulacion("POST003", estudiante3, this, new Date(), 2, "cv3.pdf"));
+        agregarPostulacionSiNoExiste(new Postulacion("POST004", estudiante4, this, new Date(), 1, "cv4.pdf"));
+        agregarPostulacionSiNoExiste(new Postulacion("POST005", estudiante5, this, new Date(), 0, "cv5.pdf"));
     }
+
+    private void agregarPostulacionSiNoExiste(Postulacion postulacion) {
+        if (!existePostulacion(postulacion.getIdPostulacion())) {
+            postulaciones.add(postulacion);
+        }
+    }
+
+    public void mostrarPostulaciones() {
+        if (postulaciones.isEmpty()) {
+            System.out.println("No hay postulaciones registradas.");
+            return;
+        }
+
+        // Encabezado
+        System.out.printf("%-10s %-15s %-20s %-12s %-10s %-20s%n",
+                "ID", "Estudiante", "Práctica", "Fecha", "Estado", "Documento");
+        System.out.println("---------------------------------------------------------------------------------------------");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        for (Postulacion p : postulaciones) {
+            String estudianteNombre = p.getEstudiante().getNombre() + " " + p.getEstudiante().getApellido();
+            String practicaPuesto = p.getPractica().getPuesto();
+            String fecha = sdf.format(p.getFechaPostulacion());
+            String estadoTexto = traducirEstado(p.getEstado());
+
+            System.out.printf("%-10s %-15s %-20s %-12s %-10s %-20s%n",
+                    p.getIdPostulacion(),
+                    acortar(estudianteNombre, 15),
+                    acortar(practicaPuesto, 20),
+                    fecha,
+                    estadoTexto,
+                    acortar(p.getDocumentos(), 20));
+        }
+    }
+
+    private String acortar(String texto, int maxLongitud) {
+        if (texto.length() > maxLongitud) {
+            return texto.substring(0, maxLongitud - 3) + "...";
+        }
+        return texto;
+    }
+
+    private String traducirEstado(int estado) {
+        return switch (estado) {
+            case 0 -> "Pendiente";
+            case 1 -> "Aceptado";
+            case 2 -> "Rechazado";
+            default -> "Desconocido";
+        };
+    }
+
 
     // CRUD progreso
 
@@ -359,9 +408,17 @@ public class Practica implements PostulacionDAO, ProgresoDAO, Comparable<Practic
 
     @Override
     public String toString() {
-        return "Practica [ID=" + idPractica + ", Empresa=" + empresa + ", Puesto=" + puesto +
-                ", Ubicación=" + ubicacion + ", FechaInicio=" + fechaInicio +
-                ", FechaFin=" + fechaFin + ", Descripción=" + descripcion +
-                ", Requisitos=" + requisitos + ", Duración=" + duracion + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Practica [ID=").append(idPractica)
+                .append(", Empresa=").append(empresa)
+                .append(", Puesto=").append(puesto)
+                .append(", Ubicación=").append(ubicacion)
+                .append(", FechaInicio=").append(fechaInicio)
+                .append(", FechaFin=").append(fechaFin)
+                .append(", Descripción=").append(descripcion)
+                .append(", Requisitos=").append(requisitos)
+                .append(", Duración=").append(duracion)
+                .append("]");
+        return sb.toString();
     }
 }

@@ -4,8 +4,7 @@ import org.example.dominio.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -28,13 +27,14 @@ public class Main {
                 case 1 -> mfacultad(sc, facultad);
                 case 2 -> menuCarreras(sc, facultad);
                 case 3 -> {
-                    String idCarrera = leerTextoLibre(sc, "ID de la carrera: ");
+                    menuPracticas(sc, new Carrera());
+                    /*String idCarrera = leerTextoLibre(sc, "ID de la carrera: ");
                     Carrera c = facultad.buscarCarrera(idCarrera);
                     if (c != null) {
                         menuPracticas(sc, c);
                     } else {
                         System.out.println("Carrera no encontrada.");
-                    }
+                    }*/
                 }
                 case 4 -> menuProgresos(sc,new Practica());
                 case 5 -> menuPostulacion(sc, new Practica());
@@ -61,6 +61,8 @@ public class Main {
             System.out.println("3. Editar carrera");
             System.out.println("4. Eliminar carrera");
             System.out.println("5. Método inicializador");
+            System.out.println("6. Método de ordenamiento comparable");
+            System.out.println("7. Método de ordenamiento comparator");
             System.out.println("0. Volver al menú principal");
             opcion = leerEntero(sc, "Seleccione una opción: ");
 
@@ -131,6 +133,45 @@ public class Main {
 
                 }
 
+                case 6 ->{
+                    Facultad fa = Facultad.getInstancia();
+                    fa.inicializar();
+
+                    // Obtener las carreras (array) y convertirlas a lista
+                    Carrera[] carrerasArray = fa.listar();
+                    List<Carrera> carrerasList = Arrays.asList(carrerasArray);
+
+                    Collections.sort(carrerasList);
+
+                    System.out.println("Carreras ordenadas por nombre:");
+                    for (Carrera c : carrerasList) {
+                        System.out.println(c);
+                    }
+
+                }
+
+                case 7 ->{
+                    Facultad fac = Facultad.getInstancia();
+                    fac.inicializar();
+
+                    Carrera[] carrerasArray = fac.listar();
+                    List<Carrera> carrerasList = Arrays.asList(carrerasArray);
+
+                    Collections.sort(carrerasList, new OrdenarCarreraNombre());
+                    System.out.println("Carreras ordenadas por NOMBRE:");
+                    for (Carrera c : carrerasList) {
+                        System.out.println(c);
+                    }
+
+                    System.out.println();
+
+                    Collections.sort(carrerasList, new OrdenarCarreraDuracion());
+                    System.out.println("Carreras ordenadas por DURACIÓN:");
+                    for (Carrera c : carrerasList) {
+                        System.out.println(c);
+                    }
+                }
+
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
             }
@@ -141,12 +182,14 @@ public class Main {
     public static void menuPracticas(Scanner sc, Carrera carrera) {
         int op;
         do {
-            System.out.println("\n--- SUBMENÚ PRÁCTICAS DE: " + carrera.getCarrera() + " ---");
+            System.out.println("\n--- SUBMENÚ PRÁCTICAS DE: " + carrera.getNomcarrera() + " ---");
             System.out.println("1. Agregar práctica");
             System.out.println("2. Mostrar prácticas");
             System.out.println("3. Editar práctica");
             System.out.println("4. Eliminar práctica");
             System.out.println("5. Inicializador practicas");
+            System.out.println("6. Método de ordenamiento comparable");
+            System.out.println("7. Método de ordenamiento comparator");
             System.out.println("0. Volver al menú principal");
             op = leerEntero(sc, "Seleccione una opción: ");
 
@@ -217,13 +260,50 @@ public class Main {
                 case 5 ->{
                     Carrera C = new Carrera();
 
-                    // Inicializar con practicas
                     C.inicializar();
 
-                    // Imprimir todas las practicas agregadas
                     System.out.println("Practicas registradas:");
                     C.mostrarPracticas();
 
+                }
+
+                case 6 ->{
+                    Carrera ca = new Carrera();
+                    ca.inicializar();
+
+                    // Obtener las carreras (array) y convertirlas a lista
+                    Practica[] practicasArray = ca.listar();
+                    List<Practica> practicasList = Arrays.asList(practicasArray);
+
+                    Collections.sort(practicasList);
+
+                    System.out.println("Practicas ordenadas por empresa:");
+                    for (Practica p : practicasList) {
+                        System.out.println(p);
+                    }
+
+                }
+
+                case 7 ->{
+                    Carrera car = new Carrera();
+                    car.inicializar();
+
+                    Practica[] practicasArray = car.listar();
+                    List<Practica> practicasList = Arrays.asList(practicasArray);
+
+                    Collections.sort(practicasList, new OrdenarPracticaEmpresa());
+                    System.out.println("Practicas ordenadas por EMPRESA:");
+                    for (Practica p : practicasList) {
+                        System.out.println(p);
+                    }
+
+                    System.out.println();
+
+                    Collections.sort(practicasList, new OrdenarPracticaDuracion());
+                    System.out.println("Practicas ordenadas por DURACIÓN:");
+                    for (Practica p : practicasList) {
+                        System.out.println(p);
+                    }
                 }
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
@@ -242,6 +322,8 @@ public class Main {
             System.out.println("3. Editar postulación");
             System.out.println("4. Eliminar postulación");
             System.out.println("5. Método Inicializador");
+            System.out.println("6. Método de ordenamiento comparable");
+            System.out.println("7. Método de ordenamiento comparator");
             System.out.println("0. Volver al menú principal");
             op = leerEntero(sc, "Seleccione una opción: ");
 
@@ -296,13 +378,50 @@ public class Main {
                 case 5 ->{
                     Practica po = new Practica();
 
-                    // Inicializar con postulaciones
                     po.inicializarPostulaciones();
 
-                    // Imprimir todas las postulaciones agregadas
                     System.out.println("Postulaciones registradas:");
                     po.mostrarPostulaciones();
 
+                }
+
+                case 6 ->{
+                    Practica pra = new Practica();
+                    pra.inicializarPostulaciones();
+
+                    // Obtener las carreras (array) y convertirlas a lista
+                    Postulacion[] postulacionesArray = pra.listarPostulaciones();
+                    List<Postulacion> postulacionesList = Arrays.asList(postulacionesArray);
+
+                    Collections.sort(postulacionesList);
+
+                    System.out.println("Postulaciones ordenadas por id:");
+                    for (Postulacion p : postulacionesList) {
+                        System.out.println(p);
+                    }
+
+                }
+
+                case 7 ->{
+                    Practica pra = new Practica();
+                    pra.inicializarPostulaciones();
+
+                    Postulacion[] postulacionesArray = pra.listarPostulaciones();
+                    List<Postulacion> postulacionesList = Arrays.asList(postulacionesArray);
+
+                    Collections.sort(postulacionesList, new OrdenarPostulacionId());
+                    System.out.println("Practicas ordenadas por ID:");
+                    for (Postulacion p : postulacionesList) {
+                        System.out.println(p);
+                    }
+
+                    System.out.println();
+
+                    Collections.sort(postulacionesList, new OrdenarPostulacionEstado());
+                    System.out.println("Practicas ordenadas por ESTADO:");
+                    for (Postulacion p : postulacionesList) {
+                        System.out.println(p);
+                    }
                 }
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
@@ -382,49 +501,113 @@ public class Main {
 
     public static void menuNotificaciones(Scanner sc, Docente docente) {
         int op;
+        boolean notificacionesInicializadas = false;
+
         do {
-            System.out.println("\n--- SUBMENÚ Notificaciones ---");
-            System.out.println("1. Agregar Notificacion");
-            System.out.println("2. Mostrar Notificacion");
-            System.out.println("3. Editar Notificacion");
-            System.out.println("4. Eliminar Notificacion");
+            System.out.println("\n--- SUBMENÚ NOTIFICACIONES ---");
+            System.out.println("1. Agregar Notificación");
+            System.out.println("2. Mostrar Notificaciones");
+            System.out.println("3. Editar Notificación");
+            System.out.println("4. Eliminar Notificación");
+            System.out.println("5. Ordenar notificaciones por ID");
+            System.out.println("6. Ordenar notificaciones por Fecha");
+            System.out.println("7. Inicializar notificaciones");
             System.out.println("0. Volver al menú principal");
             op = leerEntero(sc, "Seleccione una opción: ");
 
             switch (op) {
                 case 1 -> {
-                    String idNotificacion = leerTextoLibre(sc, "ID Notificación: ");
                     String mensaje = leerTexto(sc, "Nuevo mensaje: ");
                     Date fechaEnvio = leerFecha(sc, "Fecha nueva (dd/MM/yyyy): ");
-
-                    Notificacion n = new Notificacion(idNotificacion, docente, mensaje, fechaEnvio);
-
+                    Notificacion n = new Notificacion(docente, mensaje, fechaEnvio);
                     if (docente.agregarNotificacion(n)) {
-                        System.out.println("Notificación agregada correctamente.");
+                        System.out.println("Notificación agregada correctamente con ID: " + n.getIdNotificacion());
                     } else {
-                        System.out.println("Error: La notificación ya existe .");
+                        System.out.println("Error: La notificación ya existe.");
                     }
                 }
 
-
                 case 2 -> docente.mostrarNotificaciones();
+
+
                 case 3 -> {
-                    String id = leerTextoLibre(sc, "ID de la notificacion a editar: ");
-                    String nuevoMensaje  = leerTexto(sc, "Nuevo mensaje: ");
-                    docente.editarNotificacion(id, nuevoMensaje);
-                    System.out.println("Notificación editada exitosamente.");
+                    String id = leerTextoLibre(sc, "ID de la notificación a editar: ");
+                    String nuevoMensaje = leerTexto(sc, "Nuevo mensaje: ");
+                    if (docente.editarNotificacion(id, nuevoMensaje)) {
+                        System.out.println("Notificación editada exitosamente.");
+                    } else {
+                        System.out.println("No se encontró una notificación con ese ID.");
+                    }
                 }
+
                 case 4 -> {
                     if (!docente.hayNotificaciones()) {
                         System.out.println("No hay notificaciones registradas para eliminar.");
                     } else {
-                        String idEliminar = leerTextoLibre(sc, "ID de la notificacion a eliminar: ");
+                        String idEliminar = leerTextoLibre(sc, "ID de la notificación a eliminar: ");
                         if (docente.eliminarNotificacion(idEliminar)) {
-                            System.out.println("Notificacion eliminada correctamente.");
+                            System.out.println("Notificación eliminada correctamente.");
                         } else {
-                            System.out.println("Error: Notificacion no encontrada.");
+                            System.out.println("Error: Notificación no encontrada.");
                         }
                     }
+                }
+
+                case 5 -> {
+                    if (!notificacionesInicializadas) {
+                        docente.inicializarNotificaciones();
+                        notificacionesInicializadas = true;
+                    }
+
+                    List<Notificacion> lista = new ArrayList<>(List.of(docente.listar()));
+                    lista.sort(new OrdenarNotificacionId());
+
+                    System.out.println("\n--- Notificaciones ordenadas por ID ---");
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(String.format("%-10s %-30s %-20s\n", "ID", "Mensaje", "Fecha Envío"));
+                    sb.append("=".repeat(65)).append("\n");
+
+                    for (Notificacion n : lista) {
+                        sb.append(String.format("%-10s %-30s %-20s\n",
+                                n.getIdNotificacion(),
+                                n.getMensaje().length() > 28 ? n.getMensaje().substring(0, 27) + "…" : n.getMensaje(),
+                                new SimpleDateFormat("dd/MM/yyyy").format(n.getFechaEnvio())));
+                    }
+
+                    System.out.println(sb);
+                }
+
+                case 6 -> {
+                    if (!notificacionesInicializadas) {
+                        docente.inicializarNotificaciones();
+                        notificacionesInicializadas = true;
+                    }
+
+                    List<Notificacion> lista = new ArrayList<>(List.of(docente.listar()));
+                    lista.sort(new OrdenarNotificacionFecha());
+
+                    System.out.println("\n--- Notificaciones ordenadas por Fecha ---");
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(String.format("%-10s %-30s %-20s\n", "ID", "Mensaje", "Fecha Envío"));
+                    sb.append("=".repeat(65)).append("\n");
+
+                    for (Notificacion n : lista) {
+                        sb.append(String.format("%-10s %-30s %-20s\n",
+                                n.getIdNotificacion(),
+                                n.getMensaje().length() > 28 ? n.getMensaje().substring(0, 27) + "…" : n.getMensaje(),
+                                new SimpleDateFormat("dd/MM/yyyy").format(n.getFechaEnvio())));
+                    }
+
+                    System.out.println(sb);
+                }
+
+
+                case 7 -> {
+                    docente.inicializarNotificaciones();
+                    notificacionesInicializadas = true;
+                    System.out.println("Notificaciones inicializadas correctamente.");
                 }
 
                 case 0 -> System.out.println("Volviendo al menú principal...");

@@ -126,11 +126,15 @@ public class Postulacion implements Comparable<Postulacion> {
 
     @Override
     public String toString() {
-        return "Postulacion [ID=" + idPostulacion +
-                ", Estudiante=" + estudiante +
-                ", Practica=" + practica +
-                ", Fecha=" + fechaPostulacion +
-                ", Estado=" + estado +
-                ", Documentos=" + documentos + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Postulacion [ID=").append(idPostulacion)
+                .append(", Estudiante=").append(estudiante)
+                .append(", Practica=").append(practica)
+                .append(", Fecha=").append(fechaPostulacion)
+                .append(", Estado=").append(estado)
+                .append(", Documentos=").append(documentos)
+                .append("]");
+        return sb.toString();
     }
+
 }

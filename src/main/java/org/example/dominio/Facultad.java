@@ -93,11 +93,20 @@ public final class Facultad implements CarreraDAO {
         return carreras.removeIf(c -> c.getIdCarrera().equals(ID_CARRERA));
     }
 
-    public void mostrarCarreras() {
+    /*public void mostrarCarreras() {
         for (Carrera c : carreras) {
             System.out.println(c);
         }
+    }*/
+    public void mostrarCarreras() {
+        System.out.printf("%-8s %-30s %-10s %-30s%n", "ID", "Nombre", "Duración", "Título");
+        System.out.println("-------------------------------------------------------------------------------");
+        for (Carrera c : carreras) {
+            System.out.printf("%-8s %-30s %-10d %-30s%n",
+                    c.getIdCarrera(), c.getNomcarrera(), c.getDuracion(), c.getTitulo());
+        }
     }
+
 
     public Carrera buscarCarrera(String ID_CARRERA) {
         for (Carrera c : carreras) {
@@ -112,19 +121,38 @@ public final class Facultad implements CarreraDAO {
         return !carreras.isEmpty();
     }
 
-    public void inicializar() {
+    /*public void inicializar() {
         agregarCarrera(new Carrera("001", "Ingeniería de Software", 5, "Ingeniero en Software"));
         agregarCarrera(new Carrera("002", "Medicina", 6, "Médico"));
         agregarCarrera(new Carrera("003", "Arquitectura", 5, "Arquitecto"));
         agregarCarrera(new Carrera("004", "Administración", 4, "Administrador"));
         agregarCarrera(new Carrera("005", "Derecho", 5, "Abogado"));
+    }*/
+    public void inicializar() {
+        agregarCarreraSiNoExiste(new Carrera("001", "Ingeniería de Software", 5, "Ingeniero en Software"));
+        agregarCarreraSiNoExiste(new Carrera("002", "Medicina", 6, "Médico"));
+        agregarCarreraSiNoExiste(new Carrera("003", "Arquitectura", 5, "Arquitecto"));
+        agregarCarreraSiNoExiste(new Carrera("004", "Administración", 4, "Administrador"));
+        agregarCarreraSiNoExiste(new Carrera("005", "Derecho", 5, "Abogado"));
     }
+
+    private void agregarCarreraSiNoExiste(Carrera c) {
+        if (!existeCarrera(c)) {
+            carreras.add(c);
+        }
+    }
+
 
     @Override
     public String toString() {
-        return "Facultad [ID=" + idFacultad + ", Nombre=" + nombre +
-                ", Ubicación=" + ubicacion + ", Decano=" + decano + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Facultad [ID=").append(idFacultad)
+                .append(", Nombre=").append(nombre)
+                .append(", Ubicación=").append(ubicacion)
+                .append(", Decano=").append(decano).append("]");
+        return sb.toString();
     }
+
 
     // Métodos de CarreraDAO
     @Override
@@ -134,7 +162,7 @@ public final class Facultad implements CarreraDAO {
 
     @Override
     public boolean editar(Carrera carrera) {
-        return editarCarrera(carrera.getIdCarrera(), carrera.getCarrera(), carrera.getDuracion(), carrera.getTitulo());
+        return editarCarrera(carrera.getIdCarrera(), carrera.getNomcarrera(), carrera.getDuracion(), carrera.getTitulo());
     }
 
     @Override

@@ -2,7 +2,7 @@ package org.example.dominio;
 
 import java.util.Objects;
 
-public abstract class  Usuario {
+public abstract class Usuario implements Comparable<Usuario> {
 
     private final String idUsuario ;
     private static final String PREFIJO_USUARIO = "USR";
@@ -149,4 +149,17 @@ public abstract class  Usuario {
         return "Usuario [ID=" +idUsuario+ ", Nombre=" + nombre + ", Apellido=" + apellido +
                 ", Correo=" + correo + ", Género=" + genero + "]";
     }
+
+
+    @Override
+    public int compareTo(Usuario o) {
+        int resultado=this.nombre.compareTo(o.getNombre());
+        if (resultado>0){
+            return 1;
+        } else if (resultado<0){
+            return -1;
+        }
+        return 0;
+    }
 }
+
