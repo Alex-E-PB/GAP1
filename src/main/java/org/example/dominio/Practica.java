@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Practica implements PostulacionDAO, ProgresoDAO, Comparable<Practica> {
     private final String idPractica;
+    private final String nombrePractica;
     private String empresa;
     private String puesto;
     private String ubicacion;
@@ -22,23 +23,25 @@ public class Practica implements PostulacionDAO, ProgresoDAO, Comparable<Practic
     private List<Postulacion> postulaciones;
 
     public Practica() {
-        this.idPractica = "";
-        this.empresa = "";
-        this.puesto = "";
-        this.ubicacion = "";
+        this.idPractica = "SIN ASIGNAR";
+        this.nombrePractica="SIN ASIGNAR";
+        this.empresa = "SIN ASIGNAR";
+        this.puesto = "SIN ASIGNAR";
+        this.ubicacion = "SIN ASIGNAR";
         this.fechaInicio = new Date();
         this.fechaFin = new Date();
-        this.descripcion = "";
-        this.requisitos = "";
+        this.descripcion = "SIN ASIGNAR";
+        this.requisitos = "SIN ASIGNAR";
         this.duracion = 0;
         this.progresos = new ArrayList<>();
         this.postulaciones = new ArrayList<>();
     }
 
-    public Practica(String idPractica, String empresa, String puesto, String ubicacion,
+    public Practica(String idPractica,String nombrePractica, String empresa, String puesto, String ubicacion,
                     Date fechaInicio, Date fechaFin, String descripcion,
                     String requisitos, int duracion) {
         this.idPractica = idPractica;
+        this.nombrePractica= nombrePractica;
         setEmpresa(empresa);
         setPuesto(puesto);
         setUbicacion(ubicacion);
@@ -49,6 +52,10 @@ public class Practica implements PostulacionDAO, ProgresoDAO, Comparable<Practic
         setDuracion(duracion);
         this.progresos = new ArrayList<>();
         this.postulaciones = new ArrayList<>();
+    }
+
+    public String getNombrePractica(){
+        return nombrePractica;
     }
 
     public String getIdPractica() {
@@ -405,6 +412,11 @@ public class Practica implements PostulacionDAO, ProgresoDAO, Comparable<Practic
             return 0;
         }
     }
+
+    public List<Progreso> getListaProgresos() {
+        return new ArrayList<>(progresos); // devuelve una copia para evitar modificaciones externas
+    }
+
 
     @Override
     public String toString() {

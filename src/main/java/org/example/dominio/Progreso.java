@@ -46,11 +46,15 @@ public class Progreso implements Comparable<Progreso> {
                 ? formato.format(fechaActualizacion)
                 : "No registrada";
 
-        return "Progreso{" +
-                "comentarios='" + comentarios + '\'' +
-                ", fechaActualización=" + fechaFormateada +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Progreso {")
+                .append("comentarios='").append(comentarios).append('\'')
+                .append(", fechaActualización=").append(fechaFormateada)
+                .append('}');
+
+        return sb.toString();
     }
+
 
     @Override
     public boolean equals(final Object obj) {
@@ -69,9 +73,17 @@ public class Progreso implements Comparable<Progreso> {
 
 
     @Override
-    public int compareTo(Progreso otro) {
-        return otro.getFechaActualizacion().compareTo(this.getFechaActualizacion());
+    public int compareTo(Progreso o) {
+        int resultado = o.getFechaActualizacion().compareTo(this.getFechaActualizacion());
+        if (resultado > 0) {
+            return 1;
+        } else if (resultado < 0) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
+
 
 
 

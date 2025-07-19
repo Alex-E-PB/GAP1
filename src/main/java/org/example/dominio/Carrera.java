@@ -176,15 +176,15 @@ public class Carrera implements PracticaDAO, Comparable<Carrera> {
     }*/
 
     public void inicializar() {
-        agregarPracticaSiNoExiste(new Practica("P001", "Microsoft", "Desarrollador Backend", "Redmond, WA",
+        agregarPracticaSiNoExiste(new Practica("P001","SISTEMAS", "Microsoft", "Desarrollador Backend", "Redmond, WA",
                 new Date(), new Date(), "Desarrollar servicios web", "Java, Spring", 6));
-        agregarPracticaSiNoExiste(new Practica("P002", "Google", "Ingeniero de Datos", "Mountain View, CA",
+        agregarPracticaSiNoExiste(new Practica("P002","SISTEMAS", "Google", "Ingeniero de Datos", "Mountain View, CA",
                 new Date(), new Date(), "Manejo de grandes volúmenes de datos", "Python, SQL", 6));
-        agregarPracticaSiNoExiste(new Practica("P003", "Amazon", "Analista de Sistemas", "Seattle, WA",
+        agregarPracticaSiNoExiste(new Practica("P003","SISTEMAS", "Amazon", "Analista de Sistemas", "Seattle, WA",
                 new Date(), new Date(), "Análisis y mejora de sistemas existentes", "Análisis de sistemas", 5));
-        agregarPracticaSiNoExiste(new Practica("P004", "Tesla", "Ingeniero de Software", "Fremont, CA",
+        agregarPracticaSiNoExiste(new Practica("P004","SISTEMAS", "Tesla", "Ingeniero de Software", "Fremont, CA",
                 new Date(), new Date(), "Desarrollar software para autos", "C++, Python", 4));
-        agregarPracticaSiNoExiste(new Practica("P005", "IBM", "Investigador de IA", "Armonk, NY",
+        agregarPracticaSiNoExiste(new Practica("P005","SISTEMAS", "IBM", "Investigador de IA", "Armonk, NY",
                 new Date(), new Date(), "Proyectos de investigación en IA", "IA, ML, Python", 6));
     }
 
@@ -247,6 +247,10 @@ public class Carrera implements PracticaDAO, Comparable<Carrera> {
         } else {
             return 0;
         }
+    }
+
+    public List<Practica> getListaPracticas() {
+        return new ArrayList<>(practicas); // proteger encapsulamiento
     }
 
 

@@ -61,7 +61,7 @@ public class Main {
             System.out.println("3. Editar carrera");
             System.out.println("4. Eliminar carrera");
             System.out.println("5. Método inicializador");
-            System.out.println("6. Método de ordenamiento comparable");
+            System.out.println("6. Método de ordenamiento por nombre");
             System.out.println("7. Método de ordenamiento comparator");
             System.out.println("0. Volver al menú principal");
             opcion = leerEntero(sc, "Seleccione una opción: ");
@@ -144,10 +144,12 @@ public class Main {
                     Collections.sort(carrerasList);
 
                     System.out.println("Carreras ordenadas por nombre:");
+                    System.out.printf("%-8s %-30s %-10s %-30s%n", "ID", "Nombre", "Duración", "Título");
+                    System.out.println("-------------------------------------------------------------------------------");
                     for (Carrera c : carrerasList) {
-                        System.out.println(c);
+                        System.out.printf("%-8s %-30s %-10d %-30s%n",
+                                c.getIdCarrera(), c.getNomcarrera(), c.getDuracion(), c.getTitulo());
                     }
-
                 }
 
                 case 7 ->{
@@ -159,17 +161,25 @@ public class Main {
 
                     Collections.sort(carrerasList, new OrdenarCarreraNombre());
                     System.out.println("Carreras ordenadas por NOMBRE:");
+                    System.out.printf("%-8s %-30s %-10s %-30s%n", "ID", "Nombre", "Duración", "Título");
+                    System.out.println("-------------------------------------------------------------------------------");
                     for (Carrera c : carrerasList) {
-                        System.out.println(c);
+                        System.out.printf("%-8s %-30s %-10d %-30s%n",
+                                c.getIdCarrera(), c.getNomcarrera(), c.getDuracion(), c.getTitulo());
                     }
+
 
                     System.out.println();
 
                     Collections.sort(carrerasList, new OrdenarCarreraDuracion());
-                    System.out.println("Carreras ordenadas por DURACIÓN:");
+                    System.out.println("\nCarreras ordenadas por DURACIÓN:");
+                    System.out.printf("%-8s %-30s %-10s %-30s%n", "ID", "Nombre", "Duración", "Título");
+                    System.out.println("-------------------------------------------------------------------------------");
                     for (Carrera c : carrerasList) {
-                        System.out.println(c);
+                        System.out.printf("%-8s %-30s %-10d %-30s%n",
+                                c.getIdCarrera(), c.getNomcarrera(), c.getDuracion(), c.getTitulo());
                     }
+
                 }
 
                 case 0 -> System.out.println("Volviendo al menú principal...");
@@ -199,6 +209,7 @@ public class Main {
                     if (carrera.existePractica(idPractica)){
                         System.out.println("Ya existe una practica con ese ID");
                     }else{
+                        String nombre = leerTexto(sc,"Nombre: ");
                         String empresa = leerTexto(sc, "Empresa: ");
                         String puesto = leerTexto(sc, "Puesto: ");
                         String ubicacion = leerTextoLibre(sc, "Ubicación: ");
@@ -207,7 +218,7 @@ public class Main {
                         String descripcion= leerTexto(sc, "Descripción: ");
                         String requisitos= leerTexto(sc, "Requisitos: ");
                         int duracion = leerEntero(sc, "Duración (meses): ");
-                        Practica p = new Practica(idPractica, empresa,puesto, ubicacion,
+                        Practica p = new Practica(idPractica,nombre, empresa,puesto, ubicacion,
                                 new Date(), new Date(), descripcion,
                                 requisitos, duracion);
                         carrera.agregarPractica(p);
@@ -228,6 +239,7 @@ public class Main {
                     if (!carrera.existePractica(idPractica)) {
                         System.out.println("Error: ID de práctica no encontrado.");
                     } else {
+                        String nombre = leerTexto(sc,"Nombre: ");
                         String empresa = leerTexto(sc, "Nueva empresa: ");
                         String puesto = leerTexto(sc, "Nuevo puesto: ");
                         String ubicacion = leerTexto(sc, "Nueva ubicación: ");
@@ -236,7 +248,7 @@ public class Main {
                         int duracion = leerEntero(sc, "Nueva duración: ");
 
                         // Crear objeto con el mismo ID
-                        Practica nueva = new Practica(idPractica, empresa, puesto, ubicacion,
+                        Practica nueva = new Practica(idPractica,nombre, empresa, puesto, ubicacion,
                                 new Date(), new Date(), descripcion, requisitos, duracion);
 
                         carrera.editar(nueva);
@@ -271,17 +283,15 @@ public class Main {
                     Carrera ca = new Carrera();
                     ca.inicializar();
 
-                    // Obtener las carreras (array) y convertirlas a lista
                     Practica[] practicasArray = ca.listar();
                     List<Practica> practicasList = Arrays.asList(practicasArray);
-
                     Collections.sort(practicasList);
 
-                    System.out.println("Practicas ordenadas por empresa:");
+                    System.out.println("Practicas ordenadas por EMPRESA (Comparable):");
+                    imprimirEncabezadoPracticas();
                     for (Practica p : practicasList) {
-                        System.out.println(p);
+                        imprimirFilaPractica(p);
                     }
-
                 }
 
                 case 7 ->{
@@ -292,19 +302,22 @@ public class Main {
                     List<Practica> practicasList = Arrays.asList(practicasArray);
 
                     Collections.sort(practicasList, new OrdenarPracticaEmpresa());
-                    System.out.println("Practicas ordenadas por EMPRESA:");
+                    System.out.println("Practicas ordenadas por EMPRESA (Comparator):");
+                    imprimirEncabezadoPracticas();
                     for (Practica p : practicasList) {
-                        System.out.println(p);
+                        imprimirFilaPractica(p);
                     }
 
                     System.out.println();
 
                     Collections.sort(practicasList, new OrdenarPracticaDuracion());
                     System.out.println("Practicas ordenadas por DURACIÓN:");
+                    imprimirEncabezadoPracticas();
                     for (Practica p : practicasList) {
-                        System.out.println(p);
+                        imprimirFilaPractica(p);
                     }
                 }
+
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
             }
@@ -389,18 +402,17 @@ public class Main {
                     Practica pra = new Practica();
                     pra.inicializarPostulaciones();
 
-                    // Obtener las carreras (array) y convertirlas a lista
                     Postulacion[] postulacionesArray = pra.listarPostulaciones();
                     List<Postulacion> postulacionesList = Arrays.asList(postulacionesArray);
-
                     Collections.sort(postulacionesList);
 
-                    System.out.println("Postulaciones ordenadas por id:");
+                    System.out.println("Postulaciones ordenadas por ID:");
+                    imprimirEncabezadoPostulaciones();
                     for (Postulacion p : postulacionesList) {
-                        System.out.println(p);
+                        imprimirFilaPostulacion(p);
                     }
-
                 }
+
 
                 case 7 ->{
                     Practica pra = new Practica();
@@ -409,20 +421,25 @@ public class Main {
                     Postulacion[] postulacionesArray = pra.listarPostulaciones();
                     List<Postulacion> postulacionesList = Arrays.asList(postulacionesArray);
 
+                    // Orden por ID
                     Collections.sort(postulacionesList, new OrdenarPostulacionId());
-                    System.out.println("Practicas ordenadas por ID:");
+                    System.out.println("Postulaciones ordenadas por ID:");
+                    imprimirEncabezadoPostulaciones();
                     for (Postulacion p : postulacionesList) {
-                        System.out.println(p);
+                        imprimirFilaPostulacion(p);
                     }
 
                     System.out.println();
 
+                    // Orden por Estado
                     Collections.sort(postulacionesList, new OrdenarPostulacionEstado());
-                    System.out.println("Practicas ordenadas por ESTADO:");
+                    System.out.println("Postulaciones ordenadas por ESTADO:");
+                    imprimirEncabezadoPostulaciones();
                     for (Postulacion p : postulacionesList) {
-                        System.out.println(p);
+                        imprimirFilaPostulacion(p);
                     }
                 }
+
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
             }
@@ -440,6 +457,8 @@ public class Main {
             System.out.println("3. Editar progreso");
             System.out.println("4. Eliminar progreso");
             System.out.println("5. Método Inicializador");
+            System.out.println("6. Ordenar progreso por comentario");
+            System.out.println("7. Ordenar progreso por fecha");
             System.out.println("0. Volver al menú principal");
             op = leerEntero(sc, "Seleccione una opción: ");
 
@@ -458,9 +477,9 @@ public class Main {
                 }
                 case 2 -> {
                     practica.inicializarProgresos();
-                    if (!practica.hayProgresos()){
+                    if (!practica.hayProgresos()) {
                         System.out.println("No hay progresos registrados para mostrar");
-                    }else{
+                    } else {
                         practica.mostrarProgresos();
                     }
                 }
@@ -482,7 +501,7 @@ public class Main {
                         System.out.println("No se encontró un progreso con ese comentario.");
                     }
                 }
-                case 5 ->{
+                case 5 -> {
                     Practica pr = new Practica();
 
                     // Inicializar con progresos
@@ -492,6 +511,32 @@ public class Main {
                     System.out.println("Progresos registrados:");
                     pr.mostrarProgresos();
 
+                }
+                case 6 -> {
+                    if (!practica.hayProgresos()) {
+                        practica.inicializarProgresos();
+                    }
+
+                    List<Progreso> copia = new ArrayList<>(Arrays.asList(practica.listarProgresos()));
+                    copia.sort(new OrdenarProgresoComentario());
+
+                    System.out.println("Progresos ordenados por comentario:");
+                    for (Progreso p : copia) {
+                        System.out.println(p);
+                    }
+                }
+                case 7 -> {
+                    if (!practica.hayProgresos()) {
+                        practica.inicializarProgresos();
+                    }
+
+                    List<Progreso> copia = new ArrayList<>(Arrays.asList(practica.listarProgresos()));
+                    copia.sort(new OrdenarProgresoFecha());
+
+                    System.out.println("Progresos ordenados por fecha:");
+                    for (Progreso p : copia) {
+                        System.out.println(p);
+                    }
                 }
                 case 0 -> System.out.println("Volviendo al menú principal...");
                 default -> System.out.println("Opción inválida.");
@@ -667,5 +712,63 @@ public class Main {
         } while (input.isEmpty());
         return input;
     }
+
+    private static void imprimirEncabezadoPracticas() {
+        System.out.printf("%-8s %-15s %-20s %-15s %-12s %-12s %-25s %-20s %-8s%n",
+                "ID", "Empresa", "Puesto", "Ubicación", "Inicio", "Fin",
+                "Descripción", "Requisitos", "Duración");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------");
+    }
+
+    private static void imprimirFilaPractica(Practica p) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.printf("%-8s %-15s %-20s %-15s %-12s %-12s %-25s %-20s %-8d%n",
+                p.getIdPractica(),
+                p.getEmpresa(),
+                p.getPuesto(),
+                p.getUbicacion(),
+                sdf.format(p.getFechaInicio()),
+                sdf.format(p.getFechaFin()),
+                acortarTexto(p.getDescripcion(), 24),
+                acortarTexto(p.getRequisitos(), 19),
+                p.getDuracion());
+    }
+
+    private static String acortarTexto(String texto, int max) {
+        return (texto.length() > max) ? texto.substring(0, max - 3) + "..." : texto;
+    }
+
+    //Formato postulaciones
+
+    private static void imprimirEncabezadoPostulaciones() {
+        System.out.printf("%-10s %-15s %-20s %-12s %-10s %-20s%n",
+                "ID", "Estudiante", "Práctica", "Fecha", "Estado", "Documento");
+        System.out.println("---------------------------------------------------------------------------------------------");
+    }
+
+    private static void imprimirFilaPostulacion(Postulacion p) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String estudianteNombre = p.getEstudiante().getNombre() + " " + p.getEstudiante().getApellido();
+        String practicaPuesto = p.getPractica().getPuesto();
+        String estadoTexto = traducirEstado(p.getEstado());
+
+        System.out.printf("%-10s %-15s %-20s %-12s %-10s %-20s%n",
+                p.getIdPostulacion(),
+                acortarTexto(estudianteNombre, 15),
+                acortarTexto(practicaPuesto, 20),
+                sdf.format(p.getFechaPostulacion()),
+                estadoTexto,
+                acortarTexto(p.getDocumentos(), 20));
+    }
+
+    private static String traducirEstado(int estado) {
+        return switch (estado) {
+            case 0 -> "Pendiente";
+            case 1 -> "Aceptado";
+            case 2 -> "Rechazado";
+            default -> "Desconocido";
+        };
+    }
+
 
 }
