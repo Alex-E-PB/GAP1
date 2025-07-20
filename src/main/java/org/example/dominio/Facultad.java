@@ -146,11 +146,28 @@ public final class Facultad implements CarreraDAO {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Facultad [ID=").append(idFacultad)
-                .append(", Nombre=").append(nombre)
-                .append(", Ubicación=").append(ubicacion)
-                .append(", Decano=").append(decano).append("]");
+        String nl = System.lineSeparator();
+        int width = 40;  // ancho deseado para centrar
+
+        // Nombre de la facultad centrado
+        sb.append(center(nombre, width)).append(nl).append(nl);
+
+        // Otros datos centrados
+        sb.append(center("ID: " + idFacultad, width)).append(nl);
+        sb.append(center("Ubicación: " + ubicacion, width)).append(nl);
+        sb.append(center("Decano: " + decano, width));
+
         return sb.toString();
+    }
+
+    // Método auxiliar para centrar un texto en un ancho dado
+    private String center(String text, int width) {
+        if (text.length() >= width) {
+            return text;
+        }
+        int padding = (width - text.length()) / 2;
+        // prepend espacios
+        return String.format("%" + padding + "s%s", "", text);
     }
 
 
