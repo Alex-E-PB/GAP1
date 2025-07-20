@@ -16,8 +16,10 @@ public class UsuarioGUI extends JFrame {
         setTitle("Gestión Académica de Prácticas");
         setContentPane(JPanelGAP);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setMinimumSize(new Dimension(500, 500));
+
+        setMinimumSize(new Dimension(600, 400));
+        pack();
+        setLocationRelativeTo(null);
         setLocationRelativeTo(null);
 
         Acceso.addActionListener(new ActionListener() {
@@ -35,4 +37,3 @@ public class UsuarioGUI extends JFrame {
         SwingUtilities.invokeLater(() -> new UsuarioGUI());
     }
 }
-

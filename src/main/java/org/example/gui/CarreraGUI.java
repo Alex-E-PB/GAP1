@@ -11,13 +11,19 @@ import org.example.dominio.Facultad;
 import org.example.dominio.OrdenarCarreraDuracion;
 import org.example.dominio.OrdenarCarreraNombre;
 
-/**
- * Ventana para gestionar carreras.
- */
+
 public class CarreraGUI extends JDialog {
     private final Facultad facultad;
     //private final DefaultListModel<String> model;
     private JTextArea textArea;
+    private JPanel panel1;
+    private JTextArea textArea1;
+    private JButton ordeanarDuraciónButton;
+    private JButton agregrarButton;
+    private JButton ordenarNombreButton;
+    private JButton eliminarButton;
+    private JButton editarButton;
+    private JButton mostrarButton;
 
     public CarreraGUI(Frame owner, Facultad facultad) {
         super(owner, "Carreras", true);
@@ -31,40 +37,39 @@ public class CarreraGUI extends JDialog {
     private void initComponents() {
         setLayout(new BorderLayout());
 
-        //JList<String> list = new JList<>(model);
-        //add(new JScrollPane(list), BorderLayout.CENTER);
         textArea = new JTextArea();
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textArea.setEditable(false);
         add(new JScrollPane(textArea), BorderLayout.CENTER);
 
         JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
-        JButton addBtn = new JButton("Agregar");
-        JButton showBtn = new JButton("Mostrar");
-        JButton editBtn = new JButton("Editar");
-        JButton delBtn = new JButton("Eliminar");
-        //JButton initBtn = new JButton("Inicializar");
-        JButton sortNameBtn = new JButton("Ordenar Nombre");
-        JButton sortDurBtn = new JButton("Ordenar Duración");
+        JButton addBtn       = new JButton("Agregar");
+        JButton showBtn      = new JButton("Mostrar");
+        JButton editBtn      = new JButton("Editar");
+        JButton delBtn       = new JButton("Eliminar");
+        JButton sortNameBtn  = new JButton("Ordenar Nombre");
+        JButton sortDurBtn   = new JButton("Ordenar Duración");
+        JButton backBtn      = new JButton("Regresar");  // ← Nuevo botón
 
-        addBtn.addActionListener(e -> agregar());
-        showBtn.addActionListener(e -> mostrar());
-        editBtn.addActionListener(e -> editar());
-        delBtn.addActionListener(e -> eliminar());
-        //initBtn.addActionListener(e -> {facultad.inicializar(); mostrar();});
-        sortNameBtn.addActionListener(e -> ordenarNombre());
-        sortDurBtn.addActionListener(e -> ordenarDuracion());
+        addBtn      .addActionListener(e -> agregar());
+        showBtn     .addActionListener(e -> mostrar());
+        editBtn     .addActionListener(e -> editar());
+        delBtn      .addActionListener(e -> eliminar());
+        sortNameBtn .addActionListener(e -> ordenarNombre());
+        sortDurBtn  .addActionListener(e -> ordenarDuracion());
+        backBtn     .addActionListener(e -> dispose());  // cierra CarreraGUI
 
         panel.add(addBtn);
         panel.add(showBtn);
         panel.add(editBtn);
         panel.add(delBtn);
-        //panel.add(initBtn);
         panel.add(sortNameBtn);
         panel.add(sortDurBtn);
+        panel.add(backBtn);  // ← lo añadimos al panel
 
         add(panel, BorderLayout.EAST);
     }
+
 
     private void agregar() {
         JTextField id = new JTextField();
@@ -205,4 +210,3 @@ public class CarreraGUI extends JDialog {
         textArea.setText(sb.toString());
     }
 }
-

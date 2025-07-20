@@ -1,5 +1,4 @@
 package org.example.gui;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -15,6 +14,13 @@ public class NotificacionGUI extends JDialog {
     private final Docente docente;
     //private final DefaultListModel<String> model;
     private JTextArea textArea;
+    private JTextArea textArea1;
+    private JButton ordenarFechaButton;
+    private JButton eliminarButton1;
+    private JButton editarButton;
+    private JButton agregarButton;
+    private JButton mostrarButton;
+    private JButton ordenarIDButton;
 
 
     public NotificacionGUI(Window owner, Docente docente) {
@@ -30,9 +36,6 @@ public class NotificacionGUI extends JDialog {
     private void initComponents() {
         setLayout(new BorderLayout());
 
-        //JList<String> list = new JList<>(model);
-        //add(new JScrollPane(list), BorderLayout.CENTER);
-
         textArea = new JTextArea();
         textArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         textArea.setEditable(false);
@@ -45,6 +48,7 @@ public class NotificacionGUI extends JDialog {
         JButton delBtn = new JButton("Eliminar");
         JButton sortIdBtn = new JButton("Ordenar ID");
         JButton sortFechaBtn = new JButton("Ordenar Fecha");
+        JButton backBtn      = new JButton("Regresar");
         //JButton initBtn = new JButton("Inicializar");
 
         addBtn.addActionListener(e -> agregar());
@@ -53,7 +57,7 @@ public class NotificacionGUI extends JDialog {
         delBtn.addActionListener(e -> eliminar());
         sortIdBtn.addActionListener(e -> ordenarId());
         sortFechaBtn.addActionListener(e -> ordenarFecha());
-        //initBtn.addActionListener(e -> {docente.inicializarNotificaciones(); mostrar();});
+        backBtn     .addActionListener(e -> dispose());
 
         panel.add(addBtn);
         panel.add(showBtn);
@@ -61,7 +65,8 @@ public class NotificacionGUI extends JDialog {
         panel.add(delBtn);
         panel.add(sortIdBtn);
         panel.add(sortFechaBtn);
-        //panel.add(initBtn);
+        panel.add(backBtn);
+
 
         add(panel, BorderLayout.EAST);
     }

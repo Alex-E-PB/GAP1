@@ -15,6 +15,13 @@ public class PostulacionGUI extends JDialog {
     private final Practica practica;
     //private final DefaultListModel<String> model;
     private JTextArea textArea;
+    private JTextArea textArea1;
+    private JButton ordenarEstadoButton;
+    private JButton agregarButton;
+    private JButton ordenarIDButton;
+    private JButton mostrarButton;
+    private JButton eliminarButton;
+    private JButton editarButton;
 
     public PostulacionGUI(Frame owner, Practica practica) {
         super(owner, "Postulaciones", true);
@@ -44,6 +51,7 @@ public class PostulacionGUI extends JDialog {
         //JButton initBtn = new JButton("Inicializar");
         JButton sortIdBtn = new JButton("Ordenar ID");
         JButton sortEstBtn = new JButton("Ordenar Estado");
+        JButton backBtn      = new JButton("Regresar");
 
         addBtn.addActionListener(e -> agregar());
         showBtn.addActionListener(e -> mostrar());
@@ -52,6 +60,7 @@ public class PostulacionGUI extends JDialog {
         //initBtn.addActionListener(e -> {practica.inicializarPostulaciones(); mostrar();});
         sortIdBtn.addActionListener(e -> ordenarId());
         sortEstBtn.addActionListener(e -> ordenarEstado());
+        backBtn     .addActionListener(e -> dispose());
 
         panel.add(addBtn);
         panel.add(showBtn);
@@ -60,6 +69,7 @@ public class PostulacionGUI extends JDialog {
         //panel.add(initBtn);
         panel.add(sortIdBtn);
         panel.add(sortEstBtn);
+        panel.add(backBtn);
 
         add(panel, BorderLayout.EAST);
     }
@@ -211,6 +221,6 @@ public class PostulacionGUI extends JDialog {
             return texto.substring(0, max - 3) + "...";
         }
         return texto;
-            //model.addElement(p.toString());
+        //model.addElement(p.toString());
     }
 }

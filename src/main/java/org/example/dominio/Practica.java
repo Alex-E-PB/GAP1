@@ -318,12 +318,23 @@ public class Practica implements PostulacionDAO, ProgresoDAO, Comparable<Practic
         return null;
     }
 
-    public boolean editarProgreso(String comentarios) {
+    // Método original que seguirá funcionando como antes
+    public boolean editarProgreso(String comentario) {
+        return existeComentarios(comentario);
+    }
+
+    // Método nuevo que sí edita
+    public boolean editarProgreso(String comentarioOriginal, String nuevoComentario) {
         for (Progreso p : progresos) {
-            if (p.getComentarios().equals(comentarios)) return true;
+            if (p.getComentarios().equals(comentarioOriginal)) {
+                if (existeComentarios(nuevoComentario)) return false;
+                p.setComentarios(nuevoComentario);
+                return true;
+            }
         }
         return false;
     }
+
 
     public boolean eliminarProgreso(String comentario) {
         return progresos.removeIf(p -> p.getComentarios().equals(comentario));

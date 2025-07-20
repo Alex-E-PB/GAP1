@@ -54,4 +54,19 @@ public class Validador {
     public static boolean esVacio(String texto) {
         return texto == null || texto.trim().isEmpty();
     }
+
+    // Verifica si un campo está vacío
+    public static boolean esCampoVacio(String texto) {
+        return texto == null || texto.trim().isEmpty();
+    }
+
+    // Verifica si es un correo institucional válido para estudiante
+    public static boolean esCorreoEstudiante(String correo) {
+        return correo != null && correo.endsWith("@uce.edu.ec");
+    }
+
+    // Verifica si es un correo institucional válido para docente
+    public static boolean esCorreoDocente(String correo) {
+        return correo != null && correo.endsWith("@uce.doc.ec");
+    }
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="org.example.gui.MenuEstudiante">
+  <grid id="27dc6" binding="MenuEstudiante" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="10" vgap="10">
+    <margin top="20" left="50" bottom="20" right="50"/>
+    <constraints>
+      <xy x="27" y="30" width="662" height="329"/>
+    </constraints>
+    <properties/>
+    <border type="bevel-lowered" title="GAP">
+      <title-color color="-12875060"/>
+      <color color="-12875060"/>
+    </border>
+    <children>
+      <component id="7cf88" class="javax.swing.JLabel" binding="estudiante">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Arial" size="20" style="1"/>
+          <text value="Bienvenido al Sistema Académico de Practicas"/>
+        </properties>
+      </component>
+      <component id="113c8" class="javax.swing.JButton" binding="Postulacion">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Generar Postulacion "/>
+        </properties>
+      </component>
+      <component id="2c3ab" class="javax.swing.JButton" binding="Notificacion">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Revisar Notificaciones"/>
+        </properties>
+      </component>
+      <component id="8d755" class="javax.swing.JButton" binding="Progreso">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Gestionar Progreso"/>
+        </properties>
+      </component>
+      <component id="fd8e9" class="javax.swing.JButton" binding="Salir">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="5" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Salir"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
